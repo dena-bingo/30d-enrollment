@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enrollment window model — 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f6f2;
+  --surface:#ffffff;
+  --surface2:#f0efe9;
+  --surface3:#e8e7e0;
+  --border:rgba(0,0,0,0.07);
+  --border2:rgba(0,0,0,0.13);
+  --text:#181816;
+  --text2:#52524e;
+  --text3:#a0a09a;
+
+  /* Window close = slate */
+  --close:#475569;
+  --close-lt:#F1F5F9;
+
+  /* Invite = teal */
+  --invite:#0E9E6E;
+  --invite-lt:#d0f5e8;
+
+  /* CSD-1 zone = soft blue */
+  --w1:#93C5FD;
+  --w1-lt:#EFF6FF;
+  --w1-dk:#2563EB;
+
+  /* Cutoff = indigo */
+  --cutoff:#4338CA;
+  --cutoff-lt:#E0E7FF;
+
+  /* CSD-2 zone = soft teal-green */
+  --w2:#6EE7B7;
+  --w2-lt:#ECFDF5;
+  --w2-dk:#047857;
+
+  /* CSD markers */
+  --csd1:#D97706;
+  --csd1-lt:#FEF9E7;
+  --csd2:#B91C1C;
+  --csd2-lt:#FEE2E2;
+
+  --ok:#047857;--ok-bg:#d1fae5;
+  --warn:#92400E;--warn-bg:#fef3c7;
+  --oe:#3730A3;--oe-bg:#e0e7ff;
+  --danger:#991B1B;--danger-bg:#fee2e2;
+  --r:5px;--rlg:10px;--rxl:14px;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;position:relative}
+mono{font-family:'JetBrains Mono',monospace;font-size:.92em}
+
+/* ── LAYOUT ── */
+.shell{display:grid;grid-template-columns:320px 1fr;min-height:100vh;align-items:start}
+.sidebar{background:var(--surface);border-right:1px solid var(--border2);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;width:320px;min-width:320px;max-width:320px}
+.main{padding:20px 24px;display:flex;flex-direction:column;gap:20px;min-width:0;flex:1}
+
+/* ── SIDEBAR ── */
+.sb-head{padding:18px 18px 14px;border-bottom:1px solid var(--border)}
+.sb-title{font-size:14px;font-weight:600;color:var(--text);letter-spacing:-.02em}
+.sb-sub{font-size:11px;color:var(--text3);margin-top:2px;font-family:'JetBrains Mono',monospace}
+
+.sb-section{padding:14px 18px;border-bottom:1px solid var(--border)}
+.sb-section-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
+
+/* Legend */
+.leg-item{display:flex;align-items:center;gap:9px;margin-bottom:7px;font-size:12px;color:var(--text2)}
+.leg-item:last-child{margin-bottom:0}
+.leg-color{width:28px;height:10px;border-radius:3px;flex-shrink:0}
+.leg-label{line-height:1.3}
+.leg-sub{font-size:10px;color:var(--text3);display:block}
+
+/* Detail panel */
+.detail-empty{font-size:12px;color:var(--text3);font-style:italic;padding:4px 0}
+
+
+
+/* Detail rows */
+.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
+.det-card{border-radius:var(--r);padding:9px 11px;border:1.5px solid transparent}
+.det-card-swatch{width:12px;height:12px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:middle;flex-shrink:0}
+.det-card-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;display:flex;align-items:center}
+.det-card-val{font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace;line-height:1.3}
+.det-card-sub{font-size:10px;margin-top:2px;opacity:.75}
+
+.badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 7px;border-radius:3px;font-family:'JetBrains Mono',monospace}
+.badge-ok{background:var(--ok-bg);color:var(--ok)}
+.badge-warn{background:var(--warn-bg);color:var(--warn)}
+.badge-danger{background:var(--danger-bg);color:var(--danger)}
+.badge-oe{background:var(--oe-bg);color:var(--oe)}
+
+/* Insight box */
+.insight{background:var(--surface2);border-left:3px solid var(--cutoff);border-radius:0 var(--r) var(--r) 0;padding:8px 10px;margin-top:10px;font-size:11px;color:var(--text2);line-height:1.5}
+.insight.good{border-left-color:var(--invite)}
+.insight.warn{border-left-color:var(--csd1)}
+.insight.danger{border-left-color:var(--danger)}
+
+/* ── STATS BAR ── */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);padding:14px 16px}
+.stat-val{font-size:26px;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:4px}
+.stat-label{font-size:11px;color:var(--text2);line-height:1.4}
+.stat-sub{font-size:10px;color:var(--text3);margin-top:2px}
+.stat-card.s-ok .stat-val{color:var(--ok)}
+.stat-card.s-warn .stat-val{color:var(--warn)}
+.stat-card.s-oe .stat-val{color:var(--oe)}
+.stat-card.s-neutral .stat-val{color:var(--text)}
+
+/* ── CALENDAR ── */
+.cal-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);padding:16px}
+.cal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.cal-heading{font-size:13px;font-weight:600;color:var(--text)}
+.cal-hint{font-size:11px;color:var(--text3)}
+
+.month-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.month-card{border-radius:var(--r);padding:8px;border:1px solid var(--border)}
+.month-name{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;font-family:'JetBrains Mono',monospace}
+.dow-row{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;margin-bottom:2px}
+.dow-label{font-size:7.5px;color:var(--text3);text-align:center;font-family:'JetBrains Mono',monospace}
+.day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1.5px}
+.dc{width:100%;aspect-ratio:1;border-radius:2px;cursor:pointer;font-size:0;transition:transform .1s,box-shadow .1s;position:relative}
+.dc:hover{transform:scale(1.6);z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.18);filter:brightness(.92)}
+/* tooltip */
+.dc[data-tip]:hover::after{content:attr(data-tip);position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:rgba(24,24,22,.88);color:#fff;font-size:9px;font-family:'Inter',sans-serif;font-weight:500;padding:3px 7px;border-radius:4px;white-space:nowrap;pointer-events:none;z-index:100;line-height:1.4;letter-spacing:.01em}
+.dc[data-tip]:hover::before{content:'';position:absolute;bottom:120%;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:rgba(24,24,22,.88);pointer-events:none;z-index:100}
+.de{background:transparent;cursor:default;pointer-events:none}
+.dn{background:var(--surface3)}
+.di{background:var(--invite)}
+.dw1{background:var(--w1)}
+.dco{background:var(--cutoff)}
+.dw2{background:var(--w2)}
+.dc1{background:var(--csd1);outline:2px solid rgba(0,0,0,.2);outline-offset:-1px}
+.dc2{background:var(--csd2);outline:2px solid rgba(0,0,0,.35);outline-offset:-1px}
+.dext{background:var(--oe-bg);outline:2px dashed var(--oe);outline-offset:-1px}
+.dsel{outline:2px solid var(--text);outline-offset:1px;z-index:5;border-radius:2px}
+.dc-card-focus{outline:3px solid var(--text);outline-offset:2px;z-index:6;transform:scale(1.4);border-radius:2px}
+
+/* ── TABLE ── */
+.table-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);overflow:hidden}
+.tbl-top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
+.tbl-heading{font-size:13px;font-weight:600;color:var(--text)}
+.tbl-counts{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.filter-row{display:flex;gap:5px;flex-wrap:wrap}
+.fb{font-size:11px;padding:3px 11px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .12s;white-space:nowrap}
+.fb:hover{background:var(--surface2)}
+.fb.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.fb.f-ok.active{background:var(--ok);border-color:var(--ok);color:#fff}
+.fb.f-warn.active{background:var(--warn);border-color:var(--warn);color:#fff}
+.fb.f-oe.active{background:var(--oe);border-color:var(--oe);color:#fff}
+
+table{width:100%;border-collapse:collapse;font-size:11px}
+thead tr{background:var(--surface2);position:sticky;top:0;z-index:2}
+th{padding:7px 10px;text-align:left;font-weight:600;color:var(--text2);font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border2);white-space:nowrap}
+td{padding:5px 10px;border-bottom:1px solid var(--border);color:var(--text);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:11px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr.row-oe td:first-child{border-left:2px solid var(--cutoff)}
+tr.row-selected td{background:#fffce8 !important}
+tr:hover td{background:var(--surface2);cursor:pointer}
+.dow{font-size:9px;color:var(--text3);margin-left:3px}
+.td-na{color:var(--text3)}
+.td-good{color:var(--ok);font-weight:500}
+.td-mid{color:#5a7a00;font-weight:500}
+.td-warn{color:var(--warn)}
+.td-danger{color:var(--danger);font-weight:500}
+.td-oe{font-size:8.5px;padding:1px 5px;border-radius:2px;background:var(--oe-bg);color:var(--oe);margin-left:5px;vertical-align:middle}
+
+/* Day bar in table */
+.day-bar-wrap{display:flex;align-items:center;gap:6px}
+.day-bar{height:6px;border-radius:3px;min-width:2px;display:inline-block}
+.day-num{font-size:11px}
+
+
+/* ── TOGGLE ── */
+.toggle-wrap{padding:12px 18px;border-bottom:1px solid var(--border);background:var(--oe-bg)}
+.toggle-label{font-size:11px;font-weight:600;color:var(--oe);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.toggle-desc{font-size:10px;color:var(--oe);opacity:.8;margin-bottom:8px;line-height:1.4}
+.toggle-btn-row{display:flex;gap:6px}
+.tog{flex:1;font-size:11px;padding:6px 10px;border:1.5px solid var(--oe);border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-weight:500;background:transparent;color:var(--oe);transition:all .15s;text-align:center;opacity:.6}
+.tog.active{background:var(--oe);color:#fff;opacity:1;box-shadow:0 2px 6px rgba(60,52,137,.25)}
+.tog:not(.active):hover{background:rgba(60,52,137,.08);opacity:1}
+.delta-badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;background:var(--ok-bg);color:var(--ok);font-weight:600;font-family:'JetBrains Mono',monospace;margin-left:4px}
+
+@media(max-width:960px){.shell{grid-template-columns:1fr}.sidebar{position:static;height:auto}.month-grid{grid-template-columns:repeat(3,1fr)}.stats-bar{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.month-grid{grid-template-columns:repeat(2,1fr)}}
+/* ── COMMENTS ── */
+:root{--comment-accent:#2563eb;--comment-resolved:#6b7280}
+.comment-fab{background:var(--comment-accent);color:#fff;border:none;border-radius:50px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,.35);display:flex;align-items:center;gap:7px;transition:transform .12s,box-shadow .12s;font-family:'Inter',sans-serif}
+.comment-fab:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,99,235,.4)}
+.comment-count-badge{background:rgba(255,255,255,.25);border-radius:10px;padding:1px 7px;font-size:11px}
+
+.comment-panel{position:fixed;right:0;top:0;height:100vh;width:380px;background:var(--surface);border-left:1px solid var(--border2);z-index:9998;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .22s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 24px rgba(0,0,0,.1);pointer-events:none}
+.comment-panel.open{transform:translateX(0);pointer-events:auto}
+.cp-head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.cp-title{font-size:14px;font-weight:600;color:var(--text)}
+.cp-close{background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:2px 6px;border-radius:4px;line-height:1}
+.cp-close:hover{background:var(--surface2);color:var(--text)}
+
+.cp-name-bar{padding:10px 18px;border-bottom:1px solid var(--border);background:var(--surface2);flex-shrink:0;display:flex;align-items:center;gap:8px}
+.cp-name-label{font-size:11px;color:var(--text3);white-space:nowrap}
+.cp-name-input{flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border2);border-radius:4px;font-family:'Inter',sans-serif;background:var(--surface);color:var(--text);outline:none}
+.cp-name-input:focus{border-color:var(--comment-accent)}
+
+.cp-filters{padding:8px 18px;border-bottom:1px solid var(--border);display:flex;gap:5px;flex-shrink:0}
+.cpf{font-size:11px;padding:2px 10px;border-radius:12px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'JetBrains Mono',monospace}
+.cpf.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.cpf:hover:not(.active){background:var(--surface2)}
+
+.cp-list{flex:1;overflow-y:auto;padding:12px 18px;display:flex;flex-direction:column;gap:10px}
+.cp-empty{font-size:12px;color:var(--text3);font-style:italic;text-align:center;padding:32px 0}
+
+.comment-card{border:1px solid var(--border2);border-radius:var(--rlg);overflow:hidden;transition:opacity .15s}
+.comment-card.resolved{opacity:.55}
+.cc-head{padding:10px 12px 6px;display:flex;align-items:flex-start;gap:8px}
+.cc-avatar{width:28px;height:28px;border-radius:50%;background:var(--comment-accent);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;text-transform:uppercase}
+.cc-meta{flex:1;min-width:0}
+.cc-author{font-size:12px;font-weight:600;color:var(--text)}
+.cc-time{font-size:10px;color:var(--text3);margin-left:6px}
+.cc-context{font-size:10px;color:var(--comment-accent);font-family:'JetBrains Mono',monospace;margin-top:1px}
+.cc-body{font-size:12px;color:var(--text2);line-height:1.5;padding:4px 12px 8px 48px}
+.cc-actions{padding:4px 12px 8px 48px;display:flex;gap:8px;flex-wrap:wrap}
+.cc-btn{font-size:10px;padding:2px 8px;border-radius:3px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'JetBrains Mono',monospace;transition:background .1s}
+.cc-btn:hover{background:var(--surface2)}
+.cc-btn.resolve{color:var(--ok);border-color:var(--ok)}
+.cc-btn.resolve:hover{background:var(--ok-bg)}
+.cc-btn.dismiss{color:var(--danger);border-color:var(--danger)}
+.cc-btn.dismiss:hover{background:var(--danger-bg)}
+.cc-btn.reopen{color:var(--text3)}
+
+.cc-replies{border-top:1px solid var(--border);background:var(--surface2)}
+.cc-reply{padding:8px 12px 6px 48px;border-bottom:1px solid var(--border)}
+.cc-reply:last-child{border-bottom:none}
+.cc-reply-author{font-size:11px;font-weight:600;color:var(--text)}
+.cc-reply-time{font-size:9px;color:var(--text3);margin-left:5px}
+.cc-reply-body{font-size:11px;color:var(--text2);line-height:1.5;margin-top:2px}
+.cc-reply-del{font-size:9px;color:var(--text3);cursor:pointer;margin-left:6px}
+.cc-reply-del:hover{color:var(--danger)}
+
+.cc-reply-form{padding:8px 12px;border-top:1px solid var(--border);display:flex;gap:6px;align-items:flex-end}
+.cc-reply-input{flex:1;font-size:11px;padding:5px 8px;border:1px solid var(--border2);border-radius:4px;font-family:'Inter',sans-serif;resize:none;height:32px;color:var(--text);background:var(--surface);outline:none;transition:height .1s}
+.cc-reply-input:focus{border-color:var(--comment-accent);height:56px}
+.cc-reply-send{font-size:11px;padding:5px 10px;background:var(--comment-accent);color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:500;white-space:nowrap}
+.cc-reply-send:hover{opacity:.9}
+
+.resolved-tag{font-size:9px;padding:1px 6px;border-radius:3px;background:#e5e7eb;color:var(--comment-resolved);font-family:'JetBrains Mono',monospace;margin-left:6px}
+.dismissed-tag{font-size:9px;padding:1px 6px;border-radius:3px;background:var(--danger-bg);color:var(--danger);font-family:'JetBrains Mono',monospace;margin-left:6px}
+
+.cp-new{padding:14px 18px;border-top:1px solid var(--border);flex-shrink:0;background:var(--surface)}
+.cp-new-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.cp-new-context{font-size:10px;color:var(--comment-accent);font-family:'JetBrains Mono',monospace;margin-bottom:6px;min-height:14px}
+.cp-new-textarea{width:100%;font-size:12px;padding:8px;border:1px solid var(--border2);border-radius:6px;resize:none;height:64px;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface);outline:none}
+.cp-new-textarea:focus{border-color:var(--comment-accent)}
+.cp-new-row{display:flex;justify-content:flex-end;margin-top:6px;gap:6px}
+.cp-submit{font-size:12px;padding:6px 14px;background:var(--comment-accent);color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:500;font-family:'Inter',sans-serif}
+.cp-submit:hover{opacity:.9}
+.cp-submit:disabled{opacity:.4;cursor:default}
+.cp-cancel{font-size:12px;padding:6px 14px;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:5px;cursor:pointer;font-family:'Inter',sans-serif}
+
+/* ── PINS ── */
+body.comment-mode{cursor:crosshair!important}
+body.comment-mode *{cursor:crosshair!important}
+.comment-mode-bar{position:fixed;top:0;left:0;right:0;z-index:10000;background:#2563eb;color:#fff;padding:8px 16px;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:space-between;transform:translateY(-100%);transition:transform .18s;font-family:'Inter',sans-serif}
+.comment-mode-bar.active{transform:translateY(0)}
+.comment-mode-bar-left{display:flex;align-items:center;gap:10px}
+.cmb-key{background:rgba(255,255,255,.2);border-radius:3px;padding:1px 6px;font-family:'JetBrains Mono',monospace;font-size:11px}
+.cmb-cancel{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:4px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif}
+.cmb-cancel:hover{background:rgba(255,255,255,.25)}
+
+.pin{position:absolute;z-index:9997;width:24px;height:24px;border-radius:50%;background:#2563eb;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(37,99,235,.45);border:2px solid #fff;transition:transform .12s;transform:translate(-50%,-50%);font-family:'Inter',sans-serif;user-select:none}
+.pin:hover{transform:translate(-50%,-50%) scale(1.15)}
+.pin.resolved{background:#6b7280}
+.pin.dismissed{background:#ef4444}
+.pin-pulse{position:absolute;z-index:9996;width:32px;height:32px;border-radius:50%;background:rgba(37,99,235,.2);transform:translate(-50%,-50%);pointer-events:none;animation:pinpulse 1.5s ease-out forwards}
+@keyframes pinpulse{0%{opacity:1;transform:translate(-50%,-50%) scale(.8)}100%{opacity:0;transform:translate(-50%,-50%) scale(2.2)}}
+
+/* Pin popover */
+.pin-popover{position:fixed;z-index:9999;width:280px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--rlg);box-shadow:0 8px 32px rgba(0,0,0,.15);display:none}
+.pin-popover.open{display:flex;flex-direction:column}
+.pp-head{padding:10px 12px 6px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.pp-title{font-size:12px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
+.pp-pin-num{width:20px;height:20px;border-radius:50%;background:#2563eb;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.pp-close{background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;line-height:1;padding:2px}
+.pp-close:hover{color:var(--text)}
+.pp-body{padding:8px 12px;max-height:220px;overflow-y:auto}
+.pp-comment-item{padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
+.pp-comment-item:last-child{border-bottom:none}
+.pp-ci-author{font-weight:600;color:var(--text);font-size:11px}
+.pp-ci-time{color:var(--text3);font-size:10px;margin-left:5px}
+.pp-ci-text{color:var(--text2);line-height:1.5;margin-top:2px}
+.pp-ci-replies{margin-top:4px;padding-left:10px;border-left:2px solid var(--border2)}
+.pp-empty{font-size:11px;color:var(--text3);font-style:italic;padding:4px 0}
+.pp-new{padding:8px 12px;border-top:1px solid var(--border)}
+.pp-textarea{width:100%;font-size:11px;padding:6px 8px;border:1px solid var(--border2);border-radius:4px;resize:none;height:52px;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface);outline:none}
+.pp-textarea:focus{border-color:#2563eb}
+.pp-submit-row{display:flex;justify-content:flex-end;margin-top:5px;gap:5px}
+.pp-btn{font-size:11px;padding:4px 10px;border-radius:4px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500}
+.pp-btn.primary{background:#2563eb;color:#fff}
+.pp-btn.primary:hover{opacity:.9}
+.pp-btn.secondary{background:var(--surface2);color:var(--text2);border:1px solid var(--border2)}
+
+/* ── TOP TOGGLE ── */
+.er-toggle-bar{display:flex;gap:0;background:var(--surface2);border-bottom:1px solid var(--border2);flex-shrink:0}
+.er-tab{flex:1;font-size:12px;font-weight:600;padding:12px 10px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'Inter',sans-serif;border-bottom:2px solid transparent;transition:all .15s;letter-spacing:-.01em}
+.er-tab:hover{color:var(--text);background:var(--surface)}
+.er-tab.active{color:var(--text);border-bottom-color:var(--text);background:var(--surface)}
+
+/* ── RENEWAL VIEW ── */
+
+.renewal-track{margin:14px 18px 0;border:1px solid var(--border2);border-radius:var(--rlg);overflow:hidden}
+.rt-head{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.rt-title{font-size:12px;font-weight:600;color:var(--text)}
+.rt-desc{font-size:10px;color:var(--text3);margin-top:1px}
+.rt-badge{font-size:9px;padding:2px 7px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-weight:500}
+.rt-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.rt-cell{background:var(--surface);padding:10px 12px}
+.rt-cell-label{font-size:9px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.rt-cell-val{font-size:13px;font-weight:500;color:var(--text);font-family:'JetBrains Mono',monospace}
+.rt-cell-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.rt-cell.soft .rt-cell-val{color:var(--warn)}
+.rt-cell.hard .rt-cell-val{color:var(--danger)}
+.rt-cell.legal .rt-cell-val{color:var(--text3)}
+
+.renewal-note{margin:12px 18px;padding:10px 12px;background:var(--surface2);border-radius:var(--r);border-left:3px solid var(--text3)}
+.renewal-note p{font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:6px}
+.renewal-note p:last-child{margin-bottom:0}
+
+.renewal-tl-wrap{margin:14px 18px 0}
+.renewal-tl-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.renewal-tl-bar{position:relative;height:16px;background:var(--surface3);border-radius:4px;margin-bottom:28px}
+.rtl-seg{position:absolute;top:0;height:100%;border-radius:3px}
+.rtl-marker{position:absolute;top:-3px;width:2px;height:22px;border-radius:1px}
+.rtl-label{position:absolute;top:22px;font-size:9px;white-space:nowrap;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-weight:500}
+
+</style>
+</head>
+<body>
+<div class="comment-mode-bar" id="comment-mode-bar">
+  <div class="comment-mode-bar-left">
+    <span>📍 Comment mode — click anywhere to pin a comment</span>
+    <span class="cmb-key">C</span> to cancel
+  </div>
+  <button class="cmb-cancel" onclick="exitCommentMode()">Cancel</button>
+</div>
+<div class="pin-popover" id="pin-popover">
+  <div class="pp-head">
+    <div class="pp-title"><span class="pp-pin-num" id="pp-num">1</span><span id="pp-head-text">Comment</span></div>
+    <button class="pp-close" onclick="CS.closePopover()">✕</button>
+  </div>
+  <div class="pp-body" id="pp-body"></div>
+  <div class="pp-new">
+    <div id="pp-name-row" style="display:flex;align-items:center;gap:8px;padding:8px 12px 0;border-top:1px solid var(--border)">
+      <span style="font-size:11px;color:var(--text3);white-space:nowrap">Your name</span>
+      <input id="pp-name-input" placeholder="e.g. Dena" oninput="CS.syncName(this.value)"
+        style="flex:1;border:1px solid var(--border2);border-radius:6px;padding:4px 8px;font-size:11px;font-family:'Inter',sans-serif;outline:none;background:var(--surface2)"/>
+    </div>
+    <textarea class="pp-textarea" id="pp-textarea" placeholder="Add a comment…"></textarea>
+    <div class="pp-submit-row">
+      <button class="pp-btn secondary" onclick="CS.closePopover()">Close</button>
+      <button class="pp-btn primary" onclick="CS.submitPin()">Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- POSITIONING PANEL -->
+<div id="pov-panel" style="background:linear-gradient(135deg,#1e1b4b 0%,#312e81 60%,#3730a3 100%);font-family:'Inter',sans-serif;position:relative">
+
+  <!-- Toggle bar — always visible -->
+  <button id="pov-toggle" onclick="togglePOV()" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:none;border:none;cursor:pointer;text-align:left;border-bottom:1px solid rgba(255,255,255,0.08)">
+    <div style="display:flex;align-items:center;gap:16px">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <span style="font-size:13px;font-weight:600;color:#fff;letter-spacing:-.01em">Enrollment windows — strategic recommendation</span>
+        <span style="font-size:11px;color:rgba(255,255,255,0.5)">Thatch Product · 2026</span>
+      </div>
+    </div>
+    <div id="pov-toggle-btn" style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 12px;transition:background .15s">
+      <span id="pov-toggle-label" style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.85)">Read context</span>
+      <svg id="pov-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" style="transition:transform .25s;color:rgba(255,255,255,0.7)"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </button>
+
+  <!-- Expanded content -->
+  <div id="pov-content" style="display:none;padding:28px 28px 32px;max-width:1300px">
+
+    <!-- Headline -->
+    <div style="margin-bottom:28px;max-width:680px">
+      <div style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-.03em;line-height:1.25;margin-bottom:10px">
+        We recommend moving from two enrollment systems to one.
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7;font-weight:400">
+        Thatch currently operates two parallel enrollment models — rolling windows for new employers and a separate OE cohort operation every November. We recommend collapsing these into a single CSD-first system that runs identically year-round.
+      </div>
+    </div>
+
+    <!-- Three columns -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+
+      <!-- Problem -->
+      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px">
+        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:14px">The problem</div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font-size:12px;font-weight:600;color:#FCA5A5;margin-bottom:4px">Two systems, two playbooks</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">Rolling windows and OE cohorts run on different logic, different CS processes, and different comms. Every November, the team manually rebuilds what should be automated.</div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,0.07)"></div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:#FCA5A5;margin-bottom:4px">Extensions are a symptom, not a solution</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">The 6% enrollment lift from OE 2026 extensions was real — but required 8 cohorts, exclusion lists, and significant CS coordination. That doesn't scale with 30 new sales reps.</div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,0.07)"></div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:#FCA5A5;margin-bottom:4px">We've been solving the wrong problem</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">Employers don't want to control enrollment windows. They want to control when coverage begins. The window is an implementation detail Thatch should own.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommendation -->
+      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px">
+        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:14px">The recommendation</div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font-size:12px;font-weight:600;color:#6EE7B7;margin-bottom:4px">One system, anchored on coverage start date</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">Every invite — rolling or OE — gets a 30-day window split by a processing cutoff. Enroll before the cutoff: CSD 1. Enroll after: CSD 2. Same logic year-round, no exceptions.</div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,0.07)"></div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:#6EE7B7;margin-bottom:4px">Extensions become structural, not operational</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">The two-CSD model embeds the extension concept by design. The Jan 4–8 special extension is the only exception — a targeted policy decision, not an operational workaround.</div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,0.07)"></div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:#6EE7B7;margin-bottom:4px">OE 2027 is a capacity problem, not an architecture problem</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">With one system, OE is when more invites go out simultaneously — not a different operating mode. One CS playbook. One enrollment flow. One mental model for everyone.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- What changes + how to use -->
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px;flex:1">
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:14px">What changes</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>14-day and 21-day window options</span></div>
+            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>Manual mass extension operations</span></div>
+            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>Employer-set deadlines as default</span></div>
+            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>Separate OE operating mode</span></div>
+            <div style="height:1px;background:rgba(255,255,255,0.07);margin:4px 0"></div>
+            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>30-day window with 2 CSDs, every invite</span></div>
+            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>EOM−2 processing cutoff as single operational rhythm</span></div>
+            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>Jan 4–8 as permanent, targeted OE policy</span></div>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 18px">
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:10px">Explore the model below</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5;display:flex;gap:8px"><span style="color:#93C5FD;flex-shrink:0">→</span>Click any invite date to see its window and CSDs</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5;display:flex;gap:8px"><span style="color:#93C5FD;flex-shrink:0">→</span>Toggle special extension to see Jan 4–8 policy impact</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5;display:flex;gap:8px"><span style="color:#93C5FD;flex-shrink:0">→</span>Switch to Renewals for the OE track comparison</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="shell">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-head">
+    <div class="sb-title">Enrollment windows</div>
+    <div class="sb-sub">2026</div>
+  </div>
+  <div class="er-toggle-bar">
+    <button class="er-tab active" data-er="new" onclick="setERType('new')">🆕 New ERs</button>
+    <button class="er-tab" data-er="renewal" onclick="setERType('renewal')">🔄 Renewals</button>
+  </div>
+
+
+  <div class="toggle-wrap" data-new-er>
+    <div class="toggle-label">
+      ✦ OE extension policy
+    </div>
+    <div class="toggle-desc" id="tog-desc">Special extension special extension for Feb 1 coverage — first week back from holidays</div>
+    <div class="toggle-btn-row">
+      <button class="tog" data-t="0" onclick="setToggle(0)">Base</button>
+      <button class="tog active" data-t="1" onclick="setToggle(1)">Special extension</button>
+    </div>
+    <div style="margin-top:7px;font-size:10px;color:var(--oe)" id="tog-impact"></div>
+  </div>
+
+  <div class="sb-section" data-new-er>
+    <div class="sb-section-label">How it works</div>
+    <div style="font-size:11px;color:var(--text2);line-height:1.6">
+      Each invite starts a <strong>30-day window</strong>. The <span style="color:var(--cutoff);font-weight:500">processing cutoff</span> (EOM−2, adjusted to Thu or earlier) splits the window in two:<br><br>
+      Enroll <em>before</em> the cutoff → <span style="color:var(--csd1);font-weight:500">CSD 1</span> (next month)<br>
+      Enroll <em>after</em> the cutoff → <span style="color:var(--csd2);font-weight:500">CSD 2</span> (month after)
+    </div>
+  </div>
+
+  <div class="sb-section" data-new-er>
+    <div class="sb-section-label">Selected invite</div>
+    <div id="det-empty" class="detail-empty">Click any day on the calendar</div>
+    <div id="det-content" style="display:none">
+      <div style="margin-bottom:8px" id="d-badges"></div>
+
+      <div class="det-grid">
+        <!-- Invite -->
+        <div class="det-card" style="background:var(--invite-lt);border-color:var(--invite);border-left:3px solid var(--invite)">
+          <div class="det-card-label" style="color:var(--invite)">
+            <span class="det-card-swatch" style="background:var(--invite)"></span>Invite
+          </div>
+          <div class="det-card-val" style="color:var(--invite)" id="d-invite">—</div>
+        </div>
+        <!-- Window closes -->
+        <div class="det-card" style="background:var(--w2-lt);border-color:var(--w2-dk);border-left:3px solid var(--w2-dk)">
+          <div class="det-card-label" style="color:var(--w2-dk)">
+            <span class="det-card-swatch" style="background:var(--w2)"></span>Window closes
+          </div>
+          <div class="det-card-val" style="color:var(--w2-dk)" id="d-close">—</div>
+        </div>
+        <!-- CSD 1 cutoff -->
+        <div class="det-card" style="background:var(--cutoff-lt);border-color:var(--cutoff)">
+          <div class="det-card-label" style="color:var(--cutoff)">
+            <span class="det-card-swatch" style="background:var(--cutoff)"></span>CSD 1 cutoff
+          </div>
+          <div class="det-card-val" style="color:var(--cutoff)" id="d-cut">—</div>
+          <div class="det-card-sub" style="color:var(--cutoff)" id="d-days1">—</div>
+        </div>
+        <!-- CSD 1 -->
+        <div class="det-card" style="background:var(--csd1-lt);border-color:var(--csd1)">
+          <div class="det-card-label" style="color:var(--csd1)">
+            <span class="det-card-swatch" style="background:var(--csd1)"></span>CSD 1
+          </div>
+          <div class="det-card-val" style="color:var(--csd1)" id="d-csd1">—</div>
+        </div>
+        <!-- CSD 2 cutoff -->
+        <div class="det-card" style="background:var(--w2-lt);border-color:var(--w2-dk)">
+          <div class="det-card-label" style="color:var(--w2-dk)">
+            <span class="det-card-swatch" style="background:var(--w2)"></span>CSD 2 cutoff
+          </div>
+          <div class="det-card-val" style="color:var(--w2-dk)" id="d-cut2">—</div>
+          <div class="det-card-sub" style="color:var(--w2-dk)" id="d-days2">—</div>
+        </div>
+        <!-- CSD 2 -->
+        <div class="det-card" style="background:var(--csd2-lt);border-color:var(--csd2)">
+          <div class="det-card-label" style="color:var(--csd2)">
+            <span class="det-card-swatch" style="background:var(--csd2)"></span>CSD 2
+          </div>
+          <div class="det-card-val" style="color:var(--csd2)" id="d-csd2">—</div>
+        </div>
+      </div>
+      <div id="d-insight"></div>
+    </div>
+  </div>
+  <!-- RENEWAL VIEW -->
+  <div class="sb-section" data-renewal-er style="display:none">
+    <div class="sb-section-label">How it works</div>
+    <div style="font-size:11px;color:var(--text2);line-height:1.6">
+      All renewals target <strong>Jan 1</strong> coverage. Two tracks run in parallel — Standard for on-time employers, Late start for others.<br><br>
+      Each track has a <span style="color:var(--warn);font-weight:500">soft deadline</span> (marketed) and a <span style="color:var(--danger);font-weight:500">final deadline</span> (last chance).<br><br>
+      <span style="color:var(--text3)">Dec 15 legal backstop — Support Ops only, not marketed.</span>
+    </div>
+  </div>
+
+
+
+</div><!-- /sidebar -->
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- Stats bar -->
+  <div class="stats-bar" id="stats-bar"></div>
+
+  <!-- Renewal main panel -->
+  <div id="renewal-main" style="display:none;flex-direction:column;gap:20px">
+
+    <!-- Header bar: 3 key facts -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border-radius:var(--rxl);overflow:hidden;border:1px solid var(--border)">
+      <div style="background:var(--surface);padding:20px 24px">
+        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Coverage start date</div>
+        <div style="font-size:32px;font-weight:700;color:var(--csd1);letter-spacing:-.03em;line-height:1">Jan 1</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:5px">All renewals — no rolling window</div>
+      </div>
+      <div style="background:var(--surface);padding:20px 24px">
+        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">OE opens</div>
+        <div style="font-size:32px;font-weight:700;color:var(--ok);letter-spacing:-.03em;line-height:1">Nov 2</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:5px">Standard track · earliest invite</div>
+      </div>
+      <div style="background:var(--surface);padding:20px 24px">
+        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Renewals close</div>
+        <div style="font-size:32px;font-weight:700;color:var(--text3);letter-spacing:-.03em;line-height:1">Dec 15</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:5px">Support Ops only · not marketed</div>
+      </div>
+    </div>
+
+    <!-- Track comparison -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+      <!-- Standard track -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);overflow:hidden">
+        <!-- Track header -->
+        <div style="padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between">
+          <div>
+            <div style="font-size:15px;font-weight:700;color:#0F4C35;letter-spacing:-.01em">Standard</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">Accepts carrier rates on time</div>
+          </div>
+          <div style="font-size:10px;font-weight:600;color:#0F4C35;background:#E6F5EF;padding:3px 10px;border-radius:20px;letter-spacing:.04em;font-family:'JetBrains Mono',monospace;margin-top:2px">Track A</div>
+        </div>
+        <!-- Steps -->
+        <div style="padding:20px">
+          <!-- Step row helper: accent color, step num, label, date, sub, connector -->
+          <!-- Step 1: OE opens -->
+          <div style="display:flex;gap:14px">
+            <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+              <div style="width:26px;height:26px;border-radius:50%;background:#0F4C35;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+              <div style="width:1px;flex:1;min-height:36px;background:var(--border2);margin:4px 0"></div>
+            </div>
+            <div style="padding-top:3px;padding-bottom:16px">
+              <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em">OE opens</div>
+              <div style="font-size:20px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 2 <span style="font-size:11px;color:var(--text3);font-weight:400">Mon</span></div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px">Invites sent to members</div>
+            </div>
+          </div>
+          <!-- Duration pill -->
+          <div style="display:flex;gap:14px;align-items:center;margin-bottom:0">
+            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
+            <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">16 days</div>
+          </div>
+          <!-- Step 2: Soft deadline -->
+          <div style="display:flex;gap:14px;margin-top:0">
+            <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+              <div style="width:26px;height:26px;border-radius:50%;background:#7C4A00;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+              <div style="width:1px;flex:1;min-height:36px;background:var(--border2);margin:4px 0"></div>
+            </div>
+            <div style="padding-top:3px;padding-bottom:16px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="font-size:10px;font-weight:600;color:#7C4A00;text-transform:uppercase;letter-spacing:.06em">Soft deadline</div>
+                <div style="font-size:9px;font-weight:600;color:#7C4A00;background:#FEF3C7;padding:1px 7px;border-radius:10px">marketed</div>
+              </div>
+              <div style="font-size:20px;font-weight:700;color:#7C4A00;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 18 <span style="font-size:11px;color:var(--text3);font-weight:400">Wed</span></div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px">Primary communicated deadline</div>
+            </div>
+          </div>
+          <!-- Duration pill -->
+          <div style="display:flex;gap:14px;align-items:center;margin-bottom:0">
+            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
+            <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">6 days</div>
+          </div>
+          <!-- Step 3: Final deadline -->
+          <div style="display:flex;gap:14px;margin-top:0">
+            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center">
+              <div style="width:26px;height:26px;border-radius:50%;background:#7F1D1D;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">3</div>
+            </div>
+            <div style="padding-top:3px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="font-size:10px;font-weight:600;color:#7F1D1D;text-transform:uppercase;letter-spacing:.06em">Final deadline</div>
+                <div style="font-size:9px;font-weight:600;color:#7F1D1D;background:#FEE2E2;padding:1px 7px;border-radius:10px">last chance</div>
+              </div>
+              <div style="font-size:20px;font-weight:700;color:#7F1D1D;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 24 <span style="font-size:11px;color:var(--text3);font-weight:400">Tue</span></div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px">ERs cannot decline extension</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Late start track -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);overflow:hidden">
+        <div style="padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between">
+          <div>
+            <div style="font-size:15px;font-weight:700;color:#7C4A00;letter-spacing:-.01em">Late start</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">Accepts rates late or not at all</div>
+          </div>
+          <div style="font-size:10px;font-weight:600;color:#7C4A00;background:#FEF3C7;padding:3px 10px;border-radius:20px;letter-spacing:.04em;font-family:'JetBrains Mono',monospace;margin-top:2px">Track B</div>
+        </div>
+        <div style="padding:20px">
+          <!-- Step 1 -->
+          <div style="display:flex;gap:14px">
+            <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+              <div style="width:26px;height:26px;border-radius:50%;background:#0F4C35;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">1</div>
+              <div style="width:1px;flex:1;min-height:36px;background:var(--border2);margin:4px 0"></div>
+            </div>
+            <div style="padding-top:3px;padding-bottom:16px">
+              <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em">OE opens</div>
+              <div style="font-size:20px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 9 <span style="font-size:11px;color:var(--text3);font-weight:400">Mon</span></div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px">Invites sent to members</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:center;margin-bottom:0">
+            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
+            <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">16 days</div>
+          </div>
+          <!-- Step 2 -->
+          <div style="display:flex;gap:14px;margin-top:0">
+            <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+              <div style="width:26px;height:26px;border-radius:50%;background:#7C4A00;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">2</div>
+              <div style="width:1px;flex:1;min-height:36px;background:var(--border2);margin:4px 0"></div>
+            </div>
+            <div style="padding-top:3px;padding-bottom:16px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="font-size:10px;font-weight:600;color:#7C4A00;text-transform:uppercase;letter-spacing:.06em">Soft deadline</div>
+                <div style="font-size:9px;font-weight:600;color:#7C4A00;background:#FEF3C7;padding:1px 7px;border-radius:10px">marketed</div>
+              </div>
+              <div style="font-size:20px;font-weight:700;color:#7C4A00;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 25 <span style="font-size:11px;color:var(--text3);font-weight:400">Wed</span></div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px">Primary communicated deadline</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:center;margin-bottom:0">
+            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
+            <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">6 days</div>
+          </div>
+          <!-- Step 3 -->
+          <div style="display:flex;gap:14px;margin-top:0">
+            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center">
+              <div style="width:26px;height:26px;border-radius:50%;background:#7F1D1D;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">3</div>
+            </div>
+            <div style="padding-top:3px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="font-size:10px;font-weight:600;color:#7F1D1D;text-transform:uppercase;letter-spacing:.06em">Final deadline</div>
+                <div style="font-size:9px;font-weight:600;color:#7F1D1D;background:#FEE2E2;padding:1px 7px;border-radius:10px">last chance</div>
+              </div>
+              <div style="font-size:20px;font-weight:700;color:#7F1D1D;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Dec 1 <span style="font-size:11px;color:var(--text3);font-weight:400">Tue</span></div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px">ERs cannot decline extension</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /track comparison grid -->
+
+    <!-- Policy footer -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--border);border-radius:var(--rxl);overflow:hidden">
+      <div style="padding:16px 20px;background:var(--surface)">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Soft deadline</div>
+        <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:3px">Marketed as primary</div>
+        <div style="font-size:11px;color:var(--text3);line-height:1.5">Members who miss it get one last-chance nudge to the final deadline.</div>
+      </div>
+      <div style="padding:16px 20px;background:var(--surface);border-left:1px solid var(--border)">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Dec 15 backstop</div>
+        <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:3px">Support Ops only</div>
+        <div style="font-size:11px;color:var(--text3);line-height:1.5">Not marketed. CS can assist any member who reaches out before this date.</div>
+      </div>
+      <div style="padding:16px 20px;background:var(--surface2);border-left:1px solid var(--border)">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Renewals close</div>
+        <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:3px">Dec 15</div>
+        <div style="font-size:11px;color:var(--text3);line-height:1.5">Legal backstop. Final date any member can enroll with Support Ops assist.</div>
+      </div>
+    </div>
+</div>
+
+  <!-- Table -->
+  <div class="table-section" id="main-table">
+    <div class="tbl-top">
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <div class="tbl-heading">All invite dates</div>
+        <div class="tbl-counts" id="tbl-counts"></div>
+      </div>
+      <div class="filter-row">
+        <button class="fb f-oe active" data-f="oe">OE period</button>
+        <button class="fb f-ok" data-f="2csd">2 CSDs ✓</button>
+        <button class="fb f-warn" data-f="1csd">1 CSD only</button>
+        <button class="fb" data-f="all">All</button>
+        
+      </div>
+    </div>
+    <div id="tbl-scroll" style="max-height:340px;overflow-y:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Invite date</th>
+            <th>Window closes</th>
+            <th>CSD 1 cutoff</th>
+            <th>CSD 1</th>
+            <th>Days → CSD 1</th>
+            <th id="ext-col-head" style="display:none;color:var(--oe);background:var(--oe-bg)">Special ext window</th>
+            <th>CSD 2</th>
+            <th>Days → CSD 2</th>
+          </tr>
+        </thead>
+        <tbody id="tbl-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Calendar -->
+  <div class="cal-section" id="main-cal">
+    <div class="cal-top">
+      <div>
+        <div class="cal-heading">Explore by day</div>
+        <div class="cal-hint">Click any invite date to see its window highlighted across the year</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--invite);display:inline-block"></span>Invite</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--w1);display:inline-block"></span><span style="color:var(--w1-dk)">→ CSD 1</span></div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--cutoff);display:inline-block"></span><span style="color:var(--cutoff)">Cutoff</span></div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--w2);display:inline-block"></span>→ CSD 2</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--csd1);display:inline-block"></span>CSD 1</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--csd2);display:inline-block"></span>CSD 2</div>
+      </div>
+    </div>
+    <div class="month-grid" id="cal"></div>
+  </div>
+
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<script>
+const DM=[31,28,31,30,31,30,31,31,30,31,30,31];
+const MS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MO=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DOW_S=['S','M','T','W','T','F','S'];
+const DOW_N=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function doy(m,d){let x=0;for(let i=0;i<m;i++)x+=DM[i];return x+d;}
+function fd(n){n=((n-1)%365)+1;if(n<=0)n+=365;let m=0,r=n;while(r>DM[m]){r-=DM[m];m++;}return{m,d:r};}
+function fmt(n){const x=fd(n);return MS[x.m]+' '+x.d;}
+function fmtF(n){const x=fd(n);return MO[x.m]+' '+x.d;}
+function fom(m){if(m<12)return doy(m,1);return doy(0,1)+365;}
+function dow(n){return(4+n-1)%7;}
+function dowTag(n){return`<span class="dow">${DOW_N[dow(n)]}</span>`;}
+
+function cutoffForMonth(m){
+  let d=doy(m,DM[m])-2,w=dow(d);
+  if(w===6){d--;w=dow(d);}else if(w===0){d-=2;w=dow(d);}
+  if(w===5){d--;}return d;
+}
+const CUTOFFS=[];for(let m=0;m<12;m++)CUTOFFS.push(cutoffForMonth(m));
+const OE_START=doy(10,9),OE_END=doy(11,28),JAN1_NEXT=doy(0,1)+365;
+
+// Extension constants: Jan 4-8 2027 (doy 369-373 in 2027 = 365+4 to 365+8)
+const EXT_START=365+4; // Jan 4 2027
+const EXT_END=365+8;   // Jan 8 2027 — window close for extended OE 1-CSD dates
+const EXT_CUTOFF=EXT_END; // last day to enroll for Feb 1 under extension
+const FEB1_2027=365+32;   // Feb 1 2027
+
+// OE 1-CSD dates: Nov 9 - Nov 28 (window closes on or before Dec 28 cutoff)
+function isOE1CSD(invDoy){
+  return invDoy>=OE_START && invDoy<=doy(10,30); // Nov 9-30 (window closes on or before Dec 29 cutoff)
+}
+
+let useExtension=true;
+
+function calc(invDoy){
+  // Handle 2027 dates: offset back to 2026 equivalent, then shift outputs
+  const is2027=invDoy>365;
+  const effectiveDoy=is2027?invDoy-365:invDoy;
+  const x=fd(effectiveDoy);const m=x.m;const winLen=30;
+  let winEnd=invDoy+winLen-1;
+  const isOE=effectiveDoy>=OE_START&&effectiveDoy<=OE_END;
+  const oe1csd=isOE1CSD(invDoy);
+  let csd1Cutoff,csd1,csd2,daysCsd1,daysCsd2;
+  let extended=false;
+
+  if(isOE){
+    csd1Cutoff=CUTOFFS[11];csd1=JAN1_NEXT;
+    const dToCutoff=csd1Cutoff-invDoy;
+    daysCsd1=dToCutoff<0?0:dToCutoff; // days from invite to CSD1 cutoff
+
+    if(oe1csd && useExtension){
+      // Extension: Jan 4-8 adds CSD 2. winEnd stays invite+29 for display purposes.
+      // extWinEnd tracks the actual last day to enroll (Jan 8).
+      csd2=FEB1_2027;
+      daysCsd2=EXT_END-EXT_START+1; // 5 days (Jan 4-8)
+      extended=true;
+    } else if(winEnd<=csd1Cutoff){
+      csd2=null;daysCsd2=null;
+    } else {
+      csd2=FEB1_2027;daysCsd2=winEnd-csd1Cutoff;
+    }
+  } else {
+    csd1Cutoff=CUTOFFS[m];
+    const pastCutoff=invDoy>csd1Cutoff;
+    if(pastCutoff){
+      const nextM=(m+1)%12;
+      csd1Cutoff=CUTOFFS[nextM]+(nextM===0?365:0);
+      csd1=fom(m+2);csd2=fom(m+3);
+      const dToCutoff=csd1Cutoff-invDoy;
+      daysCsd1=dToCutoff>=0?Math.min(dToCutoff+1,winLen):0;
+      daysCsd2=Math.max(0,winEnd-(csd1Cutoff+1)+1);
+    } else {
+      csd1=fom(m+1);csd2=fom(m+2);
+      const dToCutoff=csd1Cutoff-invDoy;
+      daysCsd1=dToCutoff>=0?dToCutoff+1:0;
+      daysCsd2=Math.max(0,winEnd-(csd1Cutoff+1)+1);
+    }
+  }
+  const twoCsd=daysCsd1>0&&daysCsd2!==null&&daysCsd2>0;
+  const oneCsd=daysCsd1>0&&(daysCsd2===null||daysCsd2===0);
+  const zeroCsd=daysCsd1===0&&(daysCsd2===null||daysCsd2===0);
+  // For 2027 invites, shift all date outputs forward by 365
+  if(is2027){
+    winEnd+=365; csd1+=365; if(csd2)csd2+=365; csd1Cutoff+=365;
+  }
+  return{invDoy,winEnd,csd1Cutoff,csd1,csd2,daysCsd1,daysCsd2,isOE,oe1csd,isOE1CSD:isOE1CSD(effectiveDoy),extended,twoCsd,oneCsd,zeroCsd,month:m,is2027};
+}
+
+function rebuildData(){
+  DATA.length=0;
+  for(let d=1;d<=365;d++)DATA.push(calc(d));
+}
+const DATA=[];rebuildData();
+let selDoy=null,filterMode='all';
+
+function setToggle(val){
+  useExtension=val===1;
+  document.querySelectorAll('.tog').forEach(b=>b.classList.toggle('active',+b.dataset.t===val));
+  if(useExtension){
+    document.getElementById('tog-impact').innerHTML=
+      `<span class="delta-badge">+22 dates</span> moved from 1 CSD → 2 CSDs &nbsp;·&nbsp; 5d runway (Special extension)`;
+    document.getElementById('tog-desc').textContent='Jan 4–8 special extension for Feb 1 coverage — first week back from holidays';
+  } else {
+    document.getElementById('tog-impact').textContent='Nov 9–30 invites have 1 CSD only (Jan 1)';
+    document.getElementById('tog-desc').textContent='Standard 30d window, no special extension';
+  }
+  rebuildData();
+  buildStats();
+  if(selDoy)paintCal(selDoy),updateDetail(selDoy);
+  buildTable(filterMode);
+  updateExtColumn();
+}
+
+// Stats
+function buildStats(){
+  const two=DATA.filter(r=>r.twoCsd).length;
+  const one=DATA.filter(r=>r.oneCsd).length;
+  const oe=DATA.filter(r=>r.isOE).length;
+  const items=[
+    {val:two,label:'Days with 2 CSDs',sub:'Full experience',cls:'s-ok'},
+    {val:one,label:'Days with 1 CSD only',sub:'Reduced safety net',cls:'s-warn'},
+    {val:DATA.filter(r=>r.isOE1CSD).length,label:useExtension?'Gained 2nd CSD':'Missing 2nd CSD',sub:useExtension?'Nov 9–30 · 1 CSD → 2 CSDs via special ext':'Nov 9–30 · only Jan 1 available',cls:useExtension?'s-ok':'s-warn'},
+    {val:oe,label:'OE period days',sub:'Nov 9 – Dec 28',cls:'s-oe'},
+  ];
+  const el=document.getElementById('stats-bar');
+  el.style.cssText='';
+  el.innerHTML=items.map(i=>`
+    <div class="stat-card ${i.cls}">
+      <div class="stat-val">${i.val}</div>
+      <div class="stat-label">${i.label}</div>
+      <div class="stat-sub">${i.sub}</div>
+    </div>`).join('');
+}
+
+// Calendar
+function buildCal(){
+  const cal=document.getElementById('cal');cal.innerHTML='';
+
+  // Days in each month for 2027 (also non-leap)
+  const DM27=[31,28,31,30,31,30,31,31,30,31,30,31];
+  const MS27=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const MO27=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  // Rolling window: May 2026 (m=4) through Mar 2027 (m=2 of 2027)
+  // 2026 months: May(4)..Dec(11) = 8 months
+  // 2027 months: Jan(0)..Mar(2) = 3 months
+  // Total: 11 months
+
+  // 2026 months
+  for(let m=4;m<12;m++){
+    const card=document.createElement('div');card.className='month-card';
+    const hd=document.createElement('div');hd.className='month-name';
+    hd.textContent=MS[m]+' 26';card.appendChild(hd);
+    const dwr=document.createElement('div');dwr.className='dow-row';
+    DOW_S.forEach(l=>{const s=document.createElement('div');s.className='dow-label';s.textContent=l;dwr.appendChild(s);});
+    card.appendChild(dwr);
+    const dg=document.createElement('div');dg.className='day-grid';
+    const sw=new Date(2026,m,1).getDay();
+    for(let e=0;e<sw;e++){const em=document.createElement('div');em.className='dc de';dg.appendChild(em);}
+    for(let d=1;d<=DM[m];d++){
+      const c=document.createElement('div');c.className='dc dn';
+      const dayDoy=doy(m,d);
+      c.dataset.n=dayDoy;
+      c.setAttribute('data-tip',MO[m]+' '+d+' 2026 · '+DOW_N[dow(dayDoy)]);
+      c.addEventListener('click',onDayClick);dg.appendChild(c);
+    }
+    card.appendChild(dg);cal.appendChild(card);
+  }
+
+  // 2027 months: Jan, Feb, Mar
+  // Jan 1 2027 = Friday (dow 5); each subsequent month advances by DM
+  // dow for 2027: Jan1=Fri=5, so dow2027(doy365+n) = (4+365+n-1)%7 = (368+n-1)%7
+  function dow2027(d365plus){return(4+d365plus-1)%7;}
+
+  // 2027 month starts (1-indexed days within year, offset by 365)
+  // Jan 2027 = doy 366..396 (365+1..365+31)
+  // Feb 2027 = doy 397..424
+  // Mar 2027 = doy 425..455
+  // All 2027 months as full grids — Jan/Feb/Mar
+  // Offsets: Jan=365+1..365+31, Feb=365+32..365+59, Mar=365+60..365+90
+  const months2027all=[
+    {m:0,days:31,label:'Jan 27',startDow:5,offset:365},
+    {m:1,days:28,label:'Feb 27',startDow:1,offset:396},
+    {m:2,days:31,label:'Mar 27',startDow:1,offset:424},
+  ];
+  months2027all.forEach(({m,days,label,startDow,offset})=>{
+    const card=document.createElement('div');card.className='month-card';
+    card.style.cssText='border-color:rgba(55,48,163,.2);background:rgba(238,237,254,.1)';
+    const hd=document.createElement('div');hd.className='month-name';
+    hd.style.color='var(--oe)';hd.textContent=label;card.appendChild(hd);
+    const dwr=document.createElement('div');dwr.className='dow-row';
+    DOW_S.forEach(l=>{const s=document.createElement('div');s.className='dow-label';s.textContent=l;dwr.appendChild(s);});
+    card.appendChild(dwr);
+    const dg=document.createElement('div');dg.className='day-grid';
+    for(let e=0;e<startDow;e++){const em=document.createElement('div');em.className='dc de';dg.appendChild(em);}
+    for(let d=1;d<=days;d++){
+      const absN=offset+d;
+      const c=document.createElement('div');c.className='dc dn';
+      c.dataset.n=absN;
+      c.setAttribute('data-tip',MO27[m]+' '+d+' 2027 · '+DOW_N[dow2027(absN)]);
+      c.addEventListener('click',onDayClick);dg.appendChild(c);
+    }
+    card.appendChild(dg);cal.appendChild(card);
+  });
+}
+
+function paintCal(inv){
+  // Clear all annotations
+  document.querySelectorAll('.dc[data-n]').forEach(c=>{
+    c.className='dc dn';
+    const n=+c.dataset.n;
+    const x=fd(n);
+    c.setAttribute('data-tip',MO[x.m]+' '+x.d+' · '+DOW_N[dow(n)]);
+  });
+  // Remove any month-level annotations
+  document.querySelectorAll('.cal-month-note').forEach(el=>el.remove());
+
+  if(!inv)return;
+  const r=calc(inv);
+
+  // Helper: map doy (which may be >365 for cross-year) to calendar cell
+  // doys > 365 wrap into Jan of next year — map back to Jan doy (1–31)
+  function getDayCell(targetDoy){
+    const calDoy = targetDoy > 365 ? targetDoy - 365 : targetDoy;
+    return document.querySelector('.dc[data-n="'+calDoy+'"]');
+  }
+
+  document.querySelectorAll('.dc[data-n]').forEach(c=>{
+    const n=+c.dataset.n;
+    const x=fd(n);
+    const base=MO[x.m]+' '+x.d+' ('+DOW_N[dow(n)]+')';
+
+    // Direct comparison: cells have data-n = doy (1-365 for 2026, 366+ for 2027)
+    // All r.* values are also in this absolute doy space — compare directly
+    if(n===inv){
+      c.className='dc di dsel';
+      c.setAttribute('data-tip','📅 Invite date · '+base);
+    } else if(n===r.csd1){
+      c.className='dc dc1';
+      const yr=r.csd1>365?' 2027':'';
+      c.setAttribute('data-tip','⭐ CSD 1 · Coverage starts '+base+yr);
+    } else if(r.csd2&&n===r.csd2){
+      c.className='dc dc2';
+      const yr=r.csd2>365?' 2027':'';
+      c.setAttribute('data-tip','⭐ CSD 2 · Coverage starts '+base+yr);
+    } else if(n===r.csd1Cutoff){
+      c.className='dc dco';
+      c.setAttribute('data-tip','✂️ Processing cutoff · '+base+' · Enroll by here for CSD 1');
+    } else if(n>inv&&n<r.csd1Cutoff&&n<=r.winEnd){
+      // CSD1 zone: after invite, before cutoff, within window
+      c.className='dc dw1';
+      const daysLeft=r.csd1Cutoff-n;
+      c.setAttribute('data-tip','Enroll → CSD 1 · '+base+' · '+daysLeft+'d until cutoff');
+    } else if(n>r.csd1Cutoff&&n<=r.winEnd){
+      // CSD2 zone: after cutoff, within window (works for both 2026 and 2027 cells)
+      c.className='dc dw2';
+      const daysLeft=r.winEnd-n;
+      c.setAttribute('data-tip','Enroll → CSD 2 · '+base+(daysLeft>0?' · '+daysLeft+'d left':''));
+    } else if(r.extended&&n>=EXT_START&&n<=EXT_END){
+      // Special extension window: Jan 4-8 2027
+      c.className='dc dw2';
+      const extDay=n-365;
+      c.setAttribute('data-tip','✦ Special ext · Jan '+extDay+' 2027 · enroll here → Feb 1 coverage');
+    }
+  });
+
+  // Special extension: highlight Jan 4-8 on the calendar as a preview
+  if(r.extended){
+    // Jan 2027 is always visible in the calendar — no special action needed
+  }
+
+  // Cross-year wrap annotation on December card
+  if(r.winEnd>365){
+    const decCard=document.querySelectorAll('.month-card')[11];
+    if(decCard){
+      const note=document.createElement('div');
+      note.className='cal-month-note';
+      note.style.cssText='font-size:9px;color:var(--text3);font-family:"JetBrains Mono",monospace;margin-top:4px;padding:3px 6px;background:var(--surface2);border-radius:3px;text-align:center';
+      note.textContent='→ window continues Jan '+fmt(r.winEnd);
+      decCard.appendChild(note);
+    }
+  }
+}
+
+
+function insightText(r){
+  if(r.extended) return{cls:'good',text:`OE extension active: ${r.daysCsd1}d for Jan 1 (CSD 1), then 5d (Special extension) for Feb 1 (CSD 2). Special extension gives procrastinators a second chance.`};
+  if(r.zeroCsd) return{cls:'danger',text:`Invite falls after the processing cutoff — no CSD lands in the 30-day window.`};
+  if(r.isOE&&!r.csd2) return{cls:'warn',text:`OE period: only Jan 1 is available. Feb 1 falls outside the window. Enable the Special extensionension to add CSD 2.`};
+  if(r.oneCsd&&r.daysCsd1<=5) return{cls:'danger',text:`Only ${r.daysCsd1} day${r.daysCsd1===1?'':'s'} to enroll for CSD 1. Very tight — most employees will miss it.`};
+  if(r.oneCsd) return{cls:'warn',text:`Only CSD 1 reachable. Employees who miss ${fmt(r.csd1Cutoff)} have no second option in this window.`};
+  if(r.twoCsd&&r.daysCsd1<=3) return{cls:'warn',text:`CSD 1 runway is very short (${r.daysCsd1}d). Most enrollment will flow to CSD 2 (${r.daysCsd2}d).`};
+  if(r.twoCsd&&r.daysCsd2<=3) return{cls:'warn',text:`CSD 2 runway is thin (${r.daysCsd2}d). Procrastinators won't have much buffer.`};
+  if(r.twoCsd) return{cls:'good',text:`Well-distributed: ${r.daysCsd1}d for CSD 1, ${r.daysCsd2}d for CSD 2. Strong two-CSD experience.`};
+  return null;
+}
+
+function updateDetail(inv){
+  if(!inv){
+    document.getElementById('det-empty').style.display='block';
+    document.getElementById('det-content').style.display='none';
+    return;
+  }
+  const r=calc(inv);
+  document.getElementById('det-empty').style.display='none';
+  document.getElementById('det-content').style.display='block';
+  let badge='';
+  if(r.twoCsd) badge=`<span class="badge badge-ok">2 CSDs in window</span>`;
+  else if(r.oneCsd) badge=`<span class="badge badge-warn">1 CSD only</span>`;
+  else badge=`<span class="badge badge-danger">0 CSDs</span>`;
+  if(r.isOE) badge+=` <span class="badge badge-oe">OE</span>`;
+  if(r.extended) badge+=` <span class="badge badge-ok">Special ext ✦</span>`;
+  document.getElementById('d-badges').innerHTML=badge;
+  document.getElementById('d-invite').innerHTML=fmt(r.invDoy)+'<br><small style="color:var(--text3);font-size:10px">'+DOW_N[dow(r.invDoy)]+'</small>';
+  document.getElementById('d-close').innerHTML=fmt(r.winEnd)+(r.extended?' ✦':'')+'<br><small style="color:var(--text3);font-size:10px">'+DOW_N[dow(r.winEnd)]+'</small>';
+  document.getElementById('d-cut').innerHTML=fmt(r.csd1Cutoff)+'<br><small style="color:var(--text3);font-size:10px">'+DOW_N[dow(r.csd1Cutoff)]+'</small>';
+  document.getElementById('d-days1').textContent=r.daysCsd1>0?r.daysCsd1+'d to cutoff':'past cutoff';
+  document.getElementById('d-csd1').textContent=fmt(r.csd1);
+  // CSD 2 cutoff = window close date (invite + 30 days), or special extension end
+  const csd2CutoffStr = r.csd2
+    ? (r.extended ? 'Jan 8 2027' : fmt(r.winEnd))
+    : 'N/A';
+  const csd2CutoffDow = r.csd2
+    ? (r.extended ? 'Thu' : DOW_N[dow(r.winEnd)])
+    : '';
+  document.getElementById('d-cut2').innerHTML = r.csd2
+    ? csd2CutoffStr+'<br><small style="color:var(--text3);font-size:10px">'+csd2CutoffDow+(r.extended?' · special extension':'')+'</small>'
+    : 'N/A';
+  document.getElementById('d-days2').textContent=r.daysCsd2===null?'N/A':(r.daysCsd2>0?r.daysCsd2+'d to window close':'0d');
+  document.getElementById('d-csd2').textContent=r.csd2?fmt(r.csd2):'N/A';
+  const ins=insightText(r);
+  document.getElementById('d-insight').innerHTML=ins?`<div class="insight ${ins.cls}">${ins.text}</div>`:'';
+
+  // Wire card clicks to highlight corresponding calendar cell
+  const cardMap = {
+    'd-invite': inv,
+    'd-close': r.winEnd,
+    'd-cut':   r.csd1Cutoff,
+    'd-csd1':  r.csd1,
+    'd-cut2':  r.winEnd,
+    'd-csd2':  r.csd2,
+  };
+  Object.entries(cardMap).forEach(([cardId, targetDoy])=>{
+    const card = document.getElementById(cardId)?.closest('.det-card');
+    if(!card || !targetDoy) return;
+    card.style.cursor='pointer';
+    card.onclick = ()=>{
+      document.querySelectorAll('.dc-card-focus').forEach(c=>c.classList.remove('dc-card-focus'));
+      const target = document.querySelector(`.dc[data-n="${targetDoy}"]`);
+      if(target){
+        target.classList.add('dc-card-focus');
+        target.scrollIntoView({block:'nearest', behavior:'smooth'});
+        setTimeout(()=>target.classList.remove('dc-card-focus'), 2000);
+      }
+    };
+  });
+}
+
+function dayBarHTML(days,max,color){
+  if(days===null||days===undefined) return`<span class="td-na">N/A</span>`;
+  if(days===0) return`<span class="td-danger">0</span>`;
+  const w=Math.round(days/max*60);
+  const cls=days>=15?'td-good':days>=7?'td-mid':'td-warn';
+  return`<div class="day-bar-wrap"><div class="day-bar" style="width:${w}px;background:${color}"></div><span class="${cls} day-num">${days}</span></div>`;
+}
+
+function buildTable(filter){
+  const tbody=document.getElementById('tbl-body');tbody.innerHTML='';
+  const filtered=DATA.filter(r=>{
+    if(filter==='oe') return r.isOE;
+    if(filter==='1csd') return r.oneCsd;
+    if(filter==='2csd') return r.twoCsd;
+    if(filter==='0csd') return r.zeroCsd;
+    return true;
+  });
+  document.getElementById('tbl-counts').textContent=filtered.length+' dates';
+  filtered.forEach(r=>{
+    const tr=document.createElement('tr');
+    if(r.isOE)tr.classList.add('row-oe');
+    if(selDoy===r.invDoy)tr.classList.add('row-selected');
+    const extMark=r.extended?` <span style="font-size:9px;color:var(--oe)">✦</span>`:'';
+    const isExt=r.isOE1CSD&&useExtension;
+    const extBg=isExt?'background:var(--oe-bg);border-left:2px solid var(--oe);':'';
+    const extContent=isExt
+      ?'<span style="font-family:JetBrains Mono,monospace;font-weight:600;color:#3730A3">Jan 4–Jan 8</span>'
+      :'<span style="color:#a0a09a">—</span>';
+    const csd2Cell=r.csd2?fmt(r.csd2)+'<span class="dow"> '+DOW_N[dow(r.csd2)]+'</span>':'<span class="td-na">N/A</span>';
+    const days2Cell=r.daysCsd2===null?'<span class="td-na">N/A</span>':dayBarHTML(r.daysCsd2,30,'var(--w2-dk)');
+    tr.innerHTML=
+      '<td><mono>'+fmt(r.invDoy)+'</mono>'+dowTag(r.invDoy)+(r.isOE?'<span class="td-oe">OE</span>':'')+extMark+'</td>'+
+      '<td><mono>'+fmt(r.winEnd)+(r.extended?' ✶':'')+' </mono>'+dowTag(r.winEnd)+'</td>'+
+      '<td><mono>'+fmt(r.csd1Cutoff)+'</mono>'+dowTag(r.csd1Cutoff)+'</td>'+
+      '<td><mono>'+fmt(r.csd1)+'</mono></td>'+
+      '<td>'+dayBarHTML(r.daysCsd1,30,'var(--w1-dk)')+'</td>'+
+      '<td id="ext-td-'+r.invDoy+'" style="display:none;'+extBg+'white-space:nowrap">'+extContent+'</td>'+
+      '<td><mono>'+csd2Cell+'</mono></td>'+
+      '<td>'+days2Cell+'</td>';
+    tr.addEventListener('click',()=>{
+      selDoy=r.invDoy;paintCal(selDoy);updateDetail(selDoy);buildTable(filterMode);
+      document.querySelector('tr.row-selected')?.scrollIntoView({block:'nearest'});
+    });
+    tbody.appendChild(tr);
+  });
+  // Always sync ext column visibility after table is rendered
+  updateExtColumn();
+}
+
+function onDayClick(e){
+  const n=+e.currentTarget.dataset.n;
+  if(selDoy===n){
+    // Deselect
+    selDoy=null;
+    paintCal(null);updateDetail(null);buildTable(filterMode);
+    return;
+  }
+  selDoy=n;
+  paintCal(selDoy);updateDetail(selDoy);buildTable(filterMode);
+  // Only scroll table for 2026 dates that appear in it
+  if(n<=365) document.querySelector('tr.row-selected')?.scrollIntoView({block:'nearest'});
+}
+
+function updateExtColumn(){
+  const show = useExtension;
+  const head = document.getElementById('ext-col-head');
+  if(head) head.style.display = show ? '' : 'none';
+  document.querySelectorAll('[id^="ext-td-"]').forEach(td => td.style.display = show ? '' : 'none');
+}
+
+document.querySelectorAll('.fb').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');filterMode=this.dataset.f;buildTable(filterMode);
+  });
+});
+
+
+// ── COMMENT SYSTEM v2 ──
+// Architecture:
+// - One data model: comments[] persisted to localStorage
+// - Pins stored as {containerId, relX, relY} — coords relative to their scroll container
+// - Pins rendered as position:fixed, recomputed from container rect on every scroll/resize
+// - Tab isolation: each pin stores the erType it was placed on
+// - Name persisted to localStorage, single source of truth, synced across all inputs
+// - All mutations go through saveComments() which re-renders everything
+
+const CS = (() => {
+  // ── STATE ──
+  const STORAGE_KEY = 'ew_comments_v3';
+  const NAME_KEY    = 'ew_commenter_name';
+  let comments      = [];
+  let commentMode   = false;
+  let activePinId   = null;
+  let panelOpen     = false;
+  let cFilter       = 'open';
+
+  // ── PERSISTENCE ──
+  function persist() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(comments)); } catch(e) {}
+    render();
+  }
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      comments = raw ? JSON.parse(raw) : [];
+    } catch(e) { comments = []; }
+    // Migrate old comments that have no tab field
+    comments.forEach(c => { if (!c.tab) c.tab = 'new'; });
+    render();
+  }
+
+  // ── NAME ──
+  function getName() {
+    return (document.getElementById('cp-name')?.value?.trim()) ||
+           (document.getElementById('pp-name-input')?.value?.trim()) ||
+           (() => { try { return localStorage.getItem(NAME_KEY) || ''; } catch(e) { return ''; } })();
+  }
+
+  function setName(val) {
+    const v = (val || '').trim();
+    try { localStorage.setItem(NAME_KEY, v); } catch(e) {}
+    const cp = document.getElementById('cp-name');
+    const pp = document.getElementById('pp-name-input');
+    if (cp && cp.value !== v) cp.value = v;
+    if (pp && pp.value !== v) pp.value = v;
+  }
+
+  function loadName() {
+    try {
+      const n = localStorage.getItem(NAME_KEY) || '';
+      const cp = document.getElementById('cp-name');
+      const pp = document.getElementById('pp-name-input');
+      if (cp) cp.value = n;
+      if (pp) pp.value = n;
+    } catch(e) {}
+  }
+
+  // ── PIN COORDINATE SYSTEM ──
+  // We store coords relative to the nearest scroll container with an id.
+  // On render, we convert back to fixed viewport coords via container.getBoundingClientRect().
+  // This means pins naturally scroll with their container.
+
+  function findScrollContainer(el) {
+    let cur = el?.parentElement;
+    while (cur && cur !== document.body) {
+      if (cur.id) {
+        const st = window.getComputedStyle(cur);
+        const overflows = ['auto', 'scroll'];
+        if ((overflows.includes(st.overflowY) || overflows.includes(st.overflow)) &&
+            cur.scrollHeight > cur.clientHeight + 2) {
+          return cur;
+        }
+      }
+      cur = cur.parentElement;
+    }
+    return null;
+  }
+
+  function captureCoords(e) {
+    const container = findScrollContainer(e.target);
+    if (container) {
+      const rect = container.getBoundingClientRect();
+      return {
+        containerId: container.id,
+        relX: e.clientX - rect.left + container.scrollLeft,
+        relY: e.clientY - rect.top  + container.scrollTop,
+        // fallback for resize detection
+        containerW: container.scrollWidth,
+        containerH: container.scrollHeight,
+      };
+    }
+    // No scroll container — store as fraction of viewport (stable across resize)
+    return {
+      containerId: null,
+      relX: e.clientX / window.innerWidth,
+      relY: e.clientY / window.innerHeight,
+      containerW: null,
+      containerH: null,
+    };
+  }
+
+  function pinToViewport(c) {
+    if (c.containerId) {
+      const el = document.getElementById(c.containerId);
+      if (!el) return null;
+      const rect = el.getBoundingClientRect();
+      const x = rect.left + c.relX - el.scrollLeft;
+      const y = rect.top  + c.relY - el.scrollTop;
+      // Clamp visibility: hide if scrolled out of container
+      const visible = x >= rect.left - 12 && x <= rect.right + 12 &&
+                      y >= rect.top  - 12 && y <= rect.bottom + 12;
+      return { x, y, visible };
+    }
+    // Viewport-fraction fallback
+    return {
+      x: c.relX * window.innerWidth,
+      y: c.relY * window.innerHeight,
+      visible: true,
+    };
+  }
+
+  // ── PIN MODE ──
+  function enterCommentMode() {
+    commentMode = true;
+    document.body.classList.add('comment-mode');
+    document.getElementById('comment-mode-bar')?.classList.add('active');
+    closePopover();
+  }
+
+  function exitCommentMode() {
+    commentMode = false;
+    document.body.classList.remove('comment-mode');
+    document.getElementById('comment-mode-bar')?.classList.remove('active');
+  }
+
+  function onPageClick(e) {
+    if (!commentMode) return;
+    const ignored = ['.comment-mode-bar', '.pin-popover', '.pin', '#fab-container'];
+    if (ignored.some(sel => e.target.closest(sel))) return;
+    e.stopPropagation();
+
+    const coords = captureCoords(e);
+    const name   = getName() || 'Anonymous';
+    const pinNum = comments.filter(c => c.pin).length + 1;
+    const id     = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+
+    const comment = {
+      id, author: name, text: '', ts: Date.now(),
+      status: 'open', pin: true, pinNum,
+      tab: window._erType || 'new',
+      context: getCurrentContext(),
+      replies: [],
+      ...coords,
+    };
+
+    comments.push(comment);
+    persist();
+    exitCommentMode();
+
+    // Pulse animation at click point
+    const pulse = Object.assign(document.createElement('div'), { className: 'pin-pulse' });
+    Object.assign(pulse.style, { left: e.clientX + 'px', top: e.clientY + 'px' });
+    document.body.appendChild(pulse);
+    setTimeout(() => pulse.remove(), 1400);
+
+    setTimeout(() => openPopover(id), 80);
+  }
+
+  // ── RENDER PINS ──
+  function renderPins() {
+    document.querySelectorAll('.pin').forEach(p => p.remove());
+    const currentTab = window._erType || 'new';
+    comments
+      .filter(c => c.pin && c.tab === currentTab)
+      .forEach(c => {
+        const vp = pinToViewport(c);
+        if (!vp) return;
+
+        const pin = document.createElement('div');
+        pin.className = 'pin' + (c.status === 'resolved' ? ' resolved' : c.status === 'dismissed' ? ' dismissed' : '');
+        pin.textContent = c.pinNum;
+        pin.dataset.id  = c.id;
+        pin.title       = `Pin #${c.pinNum} — ${c.author}`;
+        Object.assign(pin.style, {
+          left:    vp.x + 'px',
+          top:     vp.y + 'px',
+          display: vp.visible ? 'flex' : 'none',
+        });
+        pin.addEventListener('click', evt => { evt.stopPropagation(); openPopover(c.id); });
+        document.body.appendChild(pin);
+      });
+  }
+
+  // Re-render on any scroll event (captures inner scroll containers)
+  window.addEventListener('scroll', renderPins, { capture: true, passive: true });
+  window.addEventListener('resize', renderPins, { passive: true });
+
+  // ── POPOVER ──
+  function openPopover(cid) {
+    activePinId = cid;
+    const c = comments.find(x => x.id === cid);
+    if (!c) return;
+
+    const pop = document.getElementById('pin-popover');
+    if (!pop) return;
+
+    // Header
+    document.getElementById('pp-num').textContent = c.pinNum;
+    document.getElementById('pp-head-text').textContent = c.context || 'General comment';
+
+    // Pre-fill name
+    const storedName = getName();
+    const ppName = document.getElementById('pp-name-input');
+    if (ppName) {
+      ppName.value = storedName;
+      ppName.style.borderColor = storedName ? 'var(--border2)' : '#f59e0b';
+    }
+
+    // Body: thread
+    let bodyHTML = '';
+    if (!c.text && !(c.replies?.length)) {
+      bodyHTML = '<div class="pp-empty">Drop a note below ↓</div>';
+    } else {
+      if (c.text) bodyHTML += threadItem(c.author, c.text, c.ts, null, cid, -1);
+      (c.replies || []).forEach((rp, ri) => {
+        bodyHTML += threadItem(rp.author, rp.text, rp.ts, true, cid, ri);
+      });
+    }
+
+    // Actions
+    const actions = c.status === 'open'
+      ? `<div class="pp-actions">
+          <button class="pp-btn secondary ok"    onclick="CS.resolve('${cid}')">✓ Resolve</button>
+          <button class="pp-btn secondary danger" onclick="CS.dismiss('${cid}')">✕ Dismiss</button>
+          <button class="pp-btn secondary"        onclick="CS.deletePin('${cid}')">🗑</button>
+        </div>`
+      : `<div class="pp-actions">
+          <button class="pp-btn secondary" onclick="CS.reopen('${cid}')">↩ Reopen</button>
+          <button class="pp-btn secondary" onclick="CS.deletePin('${cid}')">🗑</button>
+        </div>`;
+
+    document.getElementById('pp-body').innerHTML = bodyHTML + actions;
+    document.getElementById('pp-textarea').value = '';
+
+    // Position: prefer right of pin, flip left if near edge
+    const pinEl = document.querySelector(`.pin[data-id="${cid}"]`);
+    let left, top;
+    if (pinEl) {
+      const pr = pinEl.getBoundingClientRect();
+      left = pr.right + 10;
+      top  = pr.top - 10;
+      if (left + 300 > window.innerWidth)  left = pr.left - 310;
+      if (top  + 340 > window.innerHeight) top  = window.innerHeight - 350;
+      if (top < 10) top = 10;
+      if (left < 8) left = 8;
+    } else {
+      left = window.innerWidth / 2 - 145;
+      top  = window.innerHeight / 2 - 170;
+    }
+    Object.assign(pop.style, { position: 'fixed', left: left + 'px', top: top + 'px' });
+    pop.classList.add('open');
+  }
+
+  function threadItem(author, text, ts, isReply, cid, ri) {
+    const del = isReply
+      ? `<span class="pp-ci-del" onclick="CS.deleteReply('${cid}',${ri})">✕</span>`
+      : '';
+    const indent = isReply ? 'style="padding-left:10px;border-left:2px solid var(--border2)"' : '';
+    return `<div class="pp-comment-item" ${indent}>
+      <span class="pp-ci-author">${author}</span>
+      <span class="pp-ci-time">${timeAgo(ts)}</span>${del}
+      <div class="pp-ci-text">${text}</div>
+    </div>`;
+  }
+
+  function closePopover() {
+    document.getElementById('pin-popover')?.classList.remove('open');
+    activePinId = null;
+  }
+
+  // Close popover on outside click
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.pin-popover') && !e.target.closest('.pin') && !commentMode) {
+      closePopover();
+    }
+  });
+
+  function submitPinComment() {
+    const text = document.getElementById('pp-textarea')?.value.trim();
+    if (!text || !activePinId) return;
+    // Sync name from popover field
+    const ppName = document.getElementById('pp-name-input')?.value.trim();
+    if (ppName) setName(ppName);
+    const name = getName() || 'Anonymous';
+    const c = comments.find(x => x.id === activePinId);
+    if (!c) return;
+    if (!c.text) {
+      c.text = text; c.author = name;
+    } else {
+      if (!c.replies) c.replies = [];
+      c.replies.push({ author: name, text, ts: Date.now() });
+    }
+    document.getElementById('pp-textarea').value = '';
+    persist();
+    openPopover(activePinId);
+  }
+
+  // ── PANEL ──
+  function togglePanel() {
+    panelOpen = !panelOpen;
+    document.getElementById('comment-panel')?.classList.toggle('open', panelOpen);
+    if (panelOpen) render();
+  }
+
+  function setCFilter(el, f) {
+    document.querySelectorAll('.cpf').forEach(b => b.classList.remove('active'));
+    el?.classList.add('active');
+    cFilter = f;
+    renderComments();
+  }
+
+  function updateFab() {
+    const n = comments.filter(c => c.status === 'open').length;
+    const el = document.getElementById('fab-count');
+    if (el) el.textContent = n || '';
+  }
+
+  // ── COMMENT PANEL RENDER ──
+  function renderComments() {
+    const list = document.getElementById('cp-list');
+    if (!list) return;
+    const visible = comments
+      .filter(c => cFilter === 'all' ? true : c.status === cFilter)
+      .sort((a, b) => b.ts - a.ts);
+    if (!visible.length) {
+      list.innerHTML = `<div class="cp-empty">${cFilter === 'open' ? 'No open comments yet.' : 'Nothing here.'}</div>`;
+      return;
+    }
+    list.innerHTML = visible.map(c => {
+      const pinTag = c.pin
+        ? `<span style="font-size:9px;background:#dbeafe;color:#1d4ed8;padding:1px 5px;border-radius:3px;font-family:'JetBrains Mono',monospace;margin-left:4px">📍${c.pinNum}</span>`
+        : '';
+      const statusTag = c.status === 'resolved'
+        ? '<span class="resolved-tag">resolved</span>'
+        : c.status === 'dismissed' ? '<span class="dismissed-tag">dismissed</span>' : '';
+      const repliesHTML = (c.replies || []).map((rp, ri) => `
+        <div class="cc-reply">
+          <span class="cc-reply-author">${rp.author}</span>
+          <span class="cc-reply-time">${timeAgo(rp.ts)}</span>
+          <span class="cc-reply-del" onclick="CS.deleteReply('${c.id}',${ri})">✕</span>
+          <div class="cc-reply-body">${rp.text}</div>
+        </div>`).join('');
+      const actions = c.status === 'open'
+        ? `<button class="cc-btn resolve"  onclick="CS.resolve('${c.id}')">✓ Resolve</button>
+           <button class="cc-btn dismiss"  onclick="CS.dismiss('${c.id}')">✕ Dismiss</button>
+           ${c.pin ? `<button class="cc-btn" onclick="CS.viewPin('${c.id}')">📍 View</button>` : ''}
+           <button class="cc-btn"          onclick="CS.deleteComment('${c.id}')">🗑</button>`
+        : `<button class="cc-btn reopen"   onclick="CS.reopen('${c.id}')">↩ Reopen</button>
+           <button class="cc-btn"          onclick="CS.deleteComment('${c.id}')">🗑</button>`;
+      return `<div class="comment-card ${c.status !== 'open' ? 'resolved' : ''}" id="cc-${c.id}">
+        <div class="cc-head">
+          <div class="cc-avatar" style="background:${avatarColor(c.author)}">${authorInitial(c.author)}</div>
+          <div class="cc-meta">
+            <span class="cc-author">${c.author || 'Anonymous'}</span>${pinTag}
+            <span class="cc-time">${timeAgo(c.ts)}</span>${statusTag}
+            ${c.context ? `<div class="cc-context">📅 ${c.context}</div>` : ''}
+          </div>
+        </div>
+        <div class="cc-body">${c.text || '<em style="color:var(--text3)">No text yet</em>'}</div>
+        <div class="cc-actions">${actions}</div>
+        <div class="cc-replies">
+          ${repliesHTML}
+          ${c.status === 'open' ? `<div class="cc-reply-form">
+            <textarea class="cc-reply-input" id="reply-${c.id}" placeholder="Reply…"></textarea>
+            <button class="cc-reply-send" onclick="CS.submitReply('${c.id}')">Send</button>
+          </div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function render() {
+    renderComments();
+    renderPins();
+    updateFab();
+  }
+
+  // ── HELPERS ──
+  function timeAgo(ts) {
+    const s = Math.floor((Date.now() - ts) / 1000);
+    if (s < 60)    return 'just now';
+    if (s < 3600)  return Math.floor(s / 60) + 'm ago';
+    if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+    return Math.floor(s / 86400) + 'd ago';
+  }
+  function authorInitial(n) { return (n || '?').charAt(0).toUpperCase(); }
+  function avatarColor(n) {
+    const cols = ['#2563eb','#7c3aed','#db2777','#059669','#d97706','#dc2626','#0891b2'];
+    let h = 0; for (const c of (n || '?')) h = (h * 31 + c.charCodeAt(0)) % cols.length;
+    return cols[Math.abs(h)];
+  }
+
+  function getCurrentContext() {
+    if (!window.selDoy) return null;
+    try {
+      const r = calc(window.selDoy);
+      return fmt(r.invDoy) + ' invite · CSD1 ' + fmt(r.csd1) + (r.csd2 ? ' · CSD2 ' + fmt(r.csd2) : '');
+    } catch(e) { return null; }
+  }
+
+  // ── PUBLIC API ──
+  return {
+    init() {
+      loadName();
+      load();
+      document.addEventListener('click', onPageClick, { capture: true });
+      document.addEventListener('keydown', e => {
+        if (commentMode && (e.key === 'Escape' || e.key === 'c' || e.key === 'C')) exitCommentMode();
+        if (e.key === 'Escape') closePopover();
+      });
+    },
+    enter:           () => enterCommentMode(),
+    exit:            () => exitCommentMode(),
+    toggle:          () => togglePanel(),
+    setFilter:       (el, f) => setCFilter(el, f),
+    submitPin:       () => submitPinComment(),
+    closePopover:    () => closePopover(),
+    openPopover:     (id) => openPopover(id),
+    renderPins:      () => renderPins(),
+    saveName:        () => setName(document.getElementById('cp-name')?.value || ''),
+    syncName:        (v) => setName(v),
+    resolve:         (id) => { const c = comments.find(x => x.id === id); if (c) { c.status = 'resolved'; persist(); if (activePinId === id) openPopover(id); } },
+    dismiss:         (id) => { const c = comments.find(x => x.id === id); if (c) { c.status = 'dismissed'; persist(); if (activePinId === id) openPopover(id); } },
+    reopen:          (id) => { const c = comments.find(x => x.id === id); if (c) { c.status = 'open'; persist(); if (activePinId === id) openPopover(id); } },
+    deletePin:       (id) => { comments = comments.filter(x => x.id !== id); closePopover(); persist(); },
+    deleteComment:   (id) => { comments = comments.filter(x => x.id !== id); persist(); },
+    deleteReply:     (cid, ri) => { const c = comments.find(x => x.id === cid); if (c?.replies) { c.replies.splice(ri, 1); persist(); if (activePinId === cid) openPopover(cid); } },
+    submitReply:     (cid) => {
+      const el = document.getElementById('reply-' + cid);
+      if (!el) return;
+      const text = el.value.trim();
+      if (!text) return;
+      const name = getName() || 'Anonymous';
+      const c = comments.find(x => x.id === cid);
+      if (!c) return;
+      if (!c.replies) c.replies = [];
+      c.replies.push({ author: name, text, ts: Date.now() });
+      persist();
+    },
+    viewPin: (id) => { togglePanel(); openPopover(id); },
+    onTabChange: () => { render(); },
+  };
+})();
+
+
+// ── ER TYPE TOGGLE ──
+let erType='new';
+function setERType(type){
+  erType=type;
+  window._erType=type;
+  // tabs
+  document.querySelectorAll('.er-tab').forEach(t=>t.classList.toggle('active',t.dataset.er===type));
+  // sidebar sections
+  document.querySelectorAll('[data-new-er]').forEach(el=>{ el.style.display=type==='new'?'block':'none'; });
+  document.querySelectorAll('[data-renewal-er]').forEach(el=>{ el.style.display=type==='renewal'?'block':'none'; });
+  // main sections — always explicit
+  const sb=document.getElementById('stats-bar');
+  const mt=document.getElementById('main-table');
+  const mc=document.getElementById('main-cal');
+  const rm=document.getElementById('renewal-main');
+  if(sb) sb.style.display=type==='new'?'grid':'none';
+  if(mt) mt.style.display=type==='new'?'block':'none';
+  if(mc) mc.style.display=type==='new'?'block':'none';
+  if(rm) rm.style.display=type==='renewal'?'flex':'none';
+  if(type==='renewal') renderRenewalTimeline();
+  if(typeof CS!=="undefined") CS.onTabChange();
+}
+
+function renderRenewalTimeline(){
+  // doy values: Nov2=306, Nov9=313, Nov18=322, Nov24=328, Nov25=329, Dec1=335, Dec15=349
+  const start=306,end=349,span=end-start;
+  function p(d){return Math.round((d-start)/span*100);}
+
+  function buildTL(barId){
+    const bar=document.getElementById(barId);
+    if(!bar)return;
+    bar.innerHTML=`
+      <div style="position:absolute;left:0;width:${p(322)}%;top:0;height:100%;background:var(--ok-bg);border-radius:3px;border:1px solid rgba(15,110,86,.2)"></div>
+      <div style="position:absolute;left:${p(313)}%;width:${p(335)-p(313)}%;top:0;height:100%;background:var(--warn-bg);border-radius:3px;border:1px solid rgba(133,79,11,.2);opacity:.8"></div>
+      ${mkM(p(306),'var(--ok)','Nov 2','Standard opens','above')}
+      ${mkM(p(313),'var(--warn)','Nov 9','Late start opens','below')}
+      ${mkM(p(322),'var(--warn)','Nov 18','soft A','above')}
+      ${mkM(p(328),'var(--danger)','Nov 24','final A','above')}
+      ${mkM(p(329),'var(--warn)','Nov 25','soft B','below')}
+      ${mkM(p(335),'var(--danger)','Dec 1','final B','below')}
+      ${mkM(100,'var(--text3)','Dec 15','legal','above',true)}`;
+  }
+
+  function mkM(pct,color,date,label,pos,right=false){
+    const topLabel=pos==='above';
+    const dateY=topLabel?'-22px':'28px';
+    const labelY=topLabel?'-34px':'40px';
+    const xform=right?'translateX(-100%)':'translateX(-50%)';
+    return `<div style="position:absolute;left:${pct}%;top:-2px;width:2px;height:20px;background:${color};border-radius:1px">
+      <div style="position:absolute;top:${dateY};font-size:9px;font-weight:600;color:${color};white-space:nowrap;transform:${xform};font-family:'JetBrains Mono',monospace">${date}</div>
+      <div style="position:absolute;top:${labelY};font-size:8px;color:var(--text3);white-space:nowrap;transform:${xform};font-family:'JetBrains Mono',monospace">${label}</div>
+    </div>`;
+  }
+
+  buildTL('renewal-main-tl');
+}
+// ── POSITIONING PANEL ──
+function togglePOV(){
+  const content=document.getElementById('pov-content');
+  const chevron=document.getElementById('pov-chevron');
+  const label=document.getElementById('pov-toggle-label');
+  const btn=document.getElementById('pov-toggle-btn');
+  const open=content.style.display==='none';
+  content.style.display=open?'block':'none';
+  chevron.style.transform=open?'rotate(180deg)':'rotate(0deg)';
+  label.textContent=open?'Collapse':'Read context';
+  btn.style.background=open?'rgba(255,255,255,0.15)':'rgba(255,255,255,0.1)';
+  try{localStorage.setItem('ew_pov_open',open?'1':'0');}catch(e){}
+}
+// Restore panel state
+(function(){
+  try{
+    const s=localStorage.getItem('ew_pov_open');
+    if(s===null||s==='1'){
+      document.getElementById('pov-content').style.display='block';
+      document.getElementById('pov-chevron').style.transform='rotate(180deg)';
+      document.getElementById('pov-toggle-label').textContent='Collapse';
+      document.getElementById('pov-toggle-btn').style.background='rgba(255,255,255,0.15)';
+    }
+  }catch(e){}
+})();
+
+// ── INIT ──
+setToggle(1);
+window._erType='new';
+filterMode='oe';
+document.querySelectorAll('.fb').forEach(b=>b.classList.toggle('active',b.dataset.f==='oe'));
+buildCal();
+buildTable('oe');
+// Hide renewal sections, show new ERs
+document.querySelectorAll('[data-renewal-er]').forEach(el=>el.style.display='none');
+document.querySelectorAll('[data-new-er]').forEach(el=>el.style.display='block');
+var rm=document.getElementById('renewal-main');if(rm)rm.style.display='none';
+// Init comment system after DOM is ready
+CS.init();
+setTimeout(()=>setERType('new'), 0);
+
+</script>
+<!-- COMMENT FAB -->
+<div id="fab-container" style="position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:auto">
+  <button onclick="CS.enter()" id="pin-fab" style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;border-radius:50px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 2px 12px rgba(37,99,235,.3);display:flex;align-items:center;gap:6px;font-family:'Inter',sans-serif">📍 Pin comment</button>
+  <button class="comment-fab" onclick="CS.toggle()" id="comment-fab">💬 Comments <span id="fab-count">0</span></button>
+</div>
+
+<!-- COMMENT PANEL -->
+<div class="comment-panel" id="comment-panel">
+  <div class="cp-head">
+    <div class="cp-title">Comments</div>
+    <div style="display:flex;gap:5px;align-items:center">
+      <button class="cpf active" data-f="open" onclick="CS.setFilter(this,'open')">Open</button>
+      <button class="cpf" data-f="resolved" onclick="CS.setFilter(this,'resolved')">Resolved</button>
+      <button class="cpf" data-f="all" onclick="CS.setFilter(this,'all')">All</button>
+      <button onclick="CS.toggle()" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:0 4px;line-height:1;margin-left:4px">✕</button>
+    </div>
+  </div>
+  <div class="cp-name-row">
+    <span style="font-size:11px;color:var(--text3)">Commenting as</span>
+    <input id="cp-name" class="cp-name-input" placeholder="Your name" oninput="CS.saveName()"/>
+  </div>
+  <div class="cp-list" id="cp-list"></div>
+</div>
+
+</html>
