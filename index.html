@@ -609,10 +609,10 @@ body.comment-mode *{cursor:crosshair!important}
         <!-- Track header -->
         <div style="padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between">
           <div>
-            <div style="font-size:15px;font-weight:700;color:#0F4C35;letter-spacing:-.01em">Standard</div>
+            <div style="font-size:15px;font-weight:700;color:var(--invite);letter-spacing:-.01em">Standard</div>
             <div style="font-size:11px;color:var(--text3);margin-top:2px">Accepts carrier rates on time</div>
           </div>
-          <div style="font-size:10px;font-weight:600;color:#0F4C35;background:#E6F5EF;padding:3px 10px;border-radius:20px;letter-spacing:.04em;font-family:'JetBrains Mono',monospace;margin-top:2px">Track A</div>
+          <div style="font-size:10px;font-weight:600;color:var(--invite);background:var(--invite-lt);padding:3px 10px;border-radius:20px;letter-spacing:.04em;font-family:'JetBrains Mono',monospace;margin-top:2px">Track A</div>
         </div>
         <!-- Steps -->
         <div style="padding:20px">
@@ -620,7 +620,7 @@ body.comment-mode *{cursor:crosshair!important}
           <!-- Step 1: OE opens -->
           <div style="display:flex;gap:14px">
             <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
-              <div style="width:26px;height:26px;border-radius:50%;background:#0F4C35;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--invite);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
               <div style="width:1px;flex:1;min-height:36px;background:var(--border2);margin:4px 0"></div>
             </div>
             <div style="padding-top:3px;padding-bottom:16px">
@@ -637,34 +637,15 @@ body.comment-mode *{cursor:crosshair!important}
           <!-- Step 2: Soft deadline -->
           <div style="display:flex;gap:14px;margin-top:0">
             <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
-              <div style="width:26px;height:26px;border-radius:50%;background:#7C4A00;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--warn);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
               <div style="width:1px;flex:1;min-height:36px;background:var(--border2);margin:4px 0"></div>
             </div>
             <div style="padding-top:3px;padding-bottom:16px">
               <div style="display:flex;align-items:center;gap:6px">
-                <div style="font-size:10px;font-weight:600;color:#7C4A00;text-transform:uppercase;letter-spacing:.06em">Soft deadline</div>
-                <div style="font-size:9px;font-weight:600;color:#7C4A00;background:#FEF3C7;padding:1px 7px;border-radius:10px">marketed</div>
+                <div style="font-size:10px;font-weight:600;color:var(--warn);text-transform:uppercase;letter-spacing:.06em">Soft deadline</div>
+                <div style="font-size:9px;font-weight:600;color:var(--warn);background:var(--warn-bg);padding:1px 7px;border-radius:10px">marketed</div>
               </div>
-              <div style="font-size:20px;font-weight:700;color:#7C4A00;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 18 <span style="font-size:11px;color:var(--text3);font-weight:400">Wed</span></div>
-              <div style="font-size:10px;color:var(--text3);margin-top:2px">Primary communicated deadline</div>
-            </div>
-          </div>
-          <!-- Duration pill -->
-          <div style="display:flex;gap:14px;align-items:center;margin-bottom:0">
-            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
-            <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">6 days</div>
-          </div>
-          <!-- Step 3: Final deadline -->
-          <div style="display:flex;gap:14px;margin-top:0">
-            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center">
-              <div style="width:26px;height:26px;border-radius:50%;background:#7F1D1D;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">3</div>
-            </div>
-            <div style="padding-top:3px">
-              <div style="display:flex;align-items:center;gap:6px">
-                <div style="font-size:10px;font-weight:600;color:#7C4A00;text-transform:uppercase;letter-spacing:.06em">Soft deadline</div>
-                <div style="font-size:9px;font-weight:600;color:#7C4A00;background:#FEF3C7;padding:1px 7px;border-radius:10px">marketed</div>
-              </div>
-              <div style="font-size:20px;font-weight:700;color:#7C4A00;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 24 <span style="font-size:11px;color:var(--text3);font-weight:400">Tue</span></div>
+              <div style="font-size:20px;font-weight:700;color:var(--warn);font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 18 <span style="font-size:11px;color:var(--text3);font-weight:400">Wed</span></div>
               <div style="font-size:10px;color:var(--text3);margin-top:2px">Primary communicated deadline</div>
             </div>
           </div>
@@ -673,17 +654,17 @@ body.comment-mode *{cursor:crosshair!important}
             <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
             <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">5 days</div>
           </div>
-          <!-- Step 4: Last chance -->
+          <!-- Step 3: Last chance -->
           <div style="display:flex;gap:14px;margin-top:0">
             <div style="width:26px;flex-shrink:0;display:flex;justify-content:center">
-              <div style="width:26px;height:26px;border-radius:50%;background:#7F1D1D;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">4</div>
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--csd2);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">3</div>
             </div>
             <div style="padding-top:3px">
               <div style="display:flex;align-items:center;gap:6px">
-                <div style="font-size:10px;font-weight:600;color:#7F1D1D;text-transform:uppercase;letter-spacing:.06em">Last chance</div>
-                <div style="font-size:9px;font-weight:600;color:#7F1D1D;background:#FEE2E2;padding:1px 7px;border-radius:10px">+5d</div>
+                <div style="font-size:10px;font-weight:600;color:var(--csd2);text-transform:uppercase;letter-spacing:.06em">Last chance</div>
+                <div style="font-size:9px;font-weight:600;color:var(--csd2);background:var(--csd2-lt);padding:1px 7px;border-radius:10px">+5d</div>
               </div>
-              <div style="font-size:20px;font-weight:700;color:#7F1D1D;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 29 <span style="font-size:11px;color:var(--text3);font-weight:400">Sat</span></div>
+              <div style="font-size:20px;font-weight:700;color:var(--csd2);font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 23 <span style="font-size:11px;color:var(--text3);font-weight:400">Sun</span></div>
               <div style="font-size:10px;color:var(--text3);margin-top:2px">Final close · ERs cannot decline</div>
             </div>
           </div>
@@ -694,16 +675,16 @@ body.comment-mode *{cursor:crosshair!important}
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);overflow:hidden">
         <div style="padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between">
           <div>
-            <div style="font-size:15px;font-weight:700;color:#7C4A00;letter-spacing:-.01em">Late start</div>
+            <div style="font-size:15px;font-weight:700;color:var(--warn);letter-spacing:-.01em">Late start</div>
             <div style="font-size:11px;color:var(--text3);margin-top:2px">Accepts rates late or not at all</div>
           </div>
-          <div style="font-size:10px;font-weight:600;color:#7C4A00;background:#FEF3C7;padding:3px 10px;border-radius:20px;letter-spacing:.04em;font-family:'JetBrains Mono',monospace;margin-top:2px">Track B</div>
+          <div style="font-size:10px;font-weight:600;color:var(--warn);background:var(--warn-bg);padding:3px 10px;border-radius:20px;letter-spacing:.04em;font-family:'JetBrains Mono',monospace;margin-top:2px">Track B</div>
         </div>
         <div style="padding:20px">
           <!-- Step 1 -->
           <div style="display:flex;gap:14px">
             <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
-              <div style="width:26px;height:26px;border-radius:50%;background:#0F4C35;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">1</div>
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--invite);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">1</div>
               <div style="width:1px;flex:1;min-height:36px;background:var(--border2);margin:4px 0"></div>
             </div>
             <div style="padding-top:3px;padding-bottom:16px">
@@ -719,33 +700,15 @@ body.comment-mode *{cursor:crosshair!important}
           <!-- Step 2 -->
           <div style="display:flex;gap:14px;margin-top:0">
             <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
-              <div style="width:26px;height:26px;border-radius:50%;background:#7C4A00;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">2</div>
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--warn);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">2</div>
               <div style="width:1px;flex:1;min-height:36px;background:var(--border2);margin:4px 0"></div>
             </div>
             <div style="padding-top:3px;padding-bottom:16px">
               <div style="display:flex;align-items:center;gap:6px">
-                <div style="font-size:10px;font-weight:600;color:#7C4A00;text-transform:uppercase;letter-spacing:.06em">Soft deadline</div>
-                <div style="font-size:9px;font-weight:600;color:#7C4A00;background:#FEF3C7;padding:1px 7px;border-radius:10px">marketed</div>
+                <div style="font-size:10px;font-weight:600;color:var(--warn);text-transform:uppercase;letter-spacing:.06em">Soft deadline</div>
+                <div style="font-size:9px;font-weight:600;color:var(--warn);background:var(--warn-bg);padding:1px 7px;border-radius:10px">marketed</div>
               </div>
-              <div style="font-size:20px;font-weight:700;color:#7C4A00;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 25 <span style="font-size:11px;color:var(--text3);font-weight:400">Wed</span></div>
-              <div style="font-size:10px;color:var(--text3);margin-top:2px">Primary communicated deadline</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:14px;align-items:center;margin-bottom:0">
-            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
-            <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">6 days</div>
-          </div>
-          <!-- Step 3 -->
-          <div style="display:flex;gap:14px;margin-top:0">
-            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center">
-              <div style="width:26px;height:26px;border-radius:50%;background:#7F1D1D;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">3</div>
-            </div>
-            <div style="padding-top:3px">
-              <div style="display:flex;align-items:center;gap:6px">
-                <div style="font-size:10px;font-weight:600;color:#7C4A00;text-transform:uppercase;letter-spacing:.06em">Soft deadline</div>
-                <div style="font-size:9px;font-weight:600;color:#7C4A00;background:#FEF3C7;padding:1px 7px;border-radius:10px">marketed</div>
-              </div>
-              <div style="font-size:20px;font-weight:700;color:#7C4A00;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Dec 1 <span style="font-size:11px;color:var(--text3);font-weight:400">Tue</span></div>
+              <div style="font-size:20px;font-weight:700;color:var(--warn);font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 25 <span style="font-size:11px;color:var(--text3);font-weight:400">Wed</span></div>
               <div style="font-size:10px;color:var(--text3);margin-top:2px">Primary communicated deadline</div>
             </div>
           </div>
@@ -754,17 +717,17 @@ body.comment-mode *{cursor:crosshair!important}
             <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
             <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">5 days</div>
           </div>
-          <!-- Step 4: Last chance -->
+          <!-- Step 3: Last chance -->
           <div style="display:flex;gap:14px;margin-top:0">
             <div style="width:26px;flex-shrink:0;display:flex;justify-content:center">
-              <div style="width:26px;height:26px;border-radius:50%;background:#7F1D1D;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">4</div>
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--csd2);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">3</div>
             </div>
             <div style="padding-top:3px">
               <div style="display:flex;align-items:center;gap:6px">
-                <div style="font-size:10px;font-weight:600;color:#7F1D1D;text-transform:uppercase;letter-spacing:.06em">Last chance</div>
-                <div style="font-size:9px;font-weight:600;color:#7F1D1D;background:#FEE2E2;padding:1px 7px;border-radius:10px">+5d</div>
+                <div style="font-size:10px;font-weight:600;color:var(--csd2);text-transform:uppercase;letter-spacing:.06em">Last chance</div>
+                <div style="font-size:9px;font-weight:600;color:var(--csd2);background:var(--csd2-lt);padding:1px 7px;border-radius:10px">+5d</div>
               </div>
-              <div style="font-size:20px;font-weight:700;color:#7F1D1D;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Dec 6 <span style="font-size:11px;color:var(--text3);font-weight:400">Sat</span></div>
+              <div style="font-size:20px;font-weight:700;color:var(--csd2);font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 30 <span style="font-size:11px;color:var(--text3);font-weight:400">Mon</span></div>
               <div style="font-size:10px;color:var(--text3);margin-top:2px">Final close · ERs cannot decline</div>
             </div>
           </div>
@@ -775,19 +738,19 @@ body.comment-mode *{cursor:crosshair!important}
     <!-- Policy footer -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--border);border-radius:var(--rxl);overflow:hidden">
       <div style="padding:16px 20px;background:var(--surface)">
-        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Soft deadline</div>
+        <div style="font-size:10px;font-weight:600;color:var(--warn);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Soft deadline</div>
         <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:3px">Marketed as primary</div>
-        <div style="font-size:11px;color:var(--text3);line-height:1.5">Members who miss it get one last-chance nudge to the final deadline.</div>
+        <div style="font-size:11px;color:var(--text3);line-height:1.5">The deadline we communicate to employers and members. Track A: Nov 18. Track B: Nov 25. Members who miss it receive a last-chance nudge on day 1 of the extension.</div>
       </div>
       <div style="padding:16px 20px;background:var(--surface);border-left:1px solid var(--border)">
-        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Dec 15 backstop</div>
-        <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:3px">Support Ops only</div>
-        <div style="font-size:11px;color:var(--text3);line-height:1.5">Not marketed. CS can assist any member who reaches out before this date.</div>
+        <div style="font-size:10px;font-weight:600;color:var(--csd2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Last chance (+5 days)</div>
+        <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:3px">Structural extension · not a workaround</div>
+        <div style="font-size:11px;color:var(--text3);line-height:1.5">On day 17 the soft deadline passes. On day 18 a final nudge goes out — members have 5 more days to enroll (through day 22). Track A closes Nov 23. Track B closes Nov 30. ERs cannot decline this extension.</div>
       </div>
       <div style="padding:16px 20px;background:var(--surface2);border-left:1px solid var(--border)">
-        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Renewals close</div>
+        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Legal backstop</div>
         <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:3px">Dec 15</div>
-        <div style="font-size:11px;color:var(--text3);line-height:1.5">Legal backstop — Support Ops only, not marketed. Last date any member can enroll.</div>
+        <div style="font-size:11px;color:var(--text3);line-height:1.5">The legal enrollment deadline for all renewals. Support Ops only — not marketed to members or employers.</div>
       </div>
     </div>
 </div>
@@ -800,10 +763,10 @@ body.comment-mode *{cursor:crosshair!important}
         <div class="tbl-counts" id="tbl-counts"></div>
       </div>
       <div class="filter-row">
-        <button class="fb f-ok active" data-f="2csd">2 CSDs ✓</button>
+        <button class="fb f-ok" data-f="2csd">2 CSDs ✓</button>
         <button class="fb f-warn" data-f="1csd">1 CSD only</button>
         <button class="fb f-oe" data-f="oe">OE period</button>
-        <button class="fb" data-f="all">All</button>
+        <button class="fb" data-f="all" style="font-weight:600">All</button>
         
       </div>
     </div>
@@ -1018,12 +981,13 @@ function buildStats(){
      cls:ssOne===0?'s-ok':'s-warn', filter:'1csd'},
     {val:DATA.filter(r=>r.isOE&&r.twoCsd).length,
      label:'OE dates with 2 CSDs',
-     sub:useExtension?'Incl. Jan 4–8 ext for Nov 9–25':'Nov 26–Dec 28 only · ext off',
-     cls:'s-ok', filter:'2csd'},
-    {val:DATA.filter(r=>r.isOE).length,
-     label:'OE period days',
-     sub:'Nov 9 – Dec 28',
-     cls:'s-oe', filter:'oe'},
+     sub:useExtension?'All OE dates · incl. Jan 4–8 ext':'Nov 26–Dec 28 only · ext off',
+     cls:'s-ok', filter:'oe2csd'},
+    {val:DATA.filter(r=>r.isOE&&r.oneCsd).length,
+     label:'OE dates with 1 CSD',
+     sub:useExtension?'Nov 9–25 · covered by Jan 4–8 ext':'Nov 9–25 · no 2nd CSD available',
+     cls:DATA.filter(r=>r.isOE&&r.oneCsd).length===0?'s-ok':'s-warn', filter:'oe1csd'},
+
   ];
   const el=document.getElementById('stats-bar');
   el.style.cssText='';
@@ -1283,6 +1247,8 @@ function buildTable(filter){
     if(filter==='oe') return r.isOE;
     if(filter==='1csd') return r.oneCsd;
     if(filter==='2csd') return r.twoCsd;
+    if(filter==='oe2csd') return r.isOE&&r.twoCsd;
+    if(filter==='oe1csd') return r.isOE&&r.oneCsd;
     if(filter==='0csd') return r.csd2only||r.zeroCsd;
     return true;
   });
@@ -1856,11 +1822,11 @@ function renderRenewalTimeline(){
       ${mkM(p(306),'var(--ok)','Nov 2','Standard opens','above')}
       ${mkM(p(313),'var(--warn)','Nov 9','Late start opens','below')}
       ${mkM(p(322),'var(--warn)','Nov 18','soft A','above')}
-      ${mkM(p(328),'var(--warn)','Nov 24','soft A final','above')}
-      ${mkM(p(333),'var(--danger)','Nov 29','last chance A','above')}
+      
+      ${mkM(p(327),'var(--danger)','Nov 23','last chance A','above')}
       ${mkM(p(329),'var(--warn)','Nov 25','soft B','below')}
-      ${mkM(p(335),'var(--warn)','Dec 1','soft B final','below')}
-      ${mkM(p(340),'var(--danger)','Dec 6','last chance B','below')}
+      
+      ${mkM(p(334),'var(--danger)','Nov 30','last chance B','below')}
       ${mkM(100,'var(--text3)','Dec 15','legal','above',true)}`;
   }
 
@@ -1903,13 +1869,13 @@ function togglePOV(){
   }catch(e){}
 })();
 
-// ── INIT ──
-setToggle(1);
+// ── INIT ── Default: New ERs, Base (no special extension), All dates
+setToggle(0);
 window._erType='new';
 filterMode='all';
 document.querySelectorAll('.fb').forEach(b=>b.classList.toggle('active',b.dataset.f==='all'));
 buildCal();
-buildTable('oe');
+buildTable('all');
 // Hide renewal sections, show new ERs
 document.querySelectorAll('[data-renewal-er]').forEach(el=>el.style.display='none');
 document.querySelectorAll('[data-new-er]').forEach(el=>el.style.display='block');
