@@ -137,6 +137,7 @@ mono{font-family:'JetBrains Mono',monospace;font-size:.92em}
 .dc1{background:var(--csd1);outline:2px solid rgba(0,0,0,.2);outline-offset:-1px}
 .dc2{background:var(--csd2);outline:2px solid rgba(0,0,0,.35);outline-offset:-1px}
 .dext{background:var(--oe-bg);outline:2px dashed var(--oe);outline-offset:-1px}
+.dlc{background:var(--warn-bg);outline:1px solid var(--warn);outline-offset:-1px}
 .dsel{outline:2px solid var(--text);outline-offset:1px;z-index:5;border-radius:2px}
 .dc-card-focus{outline:3px solid var(--text);outline-offset:2px;z-index:6;transform:scale(1.4);border-radius:2px}
 
@@ -386,88 +387,77 @@ body.comment-mode *{cursor:crosshair!important}
   <div id="pov-content" style="display:none;padding:28px 28px 32px;max-width:1300px">
 
     <!-- Headline -->
-    <div style="margin-bottom:28px;max-width:680px">
+    <div style="margin-bottom:28px;max-width:720px">
       <div style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-.03em;line-height:1.25;margin-bottom:10px">
-        We recommend moving from two enrollment systems to one.
+        One system. Every employer, every invite, year-round.
       </div>
-      <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7;font-weight:400">
-        Thatch currently operates two parallel enrollment models — rolling windows for new employers and a separate OE cohort operation every November. We recommend collapsing these into a single CSD-first system that runs identically year-round.
+      <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.75">
+        The primary principle is <strong style="color:#fff">one system</strong> — a single enrollment model that runs identically for new ERs and renewals, in January and in November. Designing for two CSDs is a strategic way of building that system well: it embeds the extension concept structurally rather than operationally. But the CSD guarantee is a feature of the design, not the principle itself.
       </div>
     </div>
 
-    <!-- Three columns -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
 
-      <!-- Problem -->
+      <!-- The system -->
       <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px">
-        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:14px">The problem</div>
+        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:14px">The system</div>
         <div style="display:flex;flex-direction:column;gap:14px">
           <div>
-            <div style="font-size:12px;font-weight:600;color:#FCA5A5;margin-bottom:4px">Two systems, two playbooks</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">Rolling windows and OE cohorts run on different logic, different CS processes, and different comms. Every November, the team manually rebuilds what should be automated.</div>
+            <div style="font-size:12px;font-weight:600;color:#6EE7B7;margin-bottom:4px">30-day window · marketed</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">Every invite gets a 30-day enrollment window. This is the number we communicate to employers and members. Same rule, every invite, all year.</div>
           </div>
           <div style="height:1px;background:rgba(255,255,255,0.07)"></div>
           <div>
-            <div style="font-size:12px;font-weight:600;color:#FCA5A5;margin-bottom:4px">Extensions are a symptom, not a solution</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">The 6% enrollment lift from OE 2026 extensions was real — but required 8 cohorts, exclusion lists, and significant CS coordination. That doesn't scale with 30 new sales reps.</div>
+            <div style="font-size:12px;font-weight:600;color:#6EE7B7;margin-bottom:4px">+5 day last-chance window</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">On day 31, a last-chance nudge goes out. Members have 5 more days to enroll. This applies to new ERs and renewals alike — the mechanism is identical, only the durations differ.</div>
           </div>
           <div style="height:1px;background:rgba(255,255,255,0.07)"></div>
           <div>
-            <div style="font-size:12px;font-weight:600;color:#FCA5A5;margin-bottom:4px">We've been solving the wrong problem</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">Employers don't want to control enrollment windows. They want to control when coverage begins. The window is an implementation detail Thatch should own.</div>
+            <div style="font-size:12px;font-weight:600;color:#6EE7B7;margin-bottom:4px">Renewals and new ERs are the same system</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">Soft close + 5-day hard close. The logic is identical. Renewals have fixed calendar dates (OE opens Nov 2 or Nov 9); new ERs have a rolling 30-day window from invite date. One model, two configurations.</div>
           </div>
         </div>
       </div>
 
-      <!-- Recommendation -->
+      <!-- What changes -->
       <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px">
-        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:14px">The recommendation</div>
-        <div style="display:flex;flex-direction:column;gap:14px">
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#6EE7B7;margin-bottom:4px">One system, anchored on coverage start date</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">Every invite — rolling or OE — gets a 30-day window split by a processing cutoff. Enroll before the cutoff: CSD 1. Enroll after: CSD 2. Same logic year-round, no exceptions.</div>
-          </div>
-          <div style="height:1px;background:rgba(255,255,255,0.07)"></div>
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#6EE7B7;margin-bottom:4px">Extensions become structural, not operational</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">The two-CSD model embeds the extension concept by design. The Jan 4–8 special extension is the only exception — a targeted policy decision, not an operational workaround.</div>
-          </div>
-          <div style="height:1px;background:rgba(255,255,255,0.07)"></div>
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#6EE7B7;margin-bottom:4px">OE 2027 is a capacity problem, not an architecture problem</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">With one system, OE is when more invites go out simultaneously — not a different operating mode. One CS playbook. One enrollment flow. One mental model for everyone.</div>
-          </div>
+        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:14px">What changes</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>14-day, 21-day, and 60-day employer window options</span></div>
+          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>Employer-set enrollment deadlines as default</span></div>
+          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>Manual mass extension operations</span></div>
+          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>Separate OE operating mode</span></div>
+          <div style="height:1px;background:rgba(255,255,255,0.07);margin:4px 0"></div>
+          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>30-day marketed window · same for everyone</span></div>
+          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>+5 day last-chance extension · structural, not manual</span></div>
+          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>EOM−2 processing cutoff · single operational rhythm</span></div>
+          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>Renewals: allowances set by Oct 25</span></div>
         </div>
       </div>
 
-      <!-- What changes + how to use -->
+      <!-- Open questions + how to use -->
       <div style="display:flex;flex-direction:column;gap:12px">
-        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px;flex:1">
-          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:14px">What changes</div>
-          <div style="display:flex;flex-direction:column;gap:7px">
-            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>14-day and 21-day window options</span></div>
-            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>Manual mass extension operations</span></div>
-            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>Employer-set deadlines as default</span></div>
-            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>Separate OE operating mode</span></div>
-            <div style="height:1px;background:rgba(255,255,255,0.07);margin:4px 0"></div>
-            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>30-day window with 2 CSDs, every invite</span></div>
-            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>EOM−2 processing cutoff as single operational rhythm</span></div>
-            <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>Jan 4–8 as permanent, targeted OE policy</span></div>
-          </div>
+
+        <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);border-radius:12px;padding:16px 18px">
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(251,191,36,0.7);margin-bottom:10px">Open question · not yet decided</div>
+          <div style="font-size:12px;font-weight:600;color:#FCD34D;margin-bottom:6px">Jan 4–8 special extension</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:8px">For the Nov 9–25 OE cohort, the 35-day window doesn't reach the Dec 29 cutoff. A Jan 4–8 special extension would give these 17 dates a second CSD (Feb 1).</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);line-height:1.6;font-style:italic">This would break the one-system principle — it's a named exception for a specific cohort. Worth considering, but the tradeoff is explicit: better member experience for 17 OE dates vs. system purity. Not a decision yet.</div>
         </div>
 
-        <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 18px">
+        <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 18px;flex:1">
           <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:10px">Explore the model below</div>
           <div style="display:flex;flex-direction:column;gap:6px">
-            <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5;display:flex;gap:8px"><span style="color:#93C5FD;flex-shrink:0">→</span>Click any invite date to see its window and CSDs</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5;display:flex;gap:8px"><span style="color:#93C5FD;flex-shrink:0">→</span>Toggle special extension to see Jan 4–8 policy impact</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5;display:flex;gap:8px"><span style="color:#93C5FD;flex-shrink:0">→</span>Switch to Renewals for the OE track comparison</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5;display:flex;gap:8px"><span style="color:#93C5FD;flex-shrink:0">→</span>New ERs tab: click any invite date to see its 30+5d window</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5;display:flex;gap:8px"><span style="color:#93C5FD;flex-shrink:0">→</span>Toggle Jan 4–8 extension to see the open question in action</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5;display:flex;gap:8px"><span style="color:#93C5FD;flex-shrink:0">→</span>Renewals tab: same soft close + last-chance structure</div>
           </div>
         </div>
+
       </div>
 
     </div>
-  </div>
+</div>
 </div>
 
 
@@ -500,9 +490,9 @@ body.comment-mode *{cursor:crosshair!important}
   <div class="sb-section" data-new-er>
     <div class="sb-section-label">How it works</div>
     <div style="font-size:11px;color:var(--text2);line-height:1.6">
-      Each invite starts a <strong>30-day window</strong>. The <span style="color:var(--cutoff);font-weight:500">processing cutoff</span> (EOM−2, adjusted to Thu or earlier) splits the window in two:<br><br>
-      Enroll <em>before</em> the cutoff → <span style="color:var(--csd1);font-weight:500">CSD 1</span> (next month)<br>
-      Enroll <em>after</em> the cutoff → <span style="color:var(--csd2);font-weight:500">CSD 2</span> (month after)
+      Each invite starts a <strong>30-day window</strong> (soft close). On day 31 a last-chance nudge goes out — members have <strong>5 more days</strong> to enroll. The <span style="color:var(--cutoff);font-weight:500">processing cutoff</span> (EOM−2, adjusted to Thu or earlier) splits the full 35-day window:<br><br>
+      Enroll by soft close (day 30) → <span style="color:var(--csd1);font-weight:500">CSD 1</span> if before cutoff<br>
+      Days 1–35 (after cutoff) → <span style="color:var(--csd2);font-weight:500">CSD 2</span>
     </div>
   </div>
 
@@ -520,13 +510,21 @@ body.comment-mode *{cursor:crosshair!important}
           </div>
           <div class="det-card-val" style="color:var(--invite)" id="d-invite">—</div>
         </div>
-        <!-- Window closes -->
-        <div class="det-card" style="background:var(--w2-lt);border-color:var(--w2-dk);border-left:3px solid var(--w2-dk)">
-          <div class="det-card-label" style="color:var(--w2-dk)">
-            <span class="det-card-swatch" style="background:var(--w2)"></span>Window closes
+        <!-- Soft close -->
+        <div class="det-card" style="background:var(--surface2);border-color:var(--text3);border-left:3px solid var(--text3)">
+          <div class="det-card-label" style="color:var(--text3)">
+            <span class="det-card-swatch" style="background:var(--text3)"></span>Soft close (day 30)
           </div>
-          <div class="det-card-val" style="color:var(--w2-dk)" id="d-close">—</div>
+          <div class="det-card-val" style="color:var(--text2)" id="d-close">—</div>
         </div>
+        <!-- Hard close (last chance) -->
+        <div class="det-card" style="background:var(--warn-bg);border-color:var(--warn);border-left:3px solid var(--warn)">
+          <div class="det-card-label" style="color:var(--warn)">
+            <span class="det-card-swatch" style="background:var(--warn)"></span>Last chance (day 35)
+          </div>
+          <div class="det-card-val" style="color:var(--warn)" id="d-hard-close">—</div>
+        </div>
+
         <!-- CSD 1 cutoff -->
         <div class="det-card" style="background:var(--cutoff-lt);border-color:var(--cutoff)">
           <div class="det-card-label" style="color:var(--cutoff)">
@@ -663,11 +661,30 @@ body.comment-mode *{cursor:crosshair!important}
             </div>
             <div style="padding-top:3px">
               <div style="display:flex;align-items:center;gap:6px">
-                <div style="font-size:10px;font-weight:600;color:#7F1D1D;text-transform:uppercase;letter-spacing:.06em">Final deadline</div>
-                <div style="font-size:9px;font-weight:600;color:#7F1D1D;background:#FEE2E2;padding:1px 7px;border-radius:10px">last chance</div>
+                <div style="font-size:10px;font-weight:600;color:#7C4A00;text-transform:uppercase;letter-spacing:.06em">Soft deadline</div>
+                <div style="font-size:9px;font-weight:600;color:#7C4A00;background:#FEF3C7;padding:1px 7px;border-radius:10px">marketed</div>
               </div>
-              <div style="font-size:20px;font-weight:700;color:#7F1D1D;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 24 <span style="font-size:11px;color:var(--text3);font-weight:400">Tue</span></div>
-              <div style="font-size:10px;color:var(--text3);margin-top:2px">ERs cannot decline extension</div>
+              <div style="font-size:20px;font-weight:700;color:#7C4A00;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 24 <span style="font-size:11px;color:var(--text3);font-weight:400">Tue</span></div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px">Primary communicated deadline</div>
+            </div>
+          </div>
+          <!-- Duration pill -->
+          <div style="display:flex;gap:14px;align-items:center;margin-bottom:0">
+            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
+            <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">5 days</div>
+          </div>
+          <!-- Step 4: Last chance -->
+          <div style="display:flex;gap:14px;margin-top:0">
+            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center">
+              <div style="width:26px;height:26px;border-radius:50%;background:#7F1D1D;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">4</div>
+            </div>
+            <div style="padding-top:3px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="font-size:10px;font-weight:600;color:#7F1D1D;text-transform:uppercase;letter-spacing:.06em">Last chance</div>
+                <div style="font-size:9px;font-weight:600;color:#7F1D1D;background:#FEE2E2;padding:1px 7px;border-radius:10px">+5d</div>
+              </div>
+              <div style="font-size:20px;font-weight:700;color:#7F1D1D;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 29 <span style="font-size:11px;color:var(--text3);font-weight:400">Sat</span></div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px">Final close · ERs cannot decline</div>
             </div>
           </div>
         </div>
@@ -725,11 +742,30 @@ body.comment-mode *{cursor:crosshair!important}
             </div>
             <div style="padding-top:3px">
               <div style="display:flex;align-items:center;gap:6px">
-                <div style="font-size:10px;font-weight:600;color:#7F1D1D;text-transform:uppercase;letter-spacing:.06em">Final deadline</div>
-                <div style="font-size:9px;font-weight:600;color:#7F1D1D;background:#FEE2E2;padding:1px 7px;border-radius:10px">last chance</div>
+                <div style="font-size:10px;font-weight:600;color:#7C4A00;text-transform:uppercase;letter-spacing:.06em">Soft deadline</div>
+                <div style="font-size:9px;font-weight:600;color:#7C4A00;background:#FEF3C7;padding:1px 7px;border-radius:10px">marketed</div>
               </div>
-              <div style="font-size:20px;font-weight:700;color:#7F1D1D;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Dec 1 <span style="font-size:11px;color:var(--text3);font-weight:400">Tue</span></div>
-              <div style="font-size:10px;color:var(--text3);margin-top:2px">ERs cannot decline extension</div>
+              <div style="font-size:20px;font-weight:700;color:#7C4A00;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Dec 1 <span style="font-size:11px;color:var(--text3);font-weight:400">Tue</span></div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px">Primary communicated deadline</div>
+            </div>
+          </div>
+          <!-- Duration pill -->
+          <div style="display:flex;gap:14px;align-items:center;margin-bottom:0">
+            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
+            <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">5 days</div>
+          </div>
+          <!-- Step 4: Last chance -->
+          <div style="display:flex;gap:14px;margin-top:0">
+            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center">
+              <div style="width:26px;height:26px;border-radius:50%;background:#7F1D1D;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">4</div>
+            </div>
+            <div style="padding-top:3px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="font-size:10px;font-weight:600;color:#7F1D1D;text-transform:uppercase;letter-spacing:.06em">Last chance</div>
+                <div style="font-size:9px;font-weight:600;color:#7F1D1D;background:#FEE2E2;padding:1px 7px;border-radius:10px">+5d</div>
+              </div>
+              <div style="font-size:20px;font-weight:700;color:#7F1D1D;font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Dec 6 <span style="font-size:11px;color:var(--text3);font-weight:400">Sat</span></div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px">Final close · ERs cannot decline</div>
             </div>
           </div>
         </div>
@@ -751,7 +787,7 @@ body.comment-mode *{cursor:crosshair!important}
       <div style="padding:16px 20px;background:var(--surface2);border-left:1px solid var(--border)">
         <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Renewals close</div>
         <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:3px">Dec 15</div>
-        <div style="font-size:11px;color:var(--text3);line-height:1.5">Legal backstop. Final date any member can enroll with Support Ops assist.</div>
+        <div style="font-size:11px;color:var(--text3);line-height:1.5">Legal backstop — Support Ops only, not marketed. Last date any member can enroll.</div>
       </div>
     </div>
 </div>
@@ -764,9 +800,9 @@ body.comment-mode *{cursor:crosshair!important}
         <div class="tbl-counts" id="tbl-counts"></div>
       </div>
       <div class="filter-row">
-        <button class="fb f-oe active" data-f="oe">OE period</button>
-        <button class="fb f-ok" data-f="2csd">2 CSDs ✓</button>
+        <button class="fb f-ok active" data-f="2csd">2 CSDs ✓</button>
         <button class="fb f-warn" data-f="1csd">1 CSD only</button>
+        <button class="fb f-oe" data-f="oe">OE period</button>
         <button class="fb" data-f="all">All</button>
         
       </div>
@@ -776,7 +812,7 @@ body.comment-mode *{cursor:crosshair!important}
         <thead>
           <tr>
             <th>Invite date</th>
-            <th>Window closes</th>
+            <th>Soft close (day 30)</th><th>Last chance (day 35)</th>
             <th>CSD 1 cutoff</th>
             <th>CSD 1</th>
             <th>Days → CSD 1</th>
@@ -843,64 +879,99 @@ const FEB1_2027=365+32;   // Feb 1 2027
 
 // OE 1-CSD dates: Nov 9 - Nov 28 (window closes on or before Dec 28 cutoff)
 function isOE1CSD(invDoy){
-  return invDoy>=OE_START && invDoy<=doy(10,30); // Nov 9-30 (window closes on or before Dec 29 cutoff)
+  // Only dates where the 35d hard close still doesn't reach Dec 29
+  // Nov 9-24: hardClose = invDoy+34 < Dec 29 (doy 363)
+  // Nov 25: hardClose = Dec 29 exactly (daysCsd2=0, no runway)
+  // Nov 26+: hardClose > Dec 29, get 2 CSDs naturally
+  return invDoy>=OE_START && invDoy<=doy(10,25); // Nov 9-25 (hardClose on or before Dec 29)
 }
 
 let useExtension=true;
 
+// ── NEW MODEL: 30d marketed soft close + 5d last-chance extension ──
+// softClose = invDoy + 29  (day 30, marketed deadline)
+// hardClose = invDoy + 34  (day 35, last-chance, actively marketed on day 31)
+// CSD 1 = next month if enrolled before csd1Cutoff
+// CSD 2 = month after if enrolled after csd1Cutoff but before hardClose
+// OE 1-CSD cohort (Nov 9-30): Jan 4-8 special extension still needed for 17 dates
+
+const SOFT_DAYS = 29; // 0-indexed: inv + 29 = day 30
+const HARD_DAYS = 34; // inv + 34 = day 35
+
 function calc(invDoy){
-  // Handle 2027 dates: offset back to 2026 equivalent, then shift outputs
   const is2027=invDoy>365;
   const effectiveDoy=is2027?invDoy-365:invDoy;
-  const x=fd(effectiveDoy);const m=x.m;const winLen=30;
-  let winEnd=invDoy+winLen-1;
+  const x=fd(effectiveDoy);const m=x.m;
+
+  const softClose=invDoy+SOFT_DAYS;  // marketed day 30
+  const hardClose=invDoy+HARD_DAYS;  // actual day 35 (last chance)
+
   const isOE=effectiveDoy>=OE_START&&effectiveDoy<=OE_END;
   const oe1csd=isOE1CSD(invDoy);
   let csd1Cutoff,csd1,csd2,daysCsd1,daysCsd2;
   let extended=false;
 
   if(isOE){
-    csd1Cutoff=CUTOFFS[11];csd1=JAN1_NEXT;
+    // OE: cutoff = Dec 29, CSD1 = Jan 1
+    csd1Cutoff=CUTOFFS[11]; csd1=JAN1_NEXT;
     const dToCutoff=csd1Cutoff-invDoy;
-    daysCsd1=dToCutoff<0?0:dToCutoff; // days from invite to CSD1 cutoff
+    // Cap at window length — can only enroll within 35-day window
+    daysCsd1=dToCutoff<0?0:Math.min(dToCutoff,hardClose-invDoy);
 
     if(oe1csd && useExtension){
-      // Extension: Jan 4-8 adds CSD 2. winEnd stays invite+29 for display purposes.
-      // extWinEnd tracks the actual last day to enroll (Jan 8).
+      // Jan 4-8 special extension → CSD2 = Feb 1
       csd2=FEB1_2027;
-      daysCsd2=EXT_END-EXT_START+1; // 5 days (Jan 4-8)
+      daysCsd2=EXT_END-EXT_START+1; // 5 days
       extended=true;
-    } else if(winEnd<=csd1Cutoff){
-      csd2=null;daysCsd2=null;
+    } else if(hardClose>csd1Cutoff){
+      // Hard close reaches past Dec 29 → CSD2 = Feb 1
+      csd2=FEB1_2027;
+      daysCsd2=Math.max(0,hardClose-csd1Cutoff);
     } else {
-      csd2=FEB1_2027;daysCsd2=winEnd-csd1Cutoff;
+      csd2=null; daysCsd2=null;
     }
   } else {
     csd1Cutoff=CUTOFFS[m];
     const pastCutoff=invDoy>csd1Cutoff;
+
     if(pastCutoff){
+      // Invite after cutoff: CSD1 is month+2, cutoff is month+1
       const nextM=(m+1)%12;
       csd1Cutoff=CUTOFFS[nextM]+(nextM===0?365:0);
-      csd1=fom(m+2);csd2=fom(m+3);
-      const dToCutoff=csd1Cutoff-invDoy;
-      daysCsd1=dToCutoff>=0?Math.min(dToCutoff+1,winLen):0;
-      daysCsd2=Math.max(0,winEnd-(csd1Cutoff+1)+1);
+      csd1=fom(m+2); csd2=fom(m+3);
+      daysCsd1=Math.max(0,csd1Cutoff-invDoy);
+      daysCsd2=Math.max(0,hardClose-csd1Cutoff);
     } else {
-      csd1=fom(m+1);csd2=fom(m+2);
-      const dToCutoff=csd1Cutoff-invDoy;
-      daysCsd1=dToCutoff>=0?dToCutoff+1:0;
-      daysCsd2=Math.max(0,winEnd-(csd1Cutoff+1)+1);
+      csd1=fom(m+1); csd2=fom(m+2);
+      daysCsd1=Math.max(0,csd1Cutoff-invDoy);
+      daysCsd2=Math.max(0,hardClose-csd1Cutoff);
     }
   }
-  const twoCsd=daysCsd1>0&&daysCsd2!==null&&daysCsd2>0;
-  const oneCsd=daysCsd1>0&&(daysCsd2===null||daysCsd2===0);
-  const zeroCsd=daysCsd1===0&&(daysCsd2===null||daysCsd2===0);
-  // For 2027 invites, shift all date outputs forward by 365
+
+  // daysCsd1 >= 0 means cutoff day is still eligible for CSD 1
+  const twoCsd=daysCsd1>=0&&daysCsd2!=null&&daysCsd2>0;
+  const oneCsd=daysCsd1>=0&&(daysCsd2===null||daysCsd2===0);
+  const csd2only=false; // no longer needed — cutoff day gets both CSDs
+  const zeroCsd=daysCsd1<0&&(daysCsd2===null||daysCsd2===0);
+
+  // 2027 shift
   if(is2027){
-    winEnd+=365; csd1+=365; if(csd2)csd2+=365; csd1Cutoff+=365;
+    softClose_out=softClose+365; hardClose_out=hardClose+365;
+    csd1+=365; if(csd2)csd2+=365; csd1Cutoff+=365;
+  } else {
+    softClose_out=softClose; hardClose_out=hardClose;
   }
-  return{invDoy,winEnd,csd1Cutoff,csd1,csd2,daysCsd1,daysCsd2,isOE,oe1csd,isOE1CSD:isOE1CSD(effectiveDoy),extended,twoCsd,oneCsd,zeroCsd,month:m,is2027};
+
+  return{
+    invDoy, softClose:softClose_out, hardClose:hardClose_out,
+    winEnd:hardClose_out,
+    csd1Cutoff, csd1, csd2,
+    daysCsd1, daysCsd2,
+    isOE, oe1csd, isOE1CSD:isOE1CSD(effectiveDoy),
+    extended, twoCsd, oneCsd, csd2only, zeroCsd, month:m, is2027
+  };
 }
+
 
 function rebuildData(){
   DATA.length=0;
@@ -914,11 +985,11 @@ function setToggle(val){
   document.querySelectorAll('.tog').forEach(b=>b.classList.toggle('active',+b.dataset.t===val));
   if(useExtension){
     document.getElementById('tog-impact').innerHTML=
-      `<span class="delta-badge">+22 dates</span> moved from 1 CSD → 2 CSDs &nbsp;·&nbsp; 5d runway (Special extension)`;
-    document.getElementById('tog-desc').textContent='Jan 4–8 special extension for Feb 1 coverage — first week back from holidays';
+      `<span class="delta-badge">+17 dates</span> moved from 1 CSD → 2 CSDs &nbsp;·&nbsp; 5d runway (Jan 4–8 ext)`;
+    document.getElementById('tog-desc').textContent='Jan 4–8 special extension for Feb 1 coverage — catches remaining 17 OE dates the 35d window misses';
   } else {
-    document.getElementById('tog-impact').textContent='Nov 9–30 invites have 1 CSD only (Jan 1)';
-    document.getElementById('tog-desc').textContent='Standard 30d window, no special extension';
+    document.getElementById('tog-impact').textContent='Nov 9–25: 35d hard close before Dec 29 — needs Jan 4–8 ext';
+    document.getElementById('tog-desc').textContent='Standard 30d window (35d with last-chance), no special extension';
   }
   rebuildData();
   buildStats();
@@ -930,21 +1001,41 @@ function setToggle(val){
 // Stats
 function buildStats(){
   const two=DATA.filter(r=>r.twoCsd).length;
-  const one=DATA.filter(r=>r.oneCsd).length;
-  const oe=DATA.filter(r=>r.isOE).length;
+  const oeNeedExt=DATA.filter(r=>r.isOE1CSD&&!r.extended).length;
+  const oeGained=DATA.filter(r=>r.isOE1CSD&&r.extended).length;
+  // Steady-state 1-CSD: outside OE, only 1 CSD
+  const ssOne=DATA.filter(r=>r.oneCsd&&!r.isOE).length;
+  // OE 1-CSD: all OE dates that still have only 1 CSD (not rescued by ext or hard close)
+  const oeOne=DATA.filter(r=>r.isOE&&r.oneCsd).length;
   const items=[
-    {val:two,label:'Days with 2 CSDs',sub:'Full experience',cls:'s-ok'},
-    {val:one,label:'Days with 1 CSD only',sub:'Reduced safety net',cls:'s-warn'},
-    {val:DATA.filter(r=>r.isOE1CSD).length,label:useExtension?'Gained 2nd CSD':'Missing 2nd CSD',sub:useExtension?'Nov 9–30 · 1 CSD → 2 CSDs via special ext':'Nov 9–30 · only Jan 1 available',cls:useExtension?'s-ok':'s-warn'},
-    {val:oe,label:'OE period days',sub:'Nov 9 – Dec 28',cls:'s-oe'},
+    {val:two,
+     label:'Days with 2 CSDs',
+     sub:'Full experience · 30+5d window',
+     cls:'s-ok', filter:'2csd'},
+    {val:ssOne,
+     label:'1 CSD · steady state',
+     sub:ssOne===0?'Zero — solved by 30+5d model':'Late-month invites',
+     cls:ssOne===0?'s-ok':'s-warn', filter:'1csd'},
+    {val:DATA.filter(r=>r.isOE&&r.twoCsd).length,
+     label:'OE dates with 2 CSDs',
+     sub:useExtension?'Incl. Jan 4–8 ext for Nov 9–25':'Nov 26–Dec 28 only · ext off',
+     cls:'s-ok', filter:'2csd'},
+    {val:DATA.filter(r=>r.isOE).length,
+     label:'OE period days',
+     sub:'Nov 9 – Dec 28',
+     cls:'s-oe', filter:'oe'},
   ];
   const el=document.getElementById('stats-bar');
   el.style.cssText='';
   el.innerHTML=items.map(i=>`
-    <div class="stat-card ${i.cls}">
+    <div class="stat-card ${i.cls}${filterMode===i.filter?' stat-card-active':''}"
+         onclick="setStatFilter('${i.filter}')"
+         style="cursor:pointer;transition:box-shadow .12s,transform .1s"
+         title="Filter by: ${i.label}">
       <div class="stat-val">${i.val}</div>
       <div class="stat-label">${i.label}</div>
       <div class="stat-sub">${i.sub}</div>
+      <div style="font-size:9px;color:var(--text3);margin-top:4px;font-family:'JetBrains Mono',monospace;letter-spacing:.04em">click to filter ↓</div>
     </div>`).join('');
 }
 
@@ -1062,16 +1153,21 @@ function paintCal(inv){
     } else if(n===r.csd1Cutoff){
       c.className='dc dco';
       c.setAttribute('data-tip','✂️ Processing cutoff · '+base+' · Enroll by here for CSD 1');
-    } else if(n>inv&&n<r.csd1Cutoff&&n<=r.winEnd){
-      // CSD1 zone: after invite, before cutoff, within window
+    } else if(n>inv&&n<r.csd1Cutoff&&n<=r.hardClose){
+      // CSD1 zone: after invite, before cutoff, within full 35-day window
       c.className='dc dw1';
       const daysLeft=r.csd1Cutoff-n;
       c.setAttribute('data-tip','Enroll → CSD 1 · '+base+' · '+daysLeft+'d until cutoff');
-    } else if(n>r.csd1Cutoff&&n<=r.winEnd){
-      // CSD2 zone: after cutoff, within window (works for both 2026 and 2027 cells)
+    } else if(n>r.csd1Cutoff&&n<=r.softClose){
+      // CSD2 zone within marketed 30-day window
       c.className='dc dw2';
-      const daysLeft=r.winEnd-n;
-      c.setAttribute('data-tip','Enroll → CSD 2 · '+base+(daysLeft>0?' · '+daysLeft+'d left':''));
+      const daysLeft=r.softClose-n;
+      c.setAttribute('data-tip','Enroll → CSD 2 · '+base+(daysLeft>0?' · '+daysLeft+'d to soft close':''));
+    } else if(n>r.softClose&&n<=r.hardClose){
+      // Last-chance zone: days 31-35
+      c.className='dc dlc';
+      const daysLeft=r.hardClose-n;
+      c.setAttribute('data-tip','⚡ Last chance · '+base+' · day '+(n-r.invDoy+1)+' of 35'+(daysLeft>0?' · '+daysLeft+'d left':''));
     } else if(r.extended&&n>=EXT_START&&n<=EXT_END){
       // Special extension window: Jan 4-8 2027
       c.className='dc dw2';
@@ -1101,7 +1197,7 @@ function paintCal(inv){
 
 function insightText(r){
   if(r.extended) return{cls:'good',text:`OE extension active: ${r.daysCsd1}d for Jan 1 (CSD 1), then 5d (Special extension) for Feb 1 (CSD 2). Special extension gives procrastinators a second chance.`};
-  if(r.zeroCsd) return{cls:'danger',text:`Invite falls after the processing cutoff — no CSD lands in the 30-day window.`};
+  if(r.zeroCsd) return{cls:'danger',text:`Invite falls after the processing cutoff — no CSD lands in the 31-day window.`};
   if(r.isOE&&!r.csd2) return{cls:'warn',text:`OE period: only Jan 1 is available. Feb 1 falls outside the window. Enable the Special extensionension to add CSD 2.`};
   if(r.oneCsd&&r.daysCsd1<=5) return{cls:'danger',text:`Only ${r.daysCsd1} day${r.daysCsd1===1?'':'s'} to enroll for CSD 1. Very tight — most employees will miss it.`};
   if(r.oneCsd) return{cls:'warn',text:`Only CSD 1 reachable. Employees who miss ${fmt(r.csd1Cutoff)} have no second option in this window.`};
@@ -1129,6 +1225,7 @@ function updateDetail(inv){
   document.getElementById('d-badges').innerHTML=badge;
   document.getElementById('d-invite').innerHTML=fmt(r.invDoy)+'<br><small style="color:var(--text3);font-size:10px">'+DOW_N[dow(r.invDoy)]+'</small>';
   document.getElementById('d-close').innerHTML=fmt(r.winEnd)+(r.extended?' ✦':'')+'<br><small style="color:var(--text3);font-size:10px">'+DOW_N[dow(r.winEnd)]+'</small>';
+  document.getElementById('d-hard-close').innerHTML=fmt(r.hardClose)+'<br><small style="color:var(--text3);font-size:10px">'+DOW_N[dow(r.hardClose%365||r.hardClose)]+'</small>';
   document.getElementById('d-cut').innerHTML=fmt(r.csd1Cutoff)+'<br><small style="color:var(--text3);font-size:10px">'+DOW_N[dow(r.csd1Cutoff)]+'</small>';
   document.getElementById('d-days1').textContent=r.daysCsd1>0?r.daysCsd1+'d to cutoff':'past cutoff';
   document.getElementById('d-csd1').textContent=fmt(r.csd1);
@@ -1186,7 +1283,7 @@ function buildTable(filter){
     if(filter==='oe') return r.isOE;
     if(filter==='1csd') return r.oneCsd;
     if(filter==='2csd') return r.twoCsd;
-    if(filter==='0csd') return r.zeroCsd;
+    if(filter==='0csd') return r.csd2only||r.zeroCsd;
     return true;
   });
   document.getElementById('tbl-counts').textContent=filtered.length+' dates';
@@ -1204,7 +1301,8 @@ function buildTable(filter){
     const days2Cell=r.daysCsd2===null?'<span class="td-na">N/A</span>':dayBarHTML(r.daysCsd2,30,'var(--w2-dk)');
     tr.innerHTML=
       '<td><mono>'+fmt(r.invDoy)+'</mono>'+dowTag(r.invDoy)+(r.isOE?'<span class="td-oe">OE</span>':'')+extMark+'</td>'+
-      '<td><mono>'+fmt(r.winEnd)+(r.extended?' ✶':'')+' </mono>'+dowTag(r.winEnd)+'</td>'+
+      '<td><mono>'+fmt(r.softClose)+'</mono>'+dowTag(r.softClose)+'</td>'+
+      '<td><mono style="color:var(--warn)">'+fmt(r.hardClose)+'</mono>'+dowTag(r.hardClose)+'</td>'+
       '<td><mono>'+fmt(r.csd1Cutoff)+'</mono>'+dowTag(r.csd1Cutoff)+'</td>'+
       '<td><mono>'+fmt(r.csd1)+'</mono></td>'+
       '<td>'+dayBarHTML(r.daysCsd1,30,'var(--w1-dk)')+'</td>'+
@@ -1242,10 +1340,22 @@ function updateExtColumn(){
   document.querySelectorAll('[id^="ext-td-"]').forEach(td => td.style.display = show ? '' : 'none');
 }
 
+function setStatFilter(f){
+  // Toggle off if already active
+  if(filterMode===f){ f='all'; }
+  filterMode=f;
+  document.querySelectorAll('.fb').forEach(b=>b.classList.toggle('active',b.dataset.f===f));
+  buildTable(f);
+  buildStats(); // re-render cards to update active state
+  // Scroll to table
+  document.getElementById('main-table')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
 document.querySelectorAll('.fb').forEach(btn=>{
   btn.addEventListener('click',function(){
     document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
     this.classList.add('active');filterMode=this.dataset.f;buildTable(filterMode);
+    buildStats(); // sync card active states
   });
 });
 
@@ -1746,9 +1856,11 @@ function renderRenewalTimeline(){
       ${mkM(p(306),'var(--ok)','Nov 2','Standard opens','above')}
       ${mkM(p(313),'var(--warn)','Nov 9','Late start opens','below')}
       ${mkM(p(322),'var(--warn)','Nov 18','soft A','above')}
-      ${mkM(p(328),'var(--danger)','Nov 24','final A','above')}
+      ${mkM(p(328),'var(--warn)','Nov 24','soft A final','above')}
+      ${mkM(p(333),'var(--danger)','Nov 29','last chance A','above')}
       ${mkM(p(329),'var(--warn)','Nov 25','soft B','below')}
-      ${mkM(p(335),'var(--danger)','Dec 1','final B','below')}
+      ${mkM(p(335),'var(--warn)','Dec 1','soft B final','below')}
+      ${mkM(p(340),'var(--danger)','Dec 6','last chance B','below')}
       ${mkM(100,'var(--text3)','Dec 15','legal','above',true)}`;
   }
 
@@ -1794,8 +1906,8 @@ function togglePOV(){
 // ── INIT ──
 setToggle(1);
 window._erType='new';
-filterMode='oe';
-document.querySelectorAll('.fb').forEach(b=>b.classList.toggle('active',b.dataset.f==='oe'));
+filterMode='all';
+document.querySelectorAll('.fb').forEach(b=>b.classList.toggle('active',b.dataset.f==='all'));
 buildCal();
 buildTable('oe');
 // Hide renewal sections, show new ERs
