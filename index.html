@@ -55,7 +55,7 @@ body{
 .hd{margin-bottom:52px}
 .hd-eyebrow{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;font-family:'DM Mono',monospace}
 .hd-title{font-family:'DM Serif Display',serif;font-size:38px;line-height:1.15;color:var(--ink);letter-spacing:-.02em;margin-bottom:14px}
-.hd-title em{font-style:italic;color:var(--amber)}
+.hd-title em{font-style:italic;color:#7c6f5e}
 .hd-sub{font-size:15px;color:var(--ink2);line-height:1.7;max-width:560px}
 
 /* ── SECTION LABELS ── */
@@ -251,7 +251,7 @@ body{
 }
 
 /* ── INLINE STATS ── */
-.inline-stats{display:flex;align-items:flex-start;gap:0;margin-top:28px;padding-top:24px;border-top:1px solid var(--rule)}
+.inline-stats{display:flex;align-items:flex-start;gap:0}
 .istat{display:flex;flex-direction:column;gap:3px;flex:1}
 .istat-div{width:1px;background:var(--rule);margin:0 28px;align-self:stretch}
 .istat-num{font-family:'DM Serif Display',serif;font-size:28px;letter-spacing:-.03em;line-height:1;color:var(--ink)}
@@ -408,9 +408,9 @@ body{
 
   <!-- ── HEADER ── -->
   <div class="hd">
-    <div class="hd-eyebrow">Thatch · Enrollment windows · 2026</div>
+    <div class="hd-eyebrow">Enrollment windows · 2026</div>
     <h1 class="hd-title">One system.<br><em>Off-cycle and OE.</em></h1>
-    <p class="hd-sub">The core primitive is simple: ask the employer when they want coverage to begin. They can choose when to send invites — that's the extent of their control. Everything else is logic we own. The same 35-day window runs year-round, for new hires and open enrollment alike.</p>
+    <p class="hd-sub">The core primitive is simple: ask the employer when they want coverage to begin. They can choose when to send invites. That's the extent of their control. Everything else is logic we own. The same 35-day window runs year-round, for new hires and open enrollment alike.</p>
 
     <!-- Window anatomy strip -->
     <div style="display:flex;align-items:stretch;border:1px solid var(--rule2);border-radius:8px;overflow:hidden;margin-top:24px;font-family:'DM Mono',monospace;">
@@ -428,7 +428,9 @@ body{
     </div>
 
     <!-- Inline stats -->
-    <div class="inline-stats" id="insights-bar">
+    <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--rule)">
+      <div style="font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;letter-spacing:.04em;margin-bottom:16px">Across all 365 invite dates, that window produces:</div>
+      <div class="inline-stats" id="insights-bar" style="margin-top:0;padding-top:0;border-top:none">
       <div class="istat c-warn" id="ins-1csd">
         <span class="istat-num" id="ins-1csd-count">17<span class="ins-delta down" id="ins-1csd-delta"></span></span>
         <span class="istat-label">dates with 1 CSD</span>
@@ -447,6 +449,7 @@ body{
         <span class="istat-sub">window spans two cutoffs near EOM</span>
       </div>
     </div>
+    </div>
   </div>
 
   <!-- ── PICKER CARD ── -->
@@ -454,10 +457,10 @@ body{
 
     <!-- OE config row -->
     <div class="oe-config-row">
-      <span class="oe-config-label">OE · Nov 9–Dec 28 — same 30+5d window. Jan 4–8 extension is optional; restores 2nd CSD for Nov 9–25, but breaks the one-system principle.</span>
+      <span class="oe-config-label">Open enrollment runs Nov 9–Dec 28 on the same 30+5d window. Employers choose when to send invites. The Jan 4–8 extension is a deliberate tradeoff: it gives Nov 9–25 invites a second CSD, but introduces a named exception to the one-system model.</span>
       <div class="oe-switch">
-        <button class="oe-btn" data-v="0" onclick="setExt(0)">Without extension</button>
-        <button class="oe-btn active" data-v="1" onclick="setExt(1)">With extension</button>
+        <button class="oe-btn active" data-v="0" onclick="setExt(0)">Without extension</button>
+        <button class="oe-btn" data-v="1" onclick="setExt(1)">With extension</button>
       </div>
     </div>
 
@@ -465,9 +468,9 @@ body{
     <div class="picker-prompt">Pick an invite date</div>
     <div class="month-tabs" id="month-tabs"></div>
     <div class="day-picker" id="day-picker"></div>
-    <div style="margin-top:10px;font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:6px">
+    <div id="cutoff-legend" style="margin-top:10px;font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:6px">
       <span style="display:inline-block;width:14px;height:14px;border-radius:3px;border:1.5px solid var(--amber-mid);background:transparent;vertical-align:middle"></span>
-      Processing cutoff — enroll by this date for next-month coverage
+      <span id="cutoff-legend-text">Processing cutoff — enroll by this date for next-month coverage</span>
     </div>
   </div>
 
@@ -504,7 +507,11 @@ function doy(m,d){let x=0;for(let i=0;i<m;i++)x+=DM[i];return x+d;}
 function fd(n){let nn=((n-1)%365)+1;if(nn<=0)nn+=365;let m=0,r=nn;while(r>DM[m]){r-=DM[m];m++;}return{m,d:r};}
 function fmt(n){const x=fd(n>365?n-365:n);return MS[x.m]+' '+x.d+(n>365?' 2027':' 2026');}
 function fmtLong(n){const x=fd(n>365?n-365:n);return MO[x.m]+' '+x.d+(n>365?', 2027':', 2026');}
-function fom(m){if(m<12)return doy(m,1);return doy(0,1)+365;}
+function fom(m){
+  if(m<12) return doy(m,1);
+  // m=12 → Jan 2027, m=13 → Feb 2027, m=14 → Mar 2027, etc.
+  return doy((m-12)%12, 1) + 365;
+}
 function dow(n){return(4+((n-1)%365+365)%365)%7;}
 
 function cutoffForMonth(m){
@@ -523,7 +530,7 @@ const EXT_START=365+4,EXT_END=365+8,FEB1_2027=365+32;
 
 function isOE1CSD(d){return d>=OE_START&&d<=doy(10,25);}
 
-let useExt=true;
+let useExt=false;
 
 // KEY FIX vs old version: uses pastCutoff branch (from full_year tool) to correctly
 // determine which cutoff anchors CSD1. Three-CSD detection then checks if the 35d
@@ -599,7 +606,7 @@ rebuild();
 
 // ── STATE ──
 let selDoy=null;
-let selMonth=0;
+let selMonth=10; // default to November
 
 // ── MONTH TABS ──
 function buildMonthTabs(){
@@ -648,6 +655,15 @@ function renderExplainer(){
 
   const x=fd(selDoy);
   document.getElementById('ex-date').textContent=MS[x.m]+' '+x.d+', 2026';
+  // Update cutoff legend
+  const legend = document.getElementById('cutoff-legend');
+  const legendText = document.getElementById('cutoff-legend-text');
+  if(r.isOE){
+    legend.style.display = 'none';
+  } else {
+    legend.style.display = 'flex';
+    legendText.textContent = 'Processing cutoff — enroll by this date for next-month coverage';
+  }
   const cutNote=document.getElementById('ex-cutoff-note');
   cutNote.style.display=(selDoy===r.cut1)?'inline-flex':'none';
 
@@ -1004,7 +1020,7 @@ function updateInsights(){
 buildMonthTabs();
 buildDayPicker();
 updateInsights();
-selectDay(doy(0,8));
+selectDay(doy(10,9));
 </script>
 </body>
 </html>
