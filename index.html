@@ -514,12 +514,21 @@ function fom(m){
 }
 function dow(n){return(4+((n-1)%365+365)%365)%7;}
 
-function cutoffForMonth(m){
-  let d=doy(m,DM[m])-2,w=dow(d);
-  if(w===6){d--;w=dow(d);}else if(w===0){d-=2;w=dow(d);}
-  if(w===5){d--;}return d;
-}
-const CUTOFFS=[];for(let m=0;m<12;m++)CUTOFFS.push(cutoffForMonth(m));
+// Processing cutoffs — 2026 actuals
+const CUTOFFS=[
+  doy(0,29),  // Jan 29
+  doy(1,26),  // Feb 26
+  doy(2,26),  // Mar 26
+  doy(3,28),  // Apr 28
+  doy(4,28),  // May 28
+  doy(5,28),  // Jun 28
+  doy(6,29),  // Jul 29
+  doy(7,29),  // Aug 29
+  doy(8,28),  // Sep 28
+  doy(9,29),  // Oct 29
+  doy(10,28), // Nov 28
+  doy(11,29), // Dec 29
+];
 const OE_START=doy(10,9),OE_END=doy(11,28),JAN1_NEXT=doy(0,1)+365;
 
 // ⚖️ "Perfectly balanced" dates — exactly 17d for CSD1 and 17d for CSD2, one per month
@@ -866,12 +875,12 @@ function renderCsdCards(r){
     r.extended
       ? 'Enroll <strong>Jan 4–Jan 8 2027</strong> <span style="font-size:10px;color:var(--amber);font-family:\'DM Mono\',monospace">(extension)</span>'
       : r.csd2
-        ? 'Enroll '+fmt(r.cut1+1)+'–<strong>'+fmt(r.threeCsd?r.cut2:r.hard)+'</strong>'
+        ? 'Enroll after cutoff, by <strong>'+fmt(r.threeCsd?r.cut2:r.hard)+'</strong>'
         : ''
   );
   if(r.threeCsd){
     card(3,'c3',r.csd3,r.d3||0,
-      r.csd3?'Enroll '+fmt(r.cut2+1)+'–<strong>'+fmt(r.hard)+'</strong>':''
+      r.csd3?'Enroll after cutoff 2, by <strong>'+fmt(r.hard)+'</strong>':''
     );
   }
 }
@@ -991,7 +1000,8 @@ function updateInsights(){
     else if(r.oneCsd) one++;
   });
 
-  const baseOne=17, baseTwo=308;
+  // Base = counts without extension (the "off" state baseline for deltas)
+  const baseOne=BASE_ONE, baseTwo=BASE_TWO;
   const d1=one-baseOne, d2=two-baseTwo;
 
   function setCell(countEl, deltaEl, val, base){
@@ -1017,6 +1027,12 @@ function updateInsights(){
 }
 
 // ── INIT ──
+// Snapshot baseline counts (no extension) for delta display
+const _baseExt = useExt;
+if(useExt){ useExt=false; rebuild(); }
+const BASE_ONE = DATA.filter(r=>r.oneCsd).length;
+const BASE_TWO = DATA.filter(r=>r.twoCsd).length;
+useExt = _baseExt; rebuild();
 buildMonthTabs();
 buildDayPicker();
 updateInsights();
