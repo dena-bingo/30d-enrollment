@@ -3,815 +3,523 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enrollment window model — 2026</title>
+<title>Enrollment windows — Thatch 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f7f6f2;
-  --surface:#ffffff;
-  --surface2:#f0efe9;
-  --surface3:#e8e7e0;
-  --border:rgba(0,0,0,0.07);
-  --border2:rgba(0,0,0,0.13);
-  --text:#181816;
-  --text2:#52524e;
-  --text3:#a0a09a;
+  --ink:#111110;
+  --ink2:#4a4a46;
+  --ink3:#9a9991;
+  --paper:#faf9f6;
+  --paper2:#f0efe9;
+  --paper3:#e5e4dc;
+  --rule:rgba(0,0,0,0.08);
+  --rule2:rgba(0,0,0,0.14);
 
-  /* Window close = slate */
-  --close:#475569;
-  --close-lt:#F1F5F9;
+  --green:#059669;
+  --green-lt:#d1fae5;
+  --green-dim:rgba(5,150,105,0.10);
 
-  /* Invite = teal */
-  --invite:#0E9E6E;
-  --invite-lt:#d0f5e8;
+  --amber:#b45309;
+  --amber-mid:#d97706;
+  --amber-lt:#fef3c7;
 
-  /* CSD-1 zone = soft blue */
-  --w1:#93C5FD;
-  --w1-lt:#EFF6FF;
-  --w1-dk:#2563EB;
+  --blue1:#dbeafe;   /* CSD 1 zone */
+  --blue2:#93c5fd;   /* CSD 2 zone */
+  --blue3:#3b82f6;   /* CSD 3 zone */
 
-  /* Cutoff = indigo */
-  --cutoff:#4338CA;
-  --cutoff-lt:#E0E7FF;
+  --slate:#334155;
+  --rose:#e11d48;
+  --rose-lt:#fff1f2;
+  --warm:#78716c;
 
-  /* CSD-2 zone = soft teal-green */
-  --w2:#6EE7B7;
-  --w2-lt:#ECFDF5;
-  --w2-dk:#047857;
-
-  /* CSD markers */
-  --csd1:#D97706;
-  --csd1-lt:#FEF9E7;
-  --csd2:#B91C1C;
-  --csd2-lt:#FEE2E2;
-
-  --ok:#047857;--ok-bg:#d1fae5;
-  --warn:#92400E;--warn-bg:#fef3c7;
-  --oe:#3730A3;--oe-bg:#e0e7ff;
-  --danger:#991B1B;--danger-bg:#fee2e2;
-  --r:5px;--rlg:10px;--rxl:14px;
+  --r:4px;
 }
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;position:relative}
-mono{font-family:'JetBrains Mono',monospace;font-size:.92em}
 
-/* ── LAYOUT ── */
-.shell{display:grid;grid-template-columns:320px 1fr;min-height:100vh;align-items:start}
-.sidebar{background:var(--surface);border-right:1px solid var(--border2);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;width:320px;min-width:320px;max-width:320px}
-.main{padding:20px 24px;display:flex;flex-direction:column;gap:20px;min-width:0;flex:1}
+html{font-size:15px}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  min-height:100vh;
+  line-height:1.5;
+}
 
-/* ── SIDEBAR ── */
-.sb-head{padding:18px 18px 14px;border-bottom:1px solid var(--border)}
-.sb-title{font-size:14px;font-weight:600;color:var(--text);letter-spacing:-.02em}
-.sb-sub{font-size:11px;color:var(--text3);margin-top:2px;font-family:'JetBrains Mono',monospace}
+/* ── PAGE ── */
+.page{max-width:860px;margin:0 auto;padding:48px 32px 80px}
 
-.sb-section{padding:14px 18px;border-bottom:1px solid var(--border)}
-.sb-section-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
+/* ── HEADER ── */
+.hd{margin-bottom:52px}
+.hd-eyebrow{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;font-family:'DM Mono',monospace}
+.hd-title{font-family:'DM Serif Display',serif;font-size:38px;line-height:1.15;color:var(--ink);letter-spacing:-.02em;margin-bottom:14px}
+.hd-title em{font-style:italic;color:var(--amber)}
+.hd-sub{font-size:15px;color:var(--ink2);line-height:1.7;max-width:560px}
 
-/* Legend */
-.leg-item{display:flex;align-items:center;gap:9px;margin-bottom:7px;font-size:12px;color:var(--text2)}
-.leg-item:last-child{margin-bottom:0}
-.leg-color{width:28px;height:10px;border-radius:3px;flex-shrink:0}
-.leg-label{line-height:1.3}
-.leg-sub{font-size:10px;color:var(--text3);display:block}
+/* ── SECTION LABELS ── */
+.section-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);font-family:'DM Mono',monospace;margin-bottom:16px}
 
-/* Detail panel */
-.detail-empty{font-size:12px;color:var(--text3);font-style:italic;padding:4px 0}
+/* ── DATE PICKER ── */
+.picker-wrap{margin-bottom:48px}
+.picker-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.picker-label{font-size:13px;color:var(--ink2);font-weight:500}
 
+.month-tabs{display:flex;gap:4px;flex-wrap:wrap}
+.mt{
+  font-size:12px;font-weight:500;padding:5px 12px;
+  border-radius:20px;border:1px solid var(--rule2);
+  background:transparent;color:var(--ink2);
+  cursor:pointer;font-family:'DM Mono',monospace;
+  transition:all .12s;letter-spacing:.02em;
+}
+.mt:hover{background:var(--paper3);border-color:transparent}
+.mt.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 
+.day-picker{display:flex;gap:3px;flex-wrap:wrap;margin-top:12px}
+.dp{
+  width:32px;height:32px;border-radius:var(--r);
+  border:1px solid var(--rule);background:var(--paper2);
+  color:var(--ink2);font-size:12px;font-family:'DM Mono',monospace;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .1s;font-weight:400;
+}
+.dp:hover{background:var(--paper3);border-color:var(--rule2)}
+.dp.sel{background:var(--ink);color:var(--paper);border-color:var(--ink);font-weight:500}
+.dp.is-cutoff{border-color:var(--amber-mid);color:var(--amber)}
+.dp.is-cutoff.sel{background:var(--amber-mid);border-color:var(--amber-mid);color:#fff}
+.dp.disabled{opacity:.28;cursor:default;pointer-events:none}
 
-/* Detail rows */
-.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
-.det-card{border-radius:var(--r);padding:9px 11px;border:1.5px solid transparent}
-.det-card-swatch{width:12px;height:12px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:middle;flex-shrink:0}
-.det-card-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;display:flex;align-items:center}
-.det-card-val{font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace;line-height:1.3}
-.det-card-sub{font-size:10px;margin-top:2px;opacity:.75}
+/* ── MAIN EXPLAINER ── */
+.explainer{margin-bottom:48px}
 
-.badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 7px;border-radius:3px;font-family:'JetBrains Mono',monospace}
-.badge-ok{background:var(--ok-bg);color:var(--ok)}
-.badge-warn{background:var(--warn-bg);color:var(--warn)}
-.badge-danger{background:var(--danger-bg);color:var(--danger)}
-.badge-oe{background:var(--oe-bg);color:var(--oe)}
+.ex-date-row{display:flex;align-items:baseline;gap:10px;margin-bottom:28px}
+.ex-invite-label{font-size:12px;color:var(--ink3);font-weight:500;letter-spacing:.05em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.ex-invite-date{font-family:'DM Serif Display',serif;font-size:32px;color:var(--ink);letter-spacing:-.02em}
+.ex-cutoff-note{font-size:12px;color:var(--amber);font-weight:500;padding:3px 9px;background:var(--amber-lt);border-radius:20px;font-family:'DM Mono',monospace}
 
-/* Insight box */
-.insight{background:var(--surface2);border-left:3px solid var(--cutoff);border-radius:0 var(--r) var(--r) 0;padding:8px 10px;margin-top:10px;font-size:11px;color:var(--text2);line-height:1.5}
-.insight.good{border-left-color:var(--invite)}
-.insight.warn{border-left-color:var(--csd1)}
-.insight.danger{border-left-color:var(--danger)}
+/* ── TIMELINE ── */
+.timeline-wrap{margin-bottom:32px}
 
-/* ── STATS BAR ── */
-.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);padding:14px 16px}
-.stat-val{font-size:26px;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:4px}
-.stat-label{font-size:11px;color:var(--text2);line-height:1.4}
-.stat-sub{font-size:10px;color:var(--text3);margin-top:2px}
-.stat-card.s-ok .stat-val{color:var(--ok)}
-.stat-card.s-warn .stat-val{color:var(--warn)}
-.stat-card.s-oe .stat-val{color:var(--oe)}
-.stat-card.s-neutral .stat-val{color:var(--text)}
+.tl-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tl-header-label{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;letter-spacing:.04em}
 
-/* ── CALENDAR ── */
-.cal-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);padding:16px}
-.cal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-.cal-heading{font-size:13px;font-weight:600;color:var(--text)}
-.cal-hint{font-size:11px;color:var(--text3)}
+.tl-outer{position:relative;height:56px}
+.tl-track{
+  position:absolute;top:16px;left:0;right:0;height:24px;
+  border-radius:6px;overflow:hidden;
+  display:flex;
+}
+.tl-seg{height:100%;transition:width .3s cubic-bezier(.4,0,.2,1)}
+.tl-seg-1{background:var(--blue1)}
+.tl-seg-2{background:var(--blue2)}
+.tl-seg-3{background:var(--blue3)}
+.tl-seg-lc{background:var(--rose);opacity:.85}
 
-.month-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.month-card{border-radius:var(--r);padding:8px;border:1px solid var(--border)}
-.month-name{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;font-family:'JetBrains Mono',monospace}
-.dow-row{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;margin-bottom:2px}
-.dow-label{font-size:7.5px;color:var(--text3);text-align:center;font-family:'JetBrains Mono',monospace}
-.day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1.5px}
-.dc{width:100%;aspect-ratio:1;border-radius:2px;cursor:pointer;font-size:0;transition:transform .1s,box-shadow .1s;position:relative}
-.dc:hover{transform:scale(1.6);z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.18);filter:brightness(.92)}
-/* tooltip */
-.dc[data-tip]:hover::after{content:attr(data-tip);position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:rgba(24,24,22,.88);color:#fff;font-size:9px;font-family:'Inter',sans-serif;font-weight:500;padding:3px 7px;border-radius:4px;white-space:nowrap;pointer-events:none;z-index:100;line-height:1.4;letter-spacing:.01em}
-.dc[data-tip]:hover::before{content:'';position:absolute;bottom:120%;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:rgba(24,24,22,.88);pointer-events:none;z-index:100}
-.de{background:transparent;cursor:default;pointer-events:none}
-.dn{background:var(--surface3)}
-.di{background:var(--invite)}
-.dw1{background:var(--w1)}
-.dco{background:var(--cutoff)}
-.dw2{background:var(--w2)}
-.dc1{background:var(--csd1);outline:2px solid rgba(0,0,0,.2);outline-offset:-1px}
-.dc2{background:var(--csd2);outline:2px solid rgba(0,0,0,.35);outline-offset:-1px}
-.dext{background:var(--oe-bg);outline:2px dashed var(--oe);outline-offset:-1px}
-.dlc{background:var(--warn-bg);outline:1px solid var(--warn);outline-offset:-1px}
-.dsel{outline:2px solid var(--text);outline-offset:1px;z-index:5;border-radius:2px}
-.dc-card-focus{outline:3px solid var(--text);outline-offset:2px;z-index:6;transform:scale(1.4);border-radius:2px}
+/* Notches above the track */
+.tl-notch{
+  position:absolute;top:0;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;
+  pointer-events:none;
+}
+.tl-notch-line{width:1.5px;height:10px;background:var(--ink);opacity:.35;margin-bottom:2px}
+.tl-notch-label{font-size:9px;font-family:'DM Mono',monospace;color:var(--ink3);white-space:nowrap;letter-spacing:.04em}
 
-/* ── TABLE ── */
-.table-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);overflow:hidden}
-.tbl-top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
-.tbl-heading{font-size:13px;font-weight:600;color:var(--text)}
-.tbl-counts{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace}
-.filter-row{display:flex;gap:5px;flex-wrap:wrap}
-.fb{font-size:11px;padding:3px 11px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .12s;white-space:nowrap}
-.fb:hover{background:var(--surface2)}
-.fb.active{background:var(--text);color:var(--bg);border-color:var(--text)}
-.fb.f-ok.active{background:var(--ok);border-color:var(--ok);color:#fff}
-.fb.f-warn.active{background:var(--warn);border-color:var(--warn);color:#fff}
-.fb.f-oe.active{background:var(--oe);border-color:var(--oe);color:#fff}
+/* Notches below */
+.tl-notch-below{top:auto;bottom:0;transform:translateX(-50%);flex-direction:column-reverse}
+.tl-notch-below .tl-notch-line{margin-bottom:0;margin-top:2px}
 
-table{width:100%;border-collapse:collapse;font-size:11px}
-thead tr{background:var(--surface2);position:sticky;top:0;z-index:2}
-th{padding:7px 10px;text-align:left;font-weight:600;color:var(--text2);font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border2);white-space:nowrap}
-td{padding:5px 10px;border-bottom:1px solid var(--border);color:var(--text);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:11px;vertical-align:middle}
-tr:last-child td{border-bottom:none}
-tr.row-oe td:first-child{border-left:2px solid var(--cutoff)}
-tr.row-selected td{background:#fffce8 !important}
-tr:hover td{background:var(--surface2);cursor:pointer}
-.dow{font-size:9px;color:var(--text3);margin-left:3px}
-.td-na{color:var(--text3)}
-.td-good{color:var(--ok);font-weight:500}
-.td-mid{color:#5a7a00;font-weight:500}
-.td-warn{color:var(--warn)}
-.td-danger{color:var(--danger);font-weight:500}
-.td-oe{font-size:8.5px;padding:1px 5px;border-radius:2px;background:var(--oe-bg);color:var(--oe);margin-left:5px;vertical-align:middle}
+/* Marker pins on the track */
+.tl-pin{
+  position:absolute;top:16px;transform:translateX(-50%);
+  width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;font-family:'DM Mono',monospace;
+  border:2px solid #fff;
+  z-index:3;cursor:default;
+}
+.tl-pin-invite{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.tl-pin-cutoff{background:var(--slate);border-color:var(--slate);color:#fff}
+.tl-pin-csd{background:var(--amber-mid);border-color:#fff;color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.18)}
 
-/* Day bar in table */
-.day-bar-wrap{display:flex;align-items:center;gap:6px}
-.day-bar{height:6px;border-radius:3px;min-width:2px;display:inline-block}
-.day-num{font-size:11px}
+/* ── CSD CARDS ── */
+.csd-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:28px}
+.csd-card{
+  border-radius:8px;padding:16px 18px;
+  border:1px solid var(--rule2);
+  background:var(--paper);
+  position:relative;overflow:hidden;
+  transition:box-shadow .15s;
+}
+.csd-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+}
+.csd-card.c1::before{background:var(--blue1)}
+.csd-card.c2::before{background:var(--blue2)}
+.csd-card.c3::before{background:var(--blue3)}
+.csd-card.empty{opacity:.35;pointer-events:none}
 
+.csd-card-num{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);font-family:'DM Mono',monospace;margin-bottom:6px}
+.csd-card-date{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);letter-spacing:-.01em;margin-bottom:8px}
+.csd-card-window{font-size:12px;color:var(--ink2);line-height:1.6}
+.csd-card-window strong{color:var(--ink);font-weight:600}
+.csd-card-days{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;font-family:'DM Mono',monospace;
+  color:var(--ink3);margin-top:6px;
+}
+.days-bar{height:4px;border-radius:2px;background:var(--blue1);display:inline-block}
+.c2 .days-bar{background:var(--blue2)}
+.c3 .days-bar{background:var(--blue3)}
 
-/* ── TOGGLE ── */
-.toggle-wrap{padding:12px 18px;border-bottom:1px solid var(--border);background:var(--oe-bg)}
-.toggle-label{font-size:11px;font-weight:600;color:var(--oe);margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.toggle-desc{font-size:10px;color:var(--oe);opacity:.8;margin-bottom:8px;line-height:1.4}
-.toggle-btn-row{display:flex;gap:6px}
-.tog{flex:1;font-size:11px;padding:6px 10px;border:1.5px solid var(--oe);border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-weight:500;background:transparent;color:var(--oe);transition:all .15s;text-align:center;opacity:.6}
-.tog.active{background:var(--oe);color:#fff;opacity:1;box-shadow:0 2px 6px rgba(60,52,137,.25)}
-.tog:not(.active):hover{background:rgba(60,52,137,.08);opacity:1}
-.delta-badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;background:var(--ok-bg);color:var(--ok);font-weight:600;font-family:'JetBrains Mono',monospace;margin-left:4px}
+/* ── KEY RULE BOX ── */
+.rule-box{
+  background:var(--paper2);border-radius:8px;
+  border:1px solid var(--rule2);
+  padding:20px 24px;margin-bottom:48px;
+  display:flex;gap:24px;align-items:flex-start;
+}
+.rule-box-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.rule-box-text{font-size:13px;color:var(--ink2);line-height:1.7}
+.rule-box-text strong{color:var(--ink)}
 
-@media(max-width:960px){.shell{grid-template-columns:1fr}.sidebar{position:static;height:auto}.month-grid{grid-template-columns:repeat(3,1fr)}.stats-bar{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.month-grid{grid-template-columns:repeat(2,1fr)}}
-/* ── COMMENTS ── */
-:root{--comment-accent:#2563eb;--comment-resolved:#6b7280}
-.comment-fab{background:var(--comment-accent);color:#fff;border:none;border-radius:50px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,.35);display:flex;align-items:center;gap:7px;transition:transform .12s,box-shadow .12s;font-family:'Inter',sans-serif}
-.comment-fab:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,99,235,.4)}
-.comment-count-badge{background:rgba(255,255,255,.25);border-radius:10px;padding:1px 7px;font-size:11px}
+/* ── COLLAPSED CALENDAR ── */
+.explore-toggle{
+  display:flex;align-items:center;gap:10px;
+  background:none;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  color:var(--ink3);padding:0;margin-bottom:16px;
+  transition:color .12s;
+}
+.explore-toggle:hover{color:var(--ink)}
+.explore-toggle-arrow{
+  width:18px;height:18px;border-radius:4px;
+  background:var(--paper3);display:flex;align-items:center;justify-content:center;
+  font-size:10px;transition:transform .2s;
+}
+.explore-toggle.open .explore-toggle-arrow{transform:rotate(90deg)}
 
-.comment-panel{position:fixed;right:0;top:0;height:100vh;width:380px;background:var(--surface);border-left:1px solid var(--border2);z-index:9998;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .22s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 24px rgba(0,0,0,.1);pointer-events:none}
-.comment-panel.open{transform:translateX(0);pointer-events:auto}
-.cp-head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.cp-title{font-size:14px;font-weight:600;color:var(--text)}
-.cp-close{background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:2px 6px;border-radius:4px;line-height:1}
-.cp-close:hover{background:var(--surface2);color:var(--text)}
+.cal-collapse{display:none}
+.cal-collapse.open{display:block}
 
-.cp-name-bar{padding:10px 18px;border-bottom:1px solid var(--border);background:var(--surface2);flex-shrink:0;display:flex;align-items:center;gap:8px}
-.cp-name-label{font-size:11px;color:var(--text3);white-space:nowrap}
-.cp-name-input{flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border2);border-radius:4px;font-family:'Inter',sans-serif;background:var(--surface);color:var(--text);outline:none}
-.cp-name-input:focus{border-color:var(--comment-accent)}
+/* mini calendar */
+.mini-cal-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:24px}
+.mc{border-radius:6px;padding:6px;border:1px solid var(--rule)}
+.mc-name{font-size:9px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;font-family:'DM Mono',monospace}
+.mc-days{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
+.mc-dow{font-size:6.5px;color:var(--ink3);text-align:center;font-family:'DM Mono',monospace;padding-bottom:1px}
+.mcd{width:100%;aspect-ratio:1;border-radius:1px;cursor:pointer;font-size:0;transition:transform .08s;position:relative}
+.mcd:hover{transform:scale(1.8);z-index:10;filter:brightness(.88)}
+.mcd-blank{background:transparent;cursor:default;pointer-events:none}
+.mcd-n{background:var(--paper3)}
+.mcd-inv{background:var(--green);outline:none}
+.mcd-z1{background:var(--blue1)}
+.mcd-z2{background:var(--blue2)}
+.mcd-z3{background:var(--blue3)}
+.mcd-cut{background:#94a3b8}
+.mcd-sc{background:var(--blue2)}
+.mcd-lc{background:var(--blue2)}
+.mcd-csd1{background:#2563eb;outline:1.5px solid rgba(255,255,255,.6);outline-offset:-1px}
+.mcd-csd2{background:#1d4ed8;outline:1.5px solid rgba(255,255,255,.6);outline-offset:-1px}
+.mcd-csd3{background:#1e3a8a;outline:1.5px solid rgba(255,255,255,.6);outline-offset:-1px}
+.mcd-sel{outline:2px solid var(--ink);outline-offset:1px;z-index:5}
+.mcd-balanced::after{content:'';position:absolute;top:1px;right:1px;width:3px;height:3px;border-radius:50%;background:var(--green);}
+.mcd-sel{outline:2px solid var(--ink) !important;outline-offset:1px;z-index:5}
 
-.cp-filters{padding:8px 18px;border-bottom:1px solid var(--border);display:flex;gap:5px;flex-shrink:0}
-.cpf{font-size:11px;padding:2px 10px;border-radius:12px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'JetBrains Mono',monospace}
-.cpf.active{background:var(--text);color:var(--bg);border-color:var(--text)}
-.cpf:hover:not(.active){background:var(--surface2)}
+#mc-tooltip{
+  position:fixed;z-index:9999;
+  background:rgba(17,17,16,.92);color:#fff;
+  font-size:11px;font-family:'DM Sans',sans-serif;
+  padding:5px 10px;border-radius:5px;
+  pointer-events:none;display:none;
+  white-space:nowrap;line-height:1.5;
+}
 
-.cp-list{flex:1;overflow-y:auto;padding:12px 18px;display:flex;flex-direction:column;gap:10px}
-.cp-empty{font-size:12px;color:var(--text3);font-style:italic;text-align:center;padding:32px 0}
+/* ── OE TOGGLE ── */
+/* ── INSIGHTS BAR ── */
+.insights-bar{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  border:1px solid var(--rule2);border-radius:8px;overflow:hidden;
+  margin-bottom:32px;
+}
+.ins-cell{padding:14px 18px;background:var(--paper);position:relative;transition:background .2s}
+.ins-cell+.ins-cell{border-left:1px solid var(--rule2)}
+.ins-cell-label{font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink3);font-family:'DM Mono',monospace;margin-bottom:6px}
+.ins-cell-count{font-size:28px;font-weight:600;letter-spacing:-.03em;line-height:1;
+  font-family:'DM Serif Display',serif;transition:color .25s}
+.ins-cell-sub{font-size:11px;color:var(--ink3);margin-top:4px;line-height:1.5;min-height:32px}
+.ins-cell.c-good .ins-cell-count{color:var(--green)}
+.ins-cell.c-warn .ins-cell-count{color:var(--amber)}
+.ins-cell.c-blue .ins-cell-count{color:#2563eb}
+.ins-delta{display:inline-block;font-size:10px;font-weight:600;font-family:'DM Mono',monospace;
+  padding:1px 6px;border-radius:3px;margin-left:6px;vertical-align:middle;transition:all .2s}
+.ins-delta.up{background:#dcfce7;color:#166534}
+.ins-delta.down{background:#fee2e2;color:#991b1b}
+.ins-delta.zero{display:none}
 
-.comment-card{border:1px solid var(--border2);border-radius:var(--rlg);overflow:hidden;transition:opacity .15s}
-.comment-card.resolved{opacity:.55}
-.cc-head{padding:10px 12px 6px;display:flex;align-items:flex-start;gap:8px}
-.cc-avatar{width:28px;height:28px;border-radius:50%;background:var(--comment-accent);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;text-transform:uppercase}
-.cc-meta{flex:1;min-width:0}
-.cc-author{font-size:12px;font-weight:600;color:var(--text)}
-.cc-time{font-size:10px;color:var(--text3);margin-left:6px}
-.cc-context{font-size:10px;color:var(--comment-accent);font-family:'JetBrains Mono',monospace;margin-top:1px}
-.cc-body{font-size:12px;color:var(--text2);line-height:1.5;padding:4px 12px 8px 48px}
-.cc-actions{padding:4px 12px 8px 48px;display:flex;gap:8px;flex-wrap:wrap}
-.cc-btn{font-size:10px;padding:2px 8px;border-radius:3px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'JetBrains Mono',monospace;transition:background .1s}
-.cc-btn:hover{background:var(--surface2)}
-.cc-btn.resolve{color:var(--ok);border-color:var(--ok)}
-.cc-btn.resolve:hover{background:var(--ok-bg)}
-.cc-btn.dismiss{color:var(--danger);border-color:var(--danger)}
-.cc-btn.dismiss:hover{background:var(--danger-bg)}
-.cc-btn.reopen{color:var(--text3)}
+.oe-bar{
+  background:var(--paper2);border:1px solid var(--rule2);
+  border-radius:8px;padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;margin-bottom:16px;flex-wrap:wrap;
+}
+.oe-bar-label{font-size:12px;color:var(--ink2);line-height:1.5}
+.oe-bar-label strong{color:var(--ink);font-weight:600}
+.oe-switch{display:flex;gap:6px}
+.oe-btn{
+  font-size:11px;padding:4px 12px;border-radius:20px;
+  border:1px solid var(--rule2);background:transparent;
+  color:var(--ink2);cursor:pointer;font-family:'DM Mono',monospace;
+  transition:all .12s;
+}
+.oe-btn.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 
-.cc-replies{border-top:1px solid var(--border);background:var(--surface2)}
-.cc-reply{padding:8px 12px 6px 48px;border-bottom:1px solid var(--border)}
-.cc-reply:last-child{border-bottom:none}
-.cc-reply-author{font-size:11px;font-weight:600;color:var(--text)}
-.cc-reply-time{font-size:9px;color:var(--text3);margin-left:5px}
-.cc-reply-body{font-size:11px;color:var(--text2);line-height:1.5;margin-top:2px}
-.cc-reply-del{font-size:9px;color:var(--text3);cursor:pointer;margin-left:6px}
-.cc-reply-del:hover{color:var(--danger)}
+/* ── BALANCED ANIMATION ── */
+@keyframes cardBounce{
+  0%  {opacity:0;transform:scale(.6) rotate(-4deg)}
+  55% {transform:scale(1.08) rotate(2deg)}
+  75% {transform:scale(.97) rotate(-1deg)}
+  90% {transform:scale(1.02) rotate(.5deg)}
+  100%{opacity:1;transform:scale(1) rotate(0deg)}
+}
+@keyframes scaleBalance{
+  0%  {transform:scale(1) rotate(0deg)}
+  15% {transform:scale(1.5) rotate(-18deg)}
+  35% {transform:scale(1.35) rotate(14deg)}
+  55% {transform:scale(1.2) rotate(-8deg)}
+  72% {transform:scale(1.1) rotate(5deg)}
+  85% {transform:scale(1.05) rotate(-2deg)}
+  100%{transform:scale(1) rotate(0deg)}
+}
+@keyframes chipPop{
+  0%  {opacity:0;transform:scale(.5) translateY(6px)}
+  70% {transform:scale(1.1) translateY(-2px)}
+  100%{opacity:1;transform:scale(1) translateY(0)}
+}
+@keyframes statReveal{
+  0%  {opacity:0;transform:translateY(10px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+@keyframes shimmer{
+  0%,100%{opacity:1;background:rgba(5,150,105,.12)}
+  50%{opacity:.7;background:rgba(5,150,105,.22)}
+}
+@keyframes particleFly{
+  0%  {transform:translate(0,0) scale(1) rotate(0deg);opacity:1}
+  100%{transform:translate(var(--dx),var(--dy)) scale(0) rotate(var(--dr));opacity:0}
+}
+@keyframes backdropIn{from{backdrop-filter:blur(0px);background:rgba(0,0,0,0)}to{backdrop-filter:blur(3px);background:rgba(0,0,0,.08)}}
+@keyframes numberCount{from{opacity:0;transform:scale(1.6)}to{opacity:1;transform:scale(1)}}
 
-.cc-reply-form{padding:8px 12px;border-top:1px solid var(--border);display:flex;gap:6px;align-items:flex-end}
-.cc-reply-input{flex:1;font-size:11px;padding:5px 8px;border:1px solid var(--border2);border-radius:4px;font-family:'Inter',sans-serif;resize:none;height:32px;color:var(--text);background:var(--surface);outline:none;transition:height .1s}
-.cc-reply-input:focus{border-color:var(--comment-accent);height:56px}
-.cc-reply-send{font-size:11px;padding:5px 10px;background:var(--comment-accent);color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:500;white-space:nowrap}
-.cc-reply-send:hover{opacity:.9}
+.balanced-overlay{
+  position:fixed;inset:0;z-index:9999;pointer-events:auto;
+  display:flex;align-items:center;justify-content:center;
+  animation:backdropIn .3s ease forwards;
+  cursor:pointer;
+}
+.balanced-card{
+  background:var(--paper);
+  border:1.5px solid rgba(5,150,105,.2);
+  border-radius:20px;padding:36px 44px;text-align:center;
+  box-shadow:0 32px 80px rgba(0,0,0,.14), 0 0 0 1px rgba(5,150,105,.08);
+  animation:cardBounce .55s cubic-bezier(.34,1.4,.64,1) both;
+  position:relative;overflow:hidden;max-width:360px;
+  cursor:default;
+}
+.balanced-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% -20%, rgba(5,150,105,.1) 0%, transparent 65%);
+  pointer-events:none;
+}
+.balanced-card::after{
+  content:'';position:absolute;top:-40%;left:-40%;width:180%;height:180%;
+  background:conic-gradient(from 0deg, transparent 0%, rgba(5,150,105,.04) 25%, transparent 50%);
+  animation:spin 8s linear infinite;pointer-events:none;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-.resolved-tag{font-size:9px;padding:1px 6px;border-radius:3px;background:#e5e7eb;color:var(--comment-resolved);font-family:'JetBrains Mono',monospace;margin-left:6px}
-.dismissed-tag{font-size:9px;padding:1px 6px;border-radius:3px;background:var(--danger-bg);color:var(--danger);font-family:'JetBrains Mono',monospace;margin-left:6px}
+.balanced-icon{
+  font-size:64px;display:block;margin-bottom:8px;
+  animation:scaleBalance .9s .08s cubic-bezier(.34,1.2,.64,1) both;
+  filter:drop-shadow(0 4px 12px rgba(5,150,105,.3));
+}
+.balanced-title{
+  font-family:'DM Serif Display',serif;font-size:26px;color:var(--ink);
+  letter-spacing:-.025em;margin-bottom:10px;
+  animation:statReveal .4s .3s both;
+}
+.balanced-title em{font-style:italic;color:var(--green)}
+.balanced-body{
+  font-size:12px;color:var(--ink2);line-height:1.75;margin-bottom:18px;
+  animation:statReveal .4s .45s both;
+}
+.balanced-stat{
+  display:inline-flex;gap:0;background:var(--paper2);
+  border-radius:12px;margin-bottom:18px;overflow:hidden;
+  border:1px solid var(--rule2);
+  animation:statReveal .4s .35s both;
+}
+.balanced-stat-item{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:14px 28px;
+}
+.balanced-stat-item:first-child{border-right:1px solid var(--rule2)}
+.balanced-stat-num{
+  font-family:'DM Serif Display',serif;font-size:32px;color:var(--green);
+  letter-spacing:-.03em;line-height:1;
+  animation:numberCount .5s .5s both;
+}
+.balanced-stat-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);font-family:'DM Mono',monospace}
+.balanced-chip{
+  display:inline-block;font-size:10px;font-family:'DM Mono',monospace;font-weight:600;
+  color:var(--green);border-radius:20px;padding:3px 12px;margin-bottom:16px;
+  border:1px solid rgba(5,150,105,.25);
+  animation:chipPop .4s .15s cubic-bezier(.34,1.56,.64,1) both, shimmer 2.5s 1s infinite;
+}
+.balanced-dismiss{
+  display:block;font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;
+  cursor:pointer;border:none;background:none;padding:6px 12px;border-radius:6px;
+  transition:color .12s,background .12s;margin:0 auto;
+  animation:statReveal .3s .55s both;
+}
+.balanced-dismiss:hover{color:var(--ink);background:var(--paper2)}
 
-.cp-new{padding:14px 18px;border-top:1px solid var(--border);flex-shrink:0;background:var(--surface)}
-.cp-new-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.cp-new-context{font-size:10px;color:var(--comment-accent);font-family:'JetBrains Mono',monospace;margin-bottom:6px;min-height:14px}
-.cp-new-textarea{width:100%;font-size:12px;padding:8px;border:1px solid var(--border2);border-radius:6px;resize:none;height:64px;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface);outline:none}
-.cp-new-textarea:focus{border-color:var(--comment-accent)}
-.cp-new-row{display:flex;justify-content:flex-end;margin-top:6px;gap:6px}
-.cp-submit{font-size:12px;padding:6px 14px;background:var(--comment-accent);color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:500;font-family:'Inter',sans-serif}
-.cp-submit:hover{opacity:.9}
-.cp-submit:disabled{opacity:.4;cursor:default}
-.cp-cancel{font-size:12px;padding:6px 14px;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:5px;cursor:pointer;font-family:'Inter',sans-serif}
+.particle{
+  position:fixed;pointer-events:none;z-index:10000;border-radius:var(--pr,50%);
+  animation:particleFly var(--pd,.8s) var(--pde,0s) ease-out forwards;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.explainer{animation:fadeIn .25s ease}
 
-/* ── PINS ── */
-body.comment-mode{cursor:crosshair!important}
-body.comment-mode *{cursor:crosshair!important}
-.comment-mode-bar{position:fixed;top:0;left:0;right:0;z-index:10000;background:#2563eb;color:#fff;padding:8px 16px;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:space-between;transform:translateY(-100%);transition:transform .18s;font-family:'Inter',sans-serif}
-.comment-mode-bar.active{transform:translateY(0)}
-.comment-mode-bar-left{display:flex;align-items:center;gap:10px}
-.cmb-key{background:rgba(255,255,255,.2);border-radius:3px;padding:1px 6px;font-family:'JetBrains Mono',monospace;font-size:11px}
-.cmb-cancel{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:4px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif}
-.cmb-cancel:hover{background:rgba(255,255,255,.25)}
-
-.pin{position:absolute;z-index:9997;width:24px;height:24px;border-radius:50%;background:#2563eb;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(37,99,235,.45);border:2px solid #fff;transition:transform .12s;transform:translate(-50%,-50%);font-family:'Inter',sans-serif;user-select:none}
-.pin:hover{transform:translate(-50%,-50%) scale(1.15)}
-.pin.resolved{background:#6b7280}
-.pin.dismissed{background:#ef4444}
-.pin-pulse{position:absolute;z-index:9996;width:32px;height:32px;border-radius:50%;background:rgba(37,99,235,.2);transform:translate(-50%,-50%);pointer-events:none;animation:pinpulse 1.5s ease-out forwards}
-@keyframes pinpulse{0%{opacity:1;transform:translate(-50%,-50%) scale(.8)}100%{opacity:0;transform:translate(-50%,-50%) scale(2.2)}}
-
-/* Pin popover */
-.pin-popover{position:fixed;z-index:9999;width:280px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--rlg);box-shadow:0 8px 32px rgba(0,0,0,.15);display:none}
-.pin-popover.open{display:flex;flex-direction:column}
-.pp-head{padding:10px 12px 6px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-.pp-title{font-size:12px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
-.pp-pin-num{width:20px;height:20px;border-radius:50%;background:#2563eb;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
-.pp-close{background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;line-height:1;padding:2px}
-.pp-close:hover{color:var(--text)}
-.pp-body{padding:8px 12px;max-height:220px;overflow-y:auto}
-.pp-comment-item{padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
-.pp-comment-item:last-child{border-bottom:none}
-.pp-ci-author{font-weight:600;color:var(--text);font-size:11px}
-.pp-ci-time{color:var(--text3);font-size:10px;margin-left:5px}
-.pp-ci-text{color:var(--text2);line-height:1.5;margin-top:2px}
-.pp-ci-replies{margin-top:4px;padding-left:10px;border-left:2px solid var(--border2)}
-.pp-empty{font-size:11px;color:var(--text3);font-style:italic;padding:4px 0}
-.pp-new{padding:8px 12px;border-top:1px solid var(--border)}
-.pp-textarea{width:100%;font-size:11px;padding:6px 8px;border:1px solid var(--border2);border-radius:4px;resize:none;height:52px;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface);outline:none}
-.pp-textarea:focus{border-color:#2563eb}
-.pp-submit-row{display:flex;justify-content:flex-end;margin-top:5px;gap:5px}
-.pp-btn{font-size:11px;padding:4px 10px;border-radius:4px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500}
-.pp-btn.primary{background:#2563eb;color:#fff}
-.pp-btn.primary:hover{opacity:.9}
-.pp-btn.secondary{background:var(--surface2);color:var(--text2);border:1px solid var(--border2)}
-
-/* ── TOP TOGGLE ── */
-.er-toggle-bar{display:flex;gap:0;background:var(--surface2);border-bottom:1px solid var(--border2);flex-shrink:0}
-.er-tab{flex:1;font-size:12px;font-weight:600;padding:12px 10px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'Inter',sans-serif;border-bottom:2px solid transparent;transition:all .15s;letter-spacing:-.01em}
-.er-tab:hover{color:var(--text);background:var(--surface)}
-.er-tab.active{color:var(--text);border-bottom-color:var(--text);background:var(--surface)}
-
-/* ── RENEWAL VIEW ── */
-
-.renewal-track{margin:14px 18px 0;border:1px solid var(--border2);border-radius:var(--rlg);overflow:hidden}
-.rt-head{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.rt-title{font-size:12px;font-weight:600;color:var(--text)}
-.rt-desc{font-size:10px;color:var(--text3);margin-top:1px}
-.rt-badge{font-size:9px;padding:2px 7px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-weight:500}
-.rt-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
-.rt-cell{background:var(--surface);padding:10px 12px}
-.rt-cell-label{font-size:9px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
-.rt-cell-val{font-size:13px;font-weight:500;color:var(--text);font-family:'JetBrains Mono',monospace}
-.rt-cell-sub{font-size:10px;color:var(--text3);margin-top:1px}
-.rt-cell.soft .rt-cell-val{color:var(--warn)}
-.rt-cell.hard .rt-cell-val{color:var(--danger)}
-.rt-cell.legal .rt-cell-val{color:var(--text3)}
-
-.renewal-note{margin:12px 18px;padding:10px 12px;background:var(--surface2);border-radius:var(--r);border-left:3px solid var(--text3)}
-.renewal-note p{font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:6px}
-.renewal-note p:last-child{margin-bottom:0}
-
-.renewal-tl-wrap{margin:14px 18px 0}
-.renewal-tl-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-.renewal-tl-bar{position:relative;height:16px;background:var(--surface3);border-radius:4px;margin-bottom:28px}
-.rtl-seg{position:absolute;top:0;height:100%;border-radius:3px}
-.rtl-marker{position:absolute;top:-3px;width:2px;height:22px;border-radius:1px}
-.rtl-label{position:absolute;top:22px;font-size:9px;white-space:nowrap;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-weight:500}
-
+@media(max-width:640px){
+  .page{padding:32px 20px 60px}
+  .hd-title{font-size:28px}
+  .csd-cards{grid-template-columns:1fr}
+  .mini-cal-grid{grid-template-columns:repeat(3,1fr)}
+}
 </style>
 </head>
 <body>
-<div class="comment-mode-bar" id="comment-mode-bar">
-  <div class="comment-mode-bar-left">
-    <span>📍 Comment mode — click anywhere to pin a comment</span>
-    <span class="cmb-key">C</span> to cancel
+<div id="mc-tooltip"></div>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="hd">
+    <div class="hd-eyebrow">Thatch · Enrollment windows · 2026</div>
+    <h1 class="hd-title">One system.<br><em>Off-cycle and OE.</em></h1>
+    <p class="hd-sub">The core primitive is simple: ask the employer when they want coverage to begin. They can choose when to send invites — that's the extent of their control. Everything else is logic we own. The same 35-day window runs year-round, for new hires and open enrollment alike.</p>
   </div>
-  <button class="cmb-cancel" onclick="exitCommentMode()">Cancel</button>
+
+  <!-- OE toggle -->
+  <div class="oe-bar" id="oe-bar">
+    <div class="oe-bar-label">
+      <strong>OE configuration</strong> — The same 30+5d window applies; employers choose when to send invites. The Jan 4–8 extension is purely optional — it restores a second CSD for Nov 9–25 invites, but breaks the one-system principle.
+    </div>
+    <div class="oe-switch">
+      <button class="oe-btn" data-v="0" onclick="setExt(0)">Without extension</button>
+      <button class="oe-btn active" data-v="1" onclick="setExt(1)">With extension</button>
+    </div>
+  </div>
+
+  <!-- Insights bar -->
+  <div class="insights-bar" id="insights-bar">
+    <div class="ins-cell c-warn" id="ins-1csd">
+      <div class="ins-cell-label">1 CSD only</div>
+      <div class="ins-cell-count" id="ins-1csd-count">17<span class="ins-delta down" id="ins-1csd-delta"></span></div>
+      <div class="ins-cell-sub" id="ins-1csd-sub">Nov 9–25 OE invites — 35d window closes before the Dec 29 cutoff</div>
+    </div>
+    <div class="ins-cell c-good" id="ins-2csd">
+      <div class="ins-cell-label">2 CSDs</div>
+      <div class="ins-cell-count" id="ins-2csd-count">308<span class="ins-delta up" id="ins-2csd-delta"></span></div>
+      <div class="ins-cell-sub" id="ins-2csd-sub">standard experience — member has a backstop if they miss the first cutoff</div>
+    </div>
+    <div class="ins-cell c-blue" id="ins-3csd">
+      <div class="ins-cell-label">3 CSDs</div>
+      <div class="ins-cell-count">40<span class="ins-delta zero"></span></div>
+      <div class="ins-cell-sub">window spans two cutoffs — late-month invites near EOM</div>
+    </div>
+  </div>
+
+  <!-- Window anatomy -->
+  <div style="display:flex;align-items:stretch;border:1px solid var(--rule2);border-radius:8px;overflow:hidden;margin-bottom:32px;font-family:'DM Mono',monospace;">
+    <div style="flex:30;background:var(--blue1);padding:10px 16px;display:flex;flex-direction:column;gap:3px">
+      <span style="font-size:11px;font-weight:600;color:#1e40af">30 days</span>
+      <span style="font-size:10px;color:#3b82f6">marketed window</span>
+    </div>
+    <div style="flex:5;background:var(--blue2);padding:10px 16px;display:flex;flex-direction:column;gap:3px;border-left:1px solid rgba(255,255,255,.4)">
+      <span style="font-size:11px;font-weight:600;color:#1e40af">+5 days</span>
+      <span style="font-size:10px;color:#3b82f6">last chance</span>
+    </div>
+    <div style="flex:0 0 auto;background:var(--paper2);padding:10px 16px;display:flex;align-items:center;border-left:1px solid var(--rule2)">
+      <span style="font-size:11px;color:var(--ink3)">= 35d total per invite</span>
+    </div>
+  </div>
+
+  <!-- Date picker -->
+  <div class="picker-wrap">
+    <div class="section-label">Pick any invite date — off-cycle or OE <span style="font-size:9px;font-weight:400;letter-spacing:.03em;text-transform:none;color:var(--ink3);margin-left:6px">OE begins Nov 9</span></div>
+    <div class="month-tabs" id="month-tabs"></div>
+    <div class="day-picker" id="day-picker"></div>
+    <div style="margin-top:10px;font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:6px">
+      <span style="display:inline-block;width:14px;height:14px;border-radius:3px;border:1.5px solid var(--amber-mid);background:transparent;vertical-align:middle"></span>
+      Processing cutoff for that month — enroll by this date for next-month coverage
+    </div>
+  </div>
+
+  <!-- Main explainer — shown once date selected -->
+  <div class="explainer" id="explainer" style="display:none">
+
+    <!-- Selected date header -->
+    <div class="ex-date-row">
+      <span class="ex-invite-label">Invite sent</span>
+      <span class="ex-invite-date" id="ex-date">—</span>
+      <span class="ex-cutoff-note" id="ex-cutoff-note" style="display:none">also the cutoff</span>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-wrap">
+      <div class="tl-outer" id="tl-outer" style="height:80px">
+        <div class="tl-track" id="tl-track"></div>
+      </div>
+    </div>
+
+    <!-- CSD cards -->
+    <div class="csd-cards" id="csd-cards"></div>
+
+    <!-- Rule box -->
+    <div class="rule-box" id="rule-box"></div>
+
+  </div>
+
+  <!-- Explore calendar (collapsed) -->
+  <div>
+    <button class="explore-toggle" id="cal-toggle" onclick="toggleCal()">
+      <span class="explore-toggle-arrow" id="cal-arrow">▶</span>
+      Explore all invite dates
+    </button>
+    <div class="cal-collapse" id="cal-collapse">
+      <div class="section-label" style="margin-bottom:12px">Full year · Jan 2026 – Mar 2027</div>
+      <div class="mini-cal-grid" id="mini-cal"></div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;align-items:center">
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--blue1);display:inline-block"></span>→ CSD 1</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--blue2);display:inline-block"></span>→ CSD 2</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--blue3);display:inline-block"></span>→ CSD 3</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3)"><span style="width:10px;height:10px;border-radius:2px;background:#94a3b8;display:inline-block"></span>Cutoff</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--green);display:inline-block"></span>Invite</div>
+      </div>
+    </div>
+  </div>
+
 </div>
-<div class="pin-popover" id="pin-popover">
-  <div class="pp-head">
-    <div class="pp-title"><span class="pp-pin-num" id="pp-num">1</span><span id="pp-head-text">Comment</span></div>
-    <button class="pp-close" onclick="CS.closePopover()">✕</button>
-  </div>
-  <div class="pp-body" id="pp-body"></div>
-  <div class="pp-new">
-    <div id="pp-name-row" style="display:flex;align-items:center;gap:8px;padding:8px 12px 0;border-top:1px solid var(--border)">
-      <span style="font-size:11px;color:var(--text3);white-space:nowrap">Your name</span>
-      <input id="pp-name-input" placeholder="e.g. Dena" oninput="CS.syncName(this.value)"
-        style="flex:1;border:1px solid var(--border2);border-radius:6px;padding:4px 8px;font-size:11px;font-family:'Inter',sans-serif;outline:none;background:var(--surface2)"/>
-    </div>
-    <textarea class="pp-textarea" id="pp-textarea" placeholder="Add a comment…"></textarea>
-    <div class="pp-submit-row">
-      <button class="pp-btn secondary" onclick="CS.closePopover()">Close</button>
-      <button class="pp-btn primary" onclick="CS.submitPin()">Post</button>
-    </div>
-  </div>
-</div>
-
-<!-- POSITIONING PANEL -->
-<div id="pov-panel" style="background:linear-gradient(135deg,#1e1b4b 0%,#312e81 60%,#3730a3 100%);font-family:'Inter',sans-serif;position:relative">
-
-  <!-- Toggle bar — always visible -->
-  <button id="pov-toggle" onclick="togglePOV()" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:none;border:none;cursor:pointer;text-align:left;border-bottom:1px solid rgba(255,255,255,0.08)">
-    <div style="display:flex;align-items:center;gap:16px">
-      <div style="display:flex;flex-direction:column;gap:2px">
-        <span style="font-size:13px;font-weight:600;color:#fff;letter-spacing:-.01em">Enrollment windows — strategic recommendation</span>
-        <span style="font-size:11px;color:rgba(255,255,255,0.5)">Thatch Product · 2026</span>
-      </div>
-    </div>
-    <div id="pov-toggle-btn" style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 12px;transition:background .15s">
-      <span id="pov-toggle-label" style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.85)">Read context</span>
-      <svg id="pov-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" style="transition:transform .25s;color:rgba(255,255,255,0.7)"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-  </button>
-
-  <!-- Expanded content -->
-  <div id="pov-content" style="display:none;padding:28px 28px 32px;max-width:1300px">
-
-    <!-- Headline -->
-    <div style="margin-bottom:28px;max-width:720px">
-      <div style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-.03em;line-height:1.25;margin-bottom:10px">
-        One system. Every employer, every invite, year-round.
-      </div>
-      <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.75">
-        The primary principle is <strong style="color:#fff">one system</strong> — a single enrollment model that runs identically for new ERs and renewals, in January and in November. Designing for two CSDs is a strategic way of building that system well: it embeds the extension concept structurally rather than operationally. But the CSD guarantee is a feature of the design, not the principle itself.
-      </div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
-
-      <!-- The system -->
-      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px">
-        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:14px">The system</div>
-        <div style="display:flex;flex-direction:column;gap:14px">
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#6EE7B7;margin-bottom:4px">30-day window · marketed</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">Every invite gets a 30-day enrollment window. This is the number we communicate to employers and members. Same rule, every invite, all year.</div>
-          </div>
-          <div style="height:1px;background:rgba(255,255,255,0.07)"></div>
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#6EE7B7;margin-bottom:4px">+5 day last-chance window</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">On day 31, a last-chance nudge goes out. Members have 5 more days to enroll. This applies to new ERs and renewals alike — the mechanism is identical, only the durations differ.</div>
-          </div>
-          <div style="height:1px;background:rgba(255,255,255,0.07)"></div>
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#6EE7B7;margin-bottom:4px">Renewals and new ERs are the same system</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">Soft close + 5-day hard close. The logic is identical. Renewals have fixed calendar dates (OE opens Nov 2 or Nov 9); new ERs have a rolling 30-day window from invite date. One model, two configurations.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- What changes -->
-      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px">
-        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:14px">What changes</div>
-        <div style="display:flex;flex-direction:column;gap:7px">
-          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>14-day, 21-day, and 60-day employer window options</span></div>
-          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>Employer-set enrollment deadlines as default</span></div>
-          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>Manual mass extension operations</span></div>
-          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5"><span style="color:#F87171;flex-shrink:0">✕</span><span>Separate OE operating mode</span></div>
-          <div style="height:1px;background:rgba(255,255,255,0.07);margin:4px 0"></div>
-          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>30-day marketed window · same for everyone</span></div>
-          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>+5 day last-chance extension · structural, not manual</span></div>
-          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>EOM−2 processing cutoff · single operational rhythm</span></div>
-          <div style="display:flex;gap:10px;align-items:baseline;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5"><span style="color:#6EE7B7;flex-shrink:0">✓</span><span>Renewals: allowances set by Oct 25</span></div>
-        </div>
-      </div>
-
-      <!-- Open questions + how to use -->
-      <div style="display:flex;flex-direction:column;gap:12px">
-
-        <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);border-radius:12px;padding:16px 18px">
-          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(251,191,36,0.7);margin-bottom:10px">Open question · not yet decided</div>
-          <div style="font-size:12px;font-weight:600;color:#FCD34D;margin-bottom:6px">Jan 4–8 special extension</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:8px">For the Nov 9–25 OE cohort, the 35-day window doesn't reach the Dec 29 cutoff. A Jan 4–8 special extension would give these 17 dates a second CSD (Feb 1).</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.5);line-height:1.6;font-style:italic">This would break the one-system principle — it's a named exception for a specific cohort. Worth considering, but the tradeoff is explicit: better member experience for 17 OE dates vs. system purity. Not a decision yet.</div>
-        </div>
-
-        <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 18px;flex:1">
-          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.4);margin-bottom:10px">Explore the model below</div>
-          <div style="display:flex;flex-direction:column;gap:6px">
-            <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5;display:flex;gap:8px"><span style="color:#93C5FD;flex-shrink:0">→</span>New ERs tab: click any invite date to see its 30+5d window</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5;display:flex;gap:8px"><span style="color:#93C5FD;flex-shrink:0">→</span>Toggle Jan 4–8 extension to see the open question in action</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5;display:flex;gap:8px"><span style="color:#93C5FD;flex-shrink:0">→</span>Renewals tab: same soft close + last-chance structure</div>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-</div>
-</div>
-
-
-<div class="shell">
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-  <div class="sb-head">
-    <div class="sb-title">Enrollment windows</div>
-    <div class="sb-sub">2026</div>
-  </div>
-  <div class="er-toggle-bar">
-    <button class="er-tab active" data-er="new" onclick="setERType('new')">🆕 New ERs</button>
-    <button class="er-tab" data-er="renewal" onclick="setERType('renewal')">🔄 Renewals</button>
-  </div>
-
-
-  <div class="toggle-wrap" data-new-er>
-    <div class="toggle-label">
-      ✦ OE extension policy
-    </div>
-    <div class="toggle-desc" id="tog-desc">Special extension special extension for Feb 1 coverage — first week back from holidays</div>
-    <div class="toggle-btn-row">
-      <button class="tog" data-t="0" onclick="setToggle(0)">Base</button>
-      <button class="tog active" data-t="1" onclick="setToggle(1)">Special extension</button>
-    </div>
-    <div style="margin-top:7px;font-size:10px;color:var(--oe)" id="tog-impact"></div>
-  </div>
-
-  <div class="sb-section" data-new-er>
-    <div class="sb-section-label">How it works</div>
-    <div style="font-size:11px;color:var(--text2);line-height:1.6">
-      Each invite starts a <strong>30-day window</strong> (soft close). On day 31 a last-chance nudge goes out — members have <strong>5 more days</strong> to enroll. The <span style="color:var(--cutoff);font-weight:500">processing cutoff</span> (EOM−2, adjusted to Thu or earlier) splits the full 35-day window:<br><br>
-      Enroll by soft close (day 30) → <span style="color:var(--csd1);font-weight:500">CSD 1</span> if before cutoff<br>
-      Days 1–35 (after cutoff) → <span style="color:var(--csd2);font-weight:500">CSD 2</span>
-    </div>
-  </div>
-
-  <div class="sb-section" data-new-er>
-    <div class="sb-section-label">Selected invite</div>
-    <div id="det-empty" class="detail-empty">Click any day on the calendar</div>
-    <div id="det-content" style="display:none">
-      <div style="margin-bottom:8px" id="d-badges"></div>
-
-      <div class="det-grid">
-        <!-- Invite -->
-        <div class="det-card" style="background:var(--invite-lt);border-color:var(--invite);border-left:3px solid var(--invite)">
-          <div class="det-card-label" style="color:var(--invite)">
-            <span class="det-card-swatch" style="background:var(--invite)"></span>Invite
-          </div>
-          <div class="det-card-val" style="color:var(--invite)" id="d-invite">—</div>
-        </div>
-        <!-- Soft close -->
-        <div class="det-card" style="background:var(--surface2);border-color:var(--text3);border-left:3px solid var(--text3)">
-          <div class="det-card-label" style="color:var(--text3)">
-            <span class="det-card-swatch" style="background:var(--text3)"></span>Soft close (day 30)
-          </div>
-          <div class="det-card-val" style="color:var(--text2)" id="d-close">—</div>
-        </div>
-        <!-- Hard close (last chance) -->
-        <div class="det-card" style="background:var(--warn-bg);border-color:var(--warn);border-left:3px solid var(--warn)">
-          <div class="det-card-label" style="color:var(--warn)">
-            <span class="det-card-swatch" style="background:var(--warn)"></span>Last chance (day 35)
-          </div>
-          <div class="det-card-val" style="color:var(--warn)" id="d-hard-close">—</div>
-        </div>
-
-        <!-- CSD 1 cutoff -->
-        <div class="det-card" style="background:var(--cutoff-lt);border-color:var(--cutoff)">
-          <div class="det-card-label" style="color:var(--cutoff)">
-            <span class="det-card-swatch" style="background:var(--cutoff)"></span>CSD 1 cutoff
-          </div>
-          <div class="det-card-val" style="color:var(--cutoff)" id="d-cut">—</div>
-          <div class="det-card-sub" style="color:var(--cutoff)" id="d-days1">—</div>
-        </div>
-        <!-- CSD 1 -->
-        <div class="det-card" style="background:var(--csd1-lt);border-color:var(--csd1)">
-          <div class="det-card-label" style="color:var(--csd1)">
-            <span class="det-card-swatch" style="background:var(--csd1)"></span>CSD 1
-          </div>
-          <div class="det-card-val" style="color:var(--csd1)" id="d-csd1">—</div>
-        </div>
-        <!-- CSD 2 cutoff -->
-        <div class="det-card" style="background:var(--w2-lt);border-color:var(--w2-dk)">
-          <div class="det-card-label" style="color:var(--w2-dk)">
-            <span class="det-card-swatch" style="background:var(--w2)"></span>CSD 2 cutoff
-          </div>
-          <div class="det-card-val" style="color:var(--w2-dk)" id="d-cut2">—</div>
-          <div class="det-card-sub" style="color:var(--w2-dk)" id="d-days2">—</div>
-        </div>
-        <!-- CSD 2 -->
-        <div class="det-card" style="background:var(--csd2-lt);border-color:var(--csd2)">
-          <div class="det-card-label" style="color:var(--csd2)">
-            <span class="det-card-swatch" style="background:var(--csd2)"></span>CSD 2
-          </div>
-          <div class="det-card-val" style="color:var(--csd2)" id="d-csd2">—</div>
-        </div>
-      </div>
-      <div id="d-insight"></div>
-    </div>
-  </div>
-  <!-- RENEWAL VIEW -->
-  <div class="sb-section" data-renewal-er style="display:none">
-    <div class="sb-section-label">How it works</div>
-    <div style="font-size:11px;color:var(--text2);line-height:1.6">
-      All renewals target <strong>Jan 1</strong> coverage. Two tracks run in parallel — Standard for on-time employers, Late start for others.<br><br>
-      Each track has a <span style="color:var(--warn);font-weight:500">soft deadline</span> (marketed) and a <span style="color:var(--danger);font-weight:500">final deadline</span> (last chance).<br><br>
-      <span style="color:var(--text3)">Dec 15 legal backstop — Support Ops only, not marketed.</span>
-    </div>
-  </div>
-
-
-
-</div><!-- /sidebar -->
-
-<!-- MAIN -->
-<div class="main">
-
-  <!-- Stats bar -->
-  <div class="stats-bar" id="stats-bar"></div>
-
-  <!-- Renewal main panel -->
-  <div id="renewal-main" style="display:none;flex-direction:column;gap:20px">
-
-    <!-- Header bar: 3 key facts -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border-radius:var(--rxl);overflow:hidden;border:1px solid var(--border)">
-      <div style="background:var(--surface);padding:20px 24px">
-        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Coverage start date</div>
-        <div style="font-size:32px;font-weight:700;color:var(--csd1);letter-spacing:-.03em;line-height:1">Jan 1</div>
-        <div style="font-size:11px;color:var(--text3);margin-top:5px">All renewals — no rolling window</div>
-      </div>
-      <div style="background:var(--surface);padding:20px 24px">
-        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">OE opens</div>
-        <div style="font-size:32px;font-weight:700;color:var(--ok);letter-spacing:-.03em;line-height:1">Nov 2</div>
-        <div style="font-size:11px;color:var(--text3);margin-top:5px">Standard track · earliest invite</div>
-      </div>
-      <div style="background:var(--surface);padding:20px 24px">
-        <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Renewals close</div>
-        <div style="font-size:32px;font-weight:700;color:var(--text3);letter-spacing:-.03em;line-height:1">Dec 15</div>
-        <div style="font-size:11px;color:var(--text3);margin-top:5px">Support Ops only · not marketed</div>
-      </div>
-    </div>
-
-    <!-- Track comparison -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-
-      <!-- Standard track -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);overflow:hidden">
-        <!-- Track header -->
-        <div style="padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between">
-          <div>
-            <div style="font-size:15px;font-weight:700;color:var(--invite);letter-spacing:-.01em">Standard</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:2px">Accepts carrier rates on time</div>
-          </div>
-          <div style="font-size:10px;font-weight:600;color:var(--invite);background:var(--invite-lt);padding:3px 10px;border-radius:20px;letter-spacing:.04em;font-family:'JetBrains Mono',monospace;margin-top:2px">Track A</div>
-        </div>
-        <!-- Steps -->
-        <div style="padding:20px">
-          <!-- Step row helper: accent color, step num, label, date, sub, connector -->
-          <!-- Step 1: OE opens -->
-          <div style="display:flex;gap:14px">
-            <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
-              <div style="width:26px;height:26px;border-radius:50%;background:var(--invite);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
-              <div style="width:1px;flex:1;min-height:36px;background:var(--border2);margin:4px 0"></div>
-            </div>
-            <div style="padding-top:3px;padding-bottom:16px">
-              <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em">OE opens</div>
-              <div style="font-size:20px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 2 <span style="font-size:11px;color:var(--text3);font-weight:400">Mon</span></div>
-              <div style="font-size:10px;color:var(--text3);margin-top:2px">Invites sent to members</div>
-            </div>
-          </div>
-          <!-- Duration pill -->
-          <div style="display:flex;gap:14px;align-items:center;margin-bottom:0">
-            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
-            <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">16 days</div>
-          </div>
-          <!-- Step 2: Soft deadline -->
-          <div style="display:flex;gap:14px;margin-top:0">
-            <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
-              <div style="width:26px;height:26px;border-radius:50%;background:var(--warn);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
-              <div style="width:1px;flex:1;min-height:36px;background:var(--border2);margin:4px 0"></div>
-            </div>
-            <div style="padding-top:3px;padding-bottom:16px">
-              <div style="display:flex;align-items:center;gap:6px">
-                <div style="font-size:10px;font-weight:600;color:var(--warn);text-transform:uppercase;letter-spacing:.06em">Soft deadline</div>
-                <div style="font-size:9px;font-weight:600;color:var(--warn);background:var(--warn-bg);padding:1px 7px;border-radius:10px">marketed</div>
-              </div>
-              <div style="font-size:20px;font-weight:700;color:var(--warn);font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 18 <span style="font-size:11px;color:var(--text3);font-weight:400">Wed</span></div>
-              <div style="font-size:10px;color:var(--text3);margin-top:2px">Primary communicated deadline</div>
-            </div>
-          </div>
-          <!-- Duration pill -->
-          <div style="display:flex;gap:14px;align-items:center;margin-bottom:0">
-            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
-            <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">5 days</div>
-          </div>
-          <!-- Step 3: Last chance -->
-          <div style="display:flex;gap:14px;margin-top:0">
-            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center">
-              <div style="width:26px;height:26px;border-radius:50%;background:var(--csd2);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">3</div>
-            </div>
-            <div style="padding-top:3px">
-              <div style="display:flex;align-items:center;gap:6px">
-                <div style="font-size:10px;font-weight:600;color:var(--csd2);text-transform:uppercase;letter-spacing:.06em">Last chance</div>
-                <div style="font-size:9px;font-weight:600;color:var(--csd2);background:var(--csd2-lt);padding:1px 7px;border-radius:10px">+5d</div>
-              </div>
-              <div style="font-size:20px;font-weight:700;color:var(--csd2);font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 23 <span style="font-size:11px;color:var(--text3);font-weight:400">Sun</span></div>
-              <div style="font-size:10px;color:var(--text3);margin-top:2px">Final close · ERs cannot decline</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Late start track -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);overflow:hidden">
-        <div style="padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between">
-          <div>
-            <div style="font-size:15px;font-weight:700;color:var(--warn);letter-spacing:-.01em">Late start</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:2px">Accepts rates late or not at all</div>
-          </div>
-          <div style="font-size:10px;font-weight:600;color:var(--warn);background:var(--warn-bg);padding:3px 10px;border-radius:20px;letter-spacing:.04em;font-family:'JetBrains Mono',monospace;margin-top:2px">Track B</div>
-        </div>
-        <div style="padding:20px">
-          <!-- Step 1 -->
-          <div style="display:flex;gap:14px">
-            <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
-              <div style="width:26px;height:26px;border-radius:50%;background:var(--invite);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">1</div>
-              <div style="width:1px;flex:1;min-height:36px;background:var(--border2);margin:4px 0"></div>
-            </div>
-            <div style="padding-top:3px;padding-bottom:16px">
-              <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em">OE opens</div>
-              <div style="font-size:20px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 9 <span style="font-size:11px;color:var(--text3);font-weight:400">Mon</span></div>
-              <div style="font-size:10px;color:var(--text3);margin-top:2px">Invites sent to members</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:14px;align-items:center;margin-bottom:0">
-            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
-            <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">16 days</div>
-          </div>
-          <!-- Step 2 -->
-          <div style="display:flex;gap:14px;margin-top:0">
-            <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
-              <div style="width:26px;height:26px;border-radius:50%;background:var(--warn);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">2</div>
-              <div style="width:1px;flex:1;min-height:36px;background:var(--border2);margin:4px 0"></div>
-            </div>
-            <div style="padding-top:3px;padding-bottom:16px">
-              <div style="display:flex;align-items:center;gap:6px">
-                <div style="font-size:10px;font-weight:600;color:var(--warn);text-transform:uppercase;letter-spacing:.06em">Soft deadline</div>
-                <div style="font-size:9px;font-weight:600;color:var(--warn);background:var(--warn-bg);padding:1px 7px;border-radius:10px">marketed</div>
-              </div>
-              <div style="font-size:20px;font-weight:700;color:var(--warn);font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 25 <span style="font-size:11px;color:var(--text3);font-weight:400">Wed</span></div>
-              <div style="font-size:10px;color:var(--text3);margin-top:2px">Primary communicated deadline</div>
-            </div>
-          </div>
-          <!-- Duration pill -->
-          <div style="display:flex;gap:14px;align-items:center;margin-bottom:0">
-            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center"><div style="width:1px;height:14px;background:var(--border2)"></div></div>
-            <div style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface2)">5 days</div>
-          </div>
-          <!-- Step 3: Last chance -->
-          <div style="display:flex;gap:14px;margin-top:0">
-            <div style="width:26px;flex-shrink:0;display:flex;justify-content:center">
-              <div style="width:26px;height:26px;border-radius:50%;background:var(--csd2);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">3</div>
-            </div>
-            <div style="padding-top:3px">
-              <div style="display:flex;align-items:center;gap:6px">
-                <div style="font-size:10px;font-weight:600;color:var(--csd2);text-transform:uppercase;letter-spacing:.06em">Last chance</div>
-                <div style="font-size:9px;font-weight:600;color:var(--csd2);background:var(--csd2-lt);padding:1px 7px;border-radius:10px">+5d</div>
-              </div>
-              <div style="font-size:20px;font-weight:700;color:var(--csd2);font-family:'JetBrains Mono',monospace;letter-spacing:-.01em;margin-top:3px">Nov 30 <span style="font-size:11px;color:var(--text3);font-weight:400">Mon</span></div>
-              <div style="font-size:10px;color:var(--text3);margin-top:2px">Final close · ERs cannot decline</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div><!-- /track comparison grid -->
-
-    <!-- Policy footer -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--border);border-radius:var(--rxl);overflow:hidden">
-      <div style="padding:16px 20px;background:var(--surface)">
-        <div style="font-size:10px;font-weight:600;color:var(--warn);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Soft deadline</div>
-        <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:3px">Marketed as primary</div>
-        <div style="font-size:11px;color:var(--text3);line-height:1.5">The deadline we communicate to employers and members. Track A: Nov 18. Track B: Nov 25. Members who miss it receive a last-chance nudge on day 1 of the extension.</div>
-      </div>
-      <div style="padding:16px 20px;background:var(--surface);border-left:1px solid var(--border)">
-        <div style="font-size:10px;font-weight:600;color:var(--csd2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Last chance (+5 days)</div>
-        <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:3px">Structural extension · not a workaround</div>
-        <div style="font-size:11px;color:var(--text3);line-height:1.5">On day 17 the soft deadline passes. On day 18 a final nudge goes out — members have 5 more days to enroll (through day 22). Track A closes Nov 23. Track B closes Nov 30. ERs cannot decline this extension.</div>
-      </div>
-      <div style="padding:16px 20px;background:var(--surface2);border-left:1px solid var(--border)">
-        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Legal backstop</div>
-        <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:3px">Dec 15</div>
-        <div style="font-size:11px;color:var(--text3);line-height:1.5">The legal enrollment deadline for all renewals. Support Ops only — not marketed to members or employers.</div>
-      </div>
-    </div>
-</div>
-
-  <!-- Table -->
-  <div class="table-section" id="main-table">
-    <div class="tbl-top">
-      <div style="display:flex;align-items:baseline;gap:10px">
-        <div class="tbl-heading">All invite dates</div>
-        <div class="tbl-counts" id="tbl-counts"></div>
-      </div>
-      <div class="filter-row">
-        <button class="fb f-ok" data-f="2csd">2 CSDs ✓</button>
-        <button class="fb f-warn" data-f="1csd">1 CSD only</button>
-        <button class="fb f-oe" data-f="oe">OE period</button>
-        <button class="fb" data-f="all" style="font-weight:600">All</button>
-        
-      </div>
-    </div>
-    <div id="tbl-scroll" style="max-height:340px;overflow-y:auto">
-      <table>
-        <thead>
-          <tr>
-            <th>Invite date</th>
-            <th>Soft close (day 30)</th><th>Last chance (day 35)</th>
-            <th>CSD 1 cutoff</th>
-            <th>CSD 1</th>
-            <th>Days → CSD 1</th>
-            <th id="ext-col-head" style="display:none;color:var(--oe);background:var(--oe-bg)">Special ext window</th>
-            <th>CSD 2</th>
-            <th>Days → CSD 2</th>
-          </tr>
-        </thead>
-        <tbody id="tbl-body"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Calendar -->
-  <div class="cal-section" id="main-cal">
-    <div class="cal-top">
-      <div>
-        <div class="cal-heading">Explore by day</div>
-        <div class="cal-hint">Click any invite date to see its window highlighted across the year</div>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--invite);display:inline-block"></span>Invite</div>
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--w1);display:inline-block"></span><span style="color:var(--w1-dk)">→ CSD 1</span></div>
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--cutoff);display:inline-block"></span><span style="color:var(--cutoff)">Cutoff</span></div>
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--w2);display:inline-block"></span>→ CSD 2</div>
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--csd1);display:inline-block"></span>CSD 1</div>
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--csd2);display:inline-block"></span>CSD 2</div>
-      </div>
-    </div>
-    <div class="month-grid" id="cal"></div>
-  </div>
-
-</div><!-- /main -->
-</div><!-- /shell -->
 
 <script>
+// ── CORE LOGIC ──
+// Corrected calc engine: pastCutoff branch from full_year tool + three-CSD detection restored
+// Three-CSD case is real: 43 dates/year where 35d window crosses two processing cutoffs
+
 const DM=[31,28,31,30,31,30,31,31,30,31,30,31];
 const MS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MO=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -819,12 +527,11 @@ const DOW_S=['S','M','T','W','T','F','S'];
 const DOW_N=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 function doy(m,d){let x=0;for(let i=0;i<m;i++)x+=DM[i];return x+d;}
-function fd(n){n=((n-1)%365)+1;if(n<=0)n+=365;let m=0,r=n;while(r>DM[m]){r-=DM[m];m++;}return{m,d:r};}
-function fmt(n){const x=fd(n);return MS[x.m]+' '+x.d;}
-function fmtF(n){const x=fd(n);return MO[x.m]+' '+x.d;}
+function fd(n){let nn=((n-1)%365)+1;if(nn<=0)nn+=365;let m=0,r=nn;while(r>DM[m]){r-=DM[m];m++;}return{m,d:r};}
+function fmt(n){const x=fd(n>365?n-365:n);return MS[x.m]+' '+x.d+(n>365?' 2027':' 2026');}
+function fmtLong(n){const x=fd(n>365?n-365:n);return MO[x.m]+' '+x.d+(n>365?', 2027':', 2026');}
 function fom(m){if(m<12)return doy(m,1);return doy(0,1)+365;}
-function dow(n){return(4+n-1)%7;}
-function dowTag(n){return`<span class="dow">${DOW_N[dow(n)]}</span>`;}
+function dow(n){return(4+((n-1)%365+365)%365)%7;}
 
 function cutoffForMonth(m){
   let d=doy(m,DM[m])-2,w=dow(d);
@@ -834,1079 +541,565 @@ function cutoffForMonth(m){
 const CUTOFFS=[];for(let m=0;m<12;m++)CUTOFFS.push(cutoffForMonth(m));
 const OE_START=doy(10,9),OE_END=doy(11,28),JAN1_NEXT=doy(0,1)+365;
 
-// Extension constants: Jan 4-8 2027 (doy 369-373 in 2027 = 365+4 to 365+8)
-const EXT_START=365+4; // Jan 4 2027
-const EXT_END=365+8;   // Jan 8 2027 — window close for extended OE 1-CSD dates
-const EXT_CUTOFF=EXT_END; // last day to enroll for Feb 1 under extension
-const FEB1_2027=365+32;   // Feb 1 2027
+// ⚖️ "Perfectly balanced" dates — exactly 17d for CSD1 and 17d for CSD2, one per month
+const BALANCED_DOYS=new Set([doy(0,12),doy(1,9),doy(2,9),doy(3,11),doy(4,11),doy(5,8),
+  doy(6,12),doy(7,10),doy(8,11),doy(9,12),doy(10,9),doy(11,12)]);
+function isBalanced(d){return BALANCED_DOYS.has(d);}
+const EXT_START=365+4,EXT_END=365+8,FEB1_2027=365+32;
 
-// OE 1-CSD dates: Nov 9 - Nov 28 (window closes on or before Dec 28 cutoff)
-function isOE1CSD(invDoy){
-  // Only dates where the 35d hard close still doesn't reach Dec 29
-  // Nov 9-24: hardClose = invDoy+34 < Dec 29 (doy 363)
-  // Nov 25: hardClose = Dec 29 exactly (daysCsd2=0, no runway)
-  // Nov 26+: hardClose > Dec 29, get 2 CSDs naturally
-  return invDoy>=OE_START && invDoy<=doy(10,25); // Nov 9-25 (hardClose on or before Dec 29)
-}
+function isOE1CSD(d){return d>=OE_START&&d<=doy(10,25);}
 
-let useExtension=true;
+let useExt=true;
 
-// ── NEW MODEL: 30d marketed soft close + 5d last-chance extension ──
-// softClose = invDoy + 29  (day 30, marketed deadline)
-// hardClose = invDoy + 34  (day 35, last-chance, actively marketed on day 31)
-// CSD 1 = next month if enrolled before csd1Cutoff
-// CSD 2 = month after if enrolled after csd1Cutoff but before hardClose
-// OE 1-CSD cohort (Nov 9-30): Jan 4-8 special extension still needed for 17 dates
+// KEY FIX vs old version: uses pastCutoff branch (from full_year tool) to correctly
+// determine which cutoff anchors CSD1. Three-CSD detection then checks if the 35d
+// window also clears the *next* cutoff after that.
 
-const SOFT_DAYS = 29; // 0-indexed: inv + 29 = day 30
-const HARD_DAYS = 34; // inv + 34 = day 35
+const SOFT_DAYS=29, HARD_DAYS=34;
 
 function calc(invDoy){
   const is2027=invDoy>365;
-  const effectiveDoy=is2027?invDoy-365:invDoy;
-  const x=fd(effectiveDoy);const m=x.m;
-
-  const softClose=invDoy+SOFT_DAYS;  // marketed day 30
-  const hardClose=invDoy+HARD_DAYS;  // actual day 35 (last chance)
-
-  const isOE=effectiveDoy>=OE_START&&effectiveDoy<=OE_END;
-  const oe1csd=isOE1CSD(invDoy);
-  let csd1Cutoff,csd1,csd2,daysCsd1,daysCsd2;
-  let extended=false;
+  const eff=is2027?invDoy-365:invDoy;
+  const x=fd(eff);const m=x.m;
+  const soft=invDoy+SOFT_DAYS;
+  const hard=invDoy+HARD_DAYS;
+  const isOE=eff>=OE_START&&eff<=OE_END;
+  let cut1,cut2,cut3,csd1,csd2,csd3,d1,d2,d3,extended=false;
 
   if(isOE){
-    // OE: cutoff = Dec 29, CSD1 = Jan 1
-    csd1Cutoff=CUTOFFS[11]; csd1=JAN1_NEXT;
-    const dToCutoff=csd1Cutoff-invDoy;
-    // Cap at window length — can only enroll within 35-day window
-    daysCsd1=dToCutoff<0?0:Math.min(dToCutoff,hardClose-invDoy);
-
-    if(oe1csd && useExtension){
-      // Jan 4-8 special extension → CSD2 = Feb 1
-      csd2=FEB1_2027;
-      daysCsd2=EXT_END-EXT_START+1; // 5 days
-      extended=true;
-    } else if(hardClose>csd1Cutoff){
-      // Hard close reaches past Dec 29 → CSD2 = Feb 1
-      csd2=FEB1_2027;
-      daysCsd2=Math.max(0,hardClose-csd1Cutoff);
+    cut1=CUTOFFS[11]; csd1=JAN1_NEXT;
+    const dtc=cut1-invDoy;
+    d1=dtc<0?0:Math.min(dtc,hard-invDoy);
+    if(isOE1CSD(invDoy)&&useExt){
+      csd2=FEB1_2027; cut2=EXT_END; d2=EXT_END-EXT_START+1; extended=true;
+    } else if(hard>cut1){
+      csd2=FEB1_2027; cut2=hard; d2=Math.max(0,hard-cut1);
     } else {
-      csd2=null; daysCsd2=null;
+      csd2=null; cut2=null; d2=null;
     }
+    csd3=null; cut3=null; d3=null;
   } else {
-    csd1Cutoff=CUTOFFS[m];
-    const pastCutoff=invDoy>csd1Cutoff;
+    // pastCutoff: if invite is after this month's cutoff, anchor shifts to next month
+    const cut1raw=CUTOFFS[m];
+    const pastCutoff=invDoy>cut1raw;
+    const baseM=pastCutoff?m+1:m;
 
-    if(pastCutoff){
-      // Invite after cutoff: CSD1 is month+2, cutoff is month+1
-      const nextM=(m+1)%12;
-      csd1Cutoff=CUTOFFS[nextM]+(nextM===0?365:0);
-      csd1=fom(m+2); csd2=fom(m+3);
-      daysCsd1=Math.max(0,csd1Cutoff-invDoy);
-      daysCsd2=Math.max(0,hardClose-csd1Cutoff);
+    cut1=CUTOFFS[baseM%12]+(baseM>=12?365:0);
+    cut2=CUTOFFS[(baseM+1)%12]+(baseM+1>=12?365:0);
+
+    csd1=fom(baseM+1);
+    csd2=fom(baseM+2);
+    d1=Math.max(0,cut1-invDoy);
+
+    // Three-CSD: does the 35d window also clear cut2?
+    if(hard>cut2){
+      csd3=fom(baseM+3); cut3=hard;
+      d2=Math.max(0,cut2-cut1);
+      d3=Math.max(0,hard-cut2);
     } else {
-      csd1=fom(m+1); csd2=fom(m+2);
-      daysCsd1=Math.max(0,csd1Cutoff-invDoy);
-      daysCsd2=Math.max(0,hardClose-csd1Cutoff);
+      csd3=null; cut3=null;
+      d2=Math.max(0,hard-cut1);
+      d3=null;
     }
   }
 
-  // daysCsd1 >= 0 means cutoff day is still eligible for CSD 1
-  const twoCsd=daysCsd1>=0&&daysCsd2!=null&&daysCsd2>0;
-  const oneCsd=daysCsd1>=0&&(daysCsd2===null||daysCsd2===0);
-  const csd2only=false; // no longer needed — cutoff day gets both CSDs
-  const zeroCsd=daysCsd1<0&&(daysCsd2===null||daysCsd2===0);
+  const threeCsd=!!csd3&&d3>0;
+  const twoCsd=!threeCsd&&d1>=0&&!!csd2&&d2>0;
+  const oneCsd=d1>=0&&(!csd2||d2===0)&&!threeCsd;
+  const zeroCsd=d1<0;
 
-  // 2027 shift
+  let so=soft,ho=hard;
   if(is2027){
-    softClose_out=softClose+365; hardClose_out=hardClose+365;
-    csd1+=365; if(csd2)csd2+=365; csd1Cutoff+=365;
-  } else {
-    softClose_out=softClose; hardClose_out=hardClose;
+    so+=365; ho+=365;
+    csd1+=365; if(csd2)csd2+=365; if(csd3)csd3+=365;
+    cut1+=365; if(cut2)cut2+=365; if(cut3)cut3+=365;
   }
 
-  return{
-    invDoy, softClose:softClose_out, hardClose:hardClose_out,
-    winEnd:hardClose_out,
-    csd1Cutoff, csd1, csd2,
-    daysCsd1, daysCsd2,
-    isOE, oe1csd, isOE1CSD:isOE1CSD(effectiveDoy),
-    extended, twoCsd, oneCsd, csd2only, zeroCsd, month:m, is2027
-  };
+  return{invDoy,soft:so,hard:ho,cut1,cut2,cut3,csd1,csd2,csd3,d1,d2,d3,
+    isOE,extended,threeCsd,twoCsd,oneCsd,zeroCsd,m};
 }
 
+const DATA=[];
+function rebuild(){DATA.length=0;for(let d=1;d<=365;d++)DATA.push(calc(d));}
+rebuild();
 
-function rebuildData(){
-  DATA.length=0;
-  for(let d=1;d<=365;d++)DATA.push(calc(d));
-}
-const DATA=[];rebuildData();
-let selDoy=null,filterMode='all';
+// ── STATE ──
+let selDoy=null;
+let selMonth=0;
 
-function setToggle(val){
-  useExtension=val===1;
-  document.querySelectorAll('.tog').forEach(b=>b.classList.toggle('active',+b.dataset.t===val));
-  if(useExtension){
-    document.getElementById('tog-impact').innerHTML=
-      `<span class="delta-badge">+17 dates</span> moved from 1 CSD → 2 CSDs &nbsp;·&nbsp; 5d runway (Jan 4–8 ext)`;
-    document.getElementById('tog-desc').textContent='Jan 4–8 special extension for Feb 1 coverage — catches remaining 17 OE dates the 35d window misses';
-  } else {
-    document.getElementById('tog-impact').textContent='Nov 9–25: 35d hard close before Dec 29 — needs Jan 4–8 ext';
-    document.getElementById('tog-desc').textContent='Standard 30d window (35d with last-chance), no special extension';
-  }
-  rebuildData();
-  buildStats();
-  if(selDoy)paintCal(selDoy),updateDetail(selDoy);
-  buildTable(filterMode);
-  updateExtColumn();
-}
-
-// Stats
-function buildStats(){
-  const two=DATA.filter(r=>r.twoCsd).length;
-  const oeNeedExt=DATA.filter(r=>r.isOE1CSD&&!r.extended).length;
-  const oeGained=DATA.filter(r=>r.isOE1CSD&&r.extended).length;
-  // Steady-state 1-CSD: outside OE, only 1 CSD
-  const ssOne=DATA.filter(r=>r.oneCsd&&!r.isOE).length;
-  // OE 1-CSD: all OE dates that still have only 1 CSD (not rescued by ext or hard close)
-  const oeOne=DATA.filter(r=>r.isOE&&r.oneCsd).length;
-  const items=[
-    {val:two,
-     label:'Days with 2 CSDs',
-     sub:'Full experience · 30+5d window',
-     cls:'s-ok', filter:'2csd'},
-    {val:ssOne,
-     label:'1 CSD · steady state',
-     sub:ssOne===0?'Zero — solved by 30+5d model':'Late-month invites',
-     cls:ssOne===0?'s-ok':'s-warn', filter:'1csd'},
-    {val:DATA.filter(r=>r.isOE&&r.twoCsd).length,
-     label:'OE dates with 2 CSDs',
-     sub:useExtension?'All OE dates · incl. Jan 4–8 ext':'Nov 26–Dec 28 only · ext off',
-     cls:'s-ok', filter:'oe2csd'},
-    {val:DATA.filter(r=>r.isOE&&r.oneCsd).length,
-     label:'OE dates with 1 CSD',
-     sub:useExtension?'Nov 9–25 · covered by Jan 4–8 ext':'Nov 9–25 · no 2nd CSD available',
-     cls:DATA.filter(r=>r.isOE&&r.oneCsd).length===0?'s-ok':'s-warn', filter:'oe1csd'},
-
-  ];
-  const el=document.getElementById('stats-bar');
-  el.style.cssText='';
-  el.innerHTML=items.map(i=>`
-    <div class="stat-card ${i.cls}${filterMode===i.filter?' stat-card-active':''}"
-         onclick="setStatFilter('${i.filter}')"
-         style="cursor:pointer;transition:box-shadow .12s,transform .1s"
-         title="Filter by: ${i.label}">
-      <div class="stat-val">${i.val}</div>
-      <div class="stat-label">${i.label}</div>
-      <div class="stat-sub">${i.sub}</div>
-      <div style="font-size:9px;color:var(--text3);margin-top:4px;font-family:'JetBrains Mono',monospace;letter-spacing:.04em">click to filter ↓</div>
-    </div>`).join('');
-}
-
-// Calendar
-function buildCal(){
-  const cal=document.getElementById('cal');cal.innerHTML='';
-
-  // Days in each month for 2027 (also non-leap)
-  const DM27=[31,28,31,30,31,30,31,31,30,31,30,31];
-  const MS27=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const MO27=['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-  // Rolling window: May 2026 (m=4) through Mar 2027 (m=2 of 2027)
-  // 2026 months: May(4)..Dec(11) = 8 months
-  // 2027 months: Jan(0)..Mar(2) = 3 months
-  // Total: 11 months
-
-  // 2026 months
-  for(let m=4;m<12;m++){
-    const card=document.createElement('div');card.className='month-card';
-    const hd=document.createElement('div');hd.className='month-name';
-    hd.textContent=MS[m]+' 26';card.appendChild(hd);
-    const dwr=document.createElement('div');dwr.className='dow-row';
-    DOW_S.forEach(l=>{const s=document.createElement('div');s.className='dow-label';s.textContent=l;dwr.appendChild(s);});
-    card.appendChild(dwr);
-    const dg=document.createElement('div');dg.className='day-grid';
-    const sw=new Date(2026,m,1).getDay();
-    for(let e=0;e<sw;e++){const em=document.createElement('div');em.className='dc de';dg.appendChild(em);}
-    for(let d=1;d<=DM[m];d++){
-      const c=document.createElement('div');c.className='dc dn';
-      const dayDoy=doy(m,d);
-      c.dataset.n=dayDoy;
-      c.setAttribute('data-tip',MO[m]+' '+d+' 2026 · '+DOW_N[dow(dayDoy)]);
-      c.addEventListener('click',onDayClick);dg.appendChild(c);
-    }
-    card.appendChild(dg);cal.appendChild(card);
-  }
-
-  // 2027 months: Jan, Feb, Mar
-  // Jan 1 2027 = Friday (dow 5); each subsequent month advances by DM
-  // dow for 2027: Jan1=Fri=5, so dow2027(doy365+n) = (4+365+n-1)%7 = (368+n-1)%7
-  function dow2027(d365plus){return(4+d365plus-1)%7;}
-
-  // 2027 month starts (1-indexed days within year, offset by 365)
-  // Jan 2027 = doy 366..396 (365+1..365+31)
-  // Feb 2027 = doy 397..424
-  // Mar 2027 = doy 425..455
-  // All 2027 months as full grids — Jan/Feb/Mar
-  // Offsets: Jan=365+1..365+31, Feb=365+32..365+59, Mar=365+60..365+90
-  const months2027all=[
-    {m:0,days:31,label:'Jan 27',startDow:5,offset:365},
-    {m:1,days:28,label:'Feb 27',startDow:1,offset:396},
-    {m:2,days:31,label:'Mar 27',startDow:1,offset:424},
-  ];
-  months2027all.forEach(({m,days,label,startDow,offset})=>{
-    const card=document.createElement('div');card.className='month-card';
-    card.style.cssText='border-color:rgba(55,48,163,.2);background:rgba(238,237,254,.1)';
-    const hd=document.createElement('div');hd.className='month-name';
-    hd.style.color='var(--oe)';hd.textContent=label;card.appendChild(hd);
-    const dwr=document.createElement('div');dwr.className='dow-row';
-    DOW_S.forEach(l=>{const s=document.createElement('div');s.className='dow-label';s.textContent=l;dwr.appendChild(s);});
-    card.appendChild(dwr);
-    const dg=document.createElement('div');dg.className='day-grid';
-    for(let e=0;e<startDow;e++){const em=document.createElement('div');em.className='dc de';dg.appendChild(em);}
-    for(let d=1;d<=days;d++){
-      const absN=offset+d;
-      const c=document.createElement('div');c.className='dc dn';
-      c.dataset.n=absN;
-      c.setAttribute('data-tip',MO27[m]+' '+d+' 2027 · '+DOW_N[dow2027(absN)]);
-      c.addEventListener('click',onDayClick);dg.appendChild(c);
-    }
-    card.appendChild(dg);cal.appendChild(card);
+// ── MONTH TABS ──
+function buildMonthTabs(){
+  const el=document.getElementById('month-tabs');
+  el.innerHTML='';
+  MS.forEach((m,i)=>{
+    const b=document.createElement('button');
+    b.className='mt'+(i===selMonth?' active':'');
+    b.textContent=m;
+    b.onclick=()=>{selMonth=i;buildMonthTabs();buildDayPicker();};
+    el.appendChild(b);
   });
 }
 
-function paintCal(inv){
-  // Clear all annotations
-  document.querySelectorAll('.dc[data-n]').forEach(c=>{
-    c.className='dc dn';
-    const n=+c.dataset.n;
-    const x=fd(n);
-    c.setAttribute('data-tip',MO[x.m]+' '+x.d+' · '+DOW_N[dow(n)]);
-  });
-  // Remove any month-level annotations
-  document.querySelectorAll('.cal-month-note').forEach(el=>el.remove());
-
-  if(!inv)return;
-  const r=calc(inv);
-
-  // Helper: map doy (which may be >365 for cross-year) to calendar cell
-  // doys > 365 wrap into Jan of next year — map back to Jan doy (1–31)
-  function getDayCell(targetDoy){
-    const calDoy = targetDoy > 365 ? targetDoy - 365 : targetDoy;
-    return document.querySelector('.dc[data-n="'+calDoy+'"]');
-  }
-
-  document.querySelectorAll('.dc[data-n]').forEach(c=>{
-    const n=+c.dataset.n;
-    const x=fd(n);
-    const base=MO[x.m]+' '+x.d+' ('+DOW_N[dow(n)]+')';
-
-    // Direct comparison: cells have data-n = doy (1-365 for 2026, 366+ for 2027)
-    // All r.* values are also in this absolute doy space — compare directly
-    if(n===inv){
-      c.className='dc di dsel';
-      c.setAttribute('data-tip','📅 Invite date · '+base);
-    } else if(n===r.csd1){
-      c.className='dc dc1';
-      const yr=r.csd1>365?' 2027':'';
-      c.setAttribute('data-tip','⭐ CSD 1 · Coverage starts '+base+yr);
-    } else if(r.csd2&&n===r.csd2){
-      c.className='dc dc2';
-      const yr=r.csd2>365?' 2027':'';
-      c.setAttribute('data-tip','⭐ CSD 2 · Coverage starts '+base+yr);
-    } else if(n===r.csd1Cutoff){
-      c.className='dc dco';
-      c.setAttribute('data-tip','✂️ Processing cutoff · '+base+' · Enroll by here for CSD 1');
-    } else if(n>inv&&n<r.csd1Cutoff&&n<=r.hardClose){
-      // CSD1 zone: after invite, before cutoff, within full 35-day window
-      c.className='dc dw1';
-      const daysLeft=r.csd1Cutoff-n;
-      c.setAttribute('data-tip','Enroll → CSD 1 · '+base+' · '+daysLeft+'d until cutoff');
-    } else if(n>r.csd1Cutoff&&n<=r.softClose){
-      // CSD2 zone within marketed 30-day window
-      c.className='dc dw2';
-      const daysLeft=r.softClose-n;
-      c.setAttribute('data-tip','Enroll → CSD 2 · '+base+(daysLeft>0?' · '+daysLeft+'d to soft close':''));
-    } else if(n>r.softClose&&n<=r.hardClose){
-      // Last-chance zone: days 31-35
-      c.className='dc dlc';
-      const daysLeft=r.hardClose-n;
-      c.setAttribute('data-tip','⚡ Last chance · '+base+' · day '+(n-r.invDoy+1)+' of 35'+(daysLeft>0?' · '+daysLeft+'d left':''));
-    } else if(r.extended&&n>=EXT_START&&n<=EXT_END){
-      // Special extension window: Jan 4-8 2027
-      c.className='dc dw2';
-      const extDay=n-365;
-      c.setAttribute('data-tip','✦ Special ext · Jan '+extDay+' 2027 · enroll here → Feb 1 coverage');
-    }
-  });
-
-  // Special extension: highlight Jan 4-8 on the calendar as a preview
-  if(r.extended){
-    // Jan 2027 is always visible in the calendar — no special action needed
-  }
-
-  // Cross-year wrap annotation on December card
-  if(r.winEnd>365){
-    const decCard=document.querySelectorAll('.month-card')[11];
-    if(decCard){
-      const note=document.createElement('div');
-      note.className='cal-month-note';
-      note.style.cssText='font-size:9px;color:var(--text3);font-family:"JetBrains Mono",monospace;margin-top:4px;padding:3px 6px;background:var(--surface2);border-radius:3px;text-align:center';
-      note.textContent='→ window continues Jan '+fmt(r.winEnd);
-      decCard.appendChild(note);
-    }
+// ── DAY PICKER ──
+function buildDayPicker(){
+  const el=document.getElementById('day-picker');
+  el.innerHTML='';
+  const m=selMonth;
+  const cut=CUTOFFS[m];
+  for(let d=1;d<=DM[m];d++){
+    const dayN=doy(m,d);
+    const btn=document.createElement('button');
+    const isbal=isBalanced(dayN);
+    btn.className='dp'+(dayN===selDoy?' sel':'')+(dayN===cut?' is-cutoff':'');
+    btn.textContent=d;
+    btn.title=MS[m]+' '+d+(dayN===cut?' · cutoff':'');
+    btn.onclick=()=>selectDay(dayN);
+    el.appendChild(btn);
   }
 }
 
-
-function insightText(r){
-  if(r.extended) return{cls:'good',text:`OE extension active: ${r.daysCsd1}d for Jan 1 (CSD 1), then 5d (Special extension) for Feb 1 (CSD 2). Special extension gives procrastinators a second chance.`};
-  if(r.zeroCsd) return{cls:'danger',text:`Invite falls after the processing cutoff — no CSD lands in the 31-day window.`};
-  if(r.isOE&&!r.csd2) return{cls:'warn',text:`OE period: only Jan 1 is available. Feb 1 falls outside the window. Enable the Special extensionension to add CSD 2.`};
-  if(r.oneCsd&&r.daysCsd1<=5) return{cls:'danger',text:`Only ${r.daysCsd1} day${r.daysCsd1===1?'':'s'} to enroll for CSD 1. Very tight — most employees will miss it.`};
-  if(r.oneCsd) return{cls:'warn',text:`Only CSD 1 reachable. Employees who miss ${fmt(r.csd1Cutoff)} have no second option in this window.`};
-  if(r.twoCsd&&r.daysCsd1<=3) return{cls:'warn',text:`CSD 1 runway is very short (${r.daysCsd1}d). Most enrollment will flow to CSD 2 (${r.daysCsd2}d).`};
-  if(r.twoCsd&&r.daysCsd2<=3) return{cls:'warn',text:`CSD 2 runway is thin (${r.daysCsd2}d). Procrastinators won't have much buffer.`};
-  if(r.twoCsd) return{cls:'good',text:`Well-distributed: ${r.daysCsd1}d for CSD 1, ${r.daysCsd2}d for CSD 2. Strong two-CSD experience.`};
-  return null;
-}
-
-function updateDetail(inv){
-  if(!inv){
-    document.getElementById('det-empty').style.display='block';
-    document.getElementById('det-content').style.display='none';
-    return;
-  }
-  const r=calc(inv);
-  document.getElementById('det-empty').style.display='none';
-  document.getElementById('det-content').style.display='block';
-  let badge='';
-  if(r.twoCsd) badge=`<span class="badge badge-ok">2 CSDs in window</span>`;
-  else if(r.oneCsd) badge=`<span class="badge badge-warn">1 CSD only</span>`;
-  else badge=`<span class="badge badge-danger">0 CSDs</span>`;
-  if(r.isOE) badge+=` <span class="badge badge-oe">OE</span>`;
-  if(r.extended) badge+=` <span class="badge badge-ok">Special ext ✦</span>`;
-  document.getElementById('d-badges').innerHTML=badge;
-  document.getElementById('d-invite').innerHTML=fmt(r.invDoy)+'<br><small style="color:var(--text3);font-size:10px">'+DOW_N[dow(r.invDoy)]+'</small>';
-  document.getElementById('d-close').innerHTML=fmt(r.winEnd)+(r.extended?' ✦':'')+'<br><small style="color:var(--text3);font-size:10px">'+DOW_N[dow(r.winEnd)]+'</small>';
-  document.getElementById('d-hard-close').innerHTML=fmt(r.hardClose)+'<br><small style="color:var(--text3);font-size:10px">'+DOW_N[dow(r.hardClose%365||r.hardClose)]+'</small>';
-  document.getElementById('d-cut').innerHTML=fmt(r.csd1Cutoff)+'<br><small style="color:var(--text3);font-size:10px">'+DOW_N[dow(r.csd1Cutoff)]+'</small>';
-  document.getElementById('d-days1').textContent=r.daysCsd1>0?r.daysCsd1+'d to cutoff':'past cutoff';
-  document.getElementById('d-csd1').textContent=fmt(r.csd1);
-  // CSD 2 cutoff = window close date (invite + 30 days), or special extension end
-  const csd2CutoffStr = r.csd2
-    ? (r.extended ? 'Jan 8 2027' : fmt(r.winEnd))
-    : 'N/A';
-  const csd2CutoffDow = r.csd2
-    ? (r.extended ? 'Thu' : DOW_N[dow(r.winEnd)])
-    : '';
-  document.getElementById('d-cut2').innerHTML = r.csd2
-    ? csd2CutoffStr+'<br><small style="color:var(--text3);font-size:10px">'+csd2CutoffDow+(r.extended?' · special extension':'')+'</small>'
-    : 'N/A';
-  document.getElementById('d-days2').textContent=r.daysCsd2===null?'N/A':(r.daysCsd2>0?r.daysCsd2+'d to window close':'0d');
-  document.getElementById('d-csd2').textContent=r.csd2?fmt(r.csd2):'N/A';
-  const ins=insightText(r);
-  document.getElementById('d-insight').innerHTML=ins?`<div class="insight ${ins.cls}">${ins.text}</div>`:'';
-
-  // Wire card clicks to highlight corresponding calendar cell
-  const cardMap = {
-    'd-invite': inv,
-    'd-close': r.winEnd,
-    'd-cut':   r.csd1Cutoff,
-    'd-csd1':  r.csd1,
-    'd-cut2':  r.winEnd,
-    'd-csd2':  r.csd2,
-  };
-  Object.entries(cardMap).forEach(([cardId, targetDoy])=>{
-    const card = document.getElementById(cardId)?.closest('.det-card');
-    if(!card || !targetDoy) return;
-    card.style.cursor='pointer';
-    card.onclick = ()=>{
-      document.querySelectorAll('.dc-card-focus').forEach(c=>c.classList.remove('dc-card-focus'));
-      const target = document.querySelector(`.dc[data-n="${targetDoy}"]`);
-      if(target){
-        target.classList.add('dc-card-focus');
-        target.scrollIntoView({block:'nearest', behavior:'smooth'});
-        setTimeout(()=>target.classList.remove('dc-card-focus'), 2000);
-      }
-    };
-  });
-}
-
-function dayBarHTML(days,max,color){
-  if(days===null||days===undefined) return`<span class="td-na">N/A</span>`;
-  if(days===0) return`<span class="td-danger">0</span>`;
-  const w=Math.round(days/max*60);
-  const cls=days>=15?'td-good':days>=7?'td-mid':'td-warn';
-  return`<div class="day-bar-wrap"><div class="day-bar" style="width:${w}px;background:${color}"></div><span class="${cls} day-num">${days}</span></div>`;
-}
-
-function buildTable(filter){
-  const tbody=document.getElementById('tbl-body');tbody.innerHTML='';
-  const filtered=DATA.filter(r=>{
-    if(filter==='oe') return r.isOE;
-    if(filter==='1csd') return r.oneCsd;
-    if(filter==='2csd') return r.twoCsd;
-    if(filter==='oe2csd') return r.isOE&&r.twoCsd;
-    if(filter==='oe1csd') return r.isOE&&r.oneCsd;
-    if(filter==='0csd') return r.csd2only||r.zeroCsd;
-    return true;
-  });
-  document.getElementById('tbl-counts').textContent=filtered.length+' dates';
-  filtered.forEach(r=>{
-    const tr=document.createElement('tr');
-    if(r.isOE)tr.classList.add('row-oe');
-    if(selDoy===r.invDoy)tr.classList.add('row-selected');
-    const extMark=r.extended?` <span style="font-size:9px;color:var(--oe)">✦</span>`:'';
-    const isExt=r.isOE1CSD&&useExtension;
-    const extBg=isExt?'background:var(--oe-bg);border-left:2px solid var(--oe);':'';
-    const extContent=isExt
-      ?'<span style="font-family:JetBrains Mono,monospace;font-weight:600;color:#3730A3">Jan 4–Jan 8</span>'
-      :'<span style="color:#a0a09a">—</span>';
-    const csd2Cell=r.csd2?fmt(r.csd2)+'<span class="dow"> '+DOW_N[dow(r.csd2)]+'</span>':'<span class="td-na">N/A</span>';
-    const days2Cell=r.daysCsd2===null?'<span class="td-na">N/A</span>':dayBarHTML(r.daysCsd2,30,'var(--w2-dk)');
-    tr.innerHTML=
-      '<td><mono>'+fmt(r.invDoy)+'</mono>'+dowTag(r.invDoy)+(r.isOE?'<span class="td-oe">OE</span>':'')+extMark+'</td>'+
-      '<td><mono>'+fmt(r.softClose)+'</mono>'+dowTag(r.softClose)+'</td>'+
-      '<td><mono style="color:var(--warn)">'+fmt(r.hardClose)+'</mono>'+dowTag(r.hardClose)+'</td>'+
-      '<td><mono>'+fmt(r.csd1Cutoff)+'</mono>'+dowTag(r.csd1Cutoff)+'</td>'+
-      '<td><mono>'+fmt(r.csd1)+'</mono></td>'+
-      '<td>'+dayBarHTML(r.daysCsd1,30,'var(--w1-dk)')+'</td>'+
-      '<td id="ext-td-'+r.invDoy+'" style="display:none;'+extBg+'white-space:nowrap">'+extContent+'</td>'+
-      '<td><mono>'+csd2Cell+'</mono></td>'+
-      '<td>'+days2Cell+'</td>';
-    tr.addEventListener('click',()=>{
-      selDoy=r.invDoy;paintCal(selDoy);updateDetail(selDoy);buildTable(filterMode);
-      document.querySelector('tr.row-selected')?.scrollIntoView({block:'nearest'});
-    });
-    tbody.appendChild(tr);
-  });
-  // Always sync ext column visibility after table is rendered
-  updateExtColumn();
-}
-
-function onDayClick(e){
-  const n=+e.currentTarget.dataset.n;
-  if(selDoy===n){
-    // Deselect
-    selDoy=null;
-    paintCal(null);updateDetail(null);buildTable(filterMode);
-    return;
-  }
+// ── SELECT DAY ──
+function selectDay(n){
   selDoy=n;
-  paintCal(selDoy);updateDetail(selDoy);buildTable(filterMode);
-  // Only scroll table for 2026 dates that appear in it
-  if(n<=365) document.querySelector('tr.row-selected')?.scrollIntoView({block:'nearest'});
+  const x=fd(n);selMonth=x.m;
+  buildMonthTabs();buildDayPicker();
+  renderExplainer();
 }
 
-function updateExtColumn(){
-  const show = useExtension;
-  const head = document.getElementById('ext-col-head');
-  if(head) head.style.display = show ? '' : 'none';
-  document.querySelectorAll('[id^="ext-td-"]').forEach(td => td.style.display = show ? '' : 'none');
+// ── RENDER EXPLAINER ──
+function renderExplainer(){
+  if(!selDoy){document.getElementById('explainer').style.display='none';return;}
+  const r=calc(selDoy);
+  document.getElementById('explainer').style.display='block';
+
+  const x=fd(selDoy);
+  document.getElementById('ex-date').textContent=MS[x.m]+' '+x.d+', 2026';
+  const cutNote=document.getElementById('ex-cutoff-note');
+  cutNote.style.display=(selDoy===r.cut1)?'inline-flex':'none';
+
+  renderTimeline(r);
+  renderCsdCards(r);
+  renderRuleBox(r);
+
+  if(document.getElementById('cal-collapse').classList.contains('open')) renderMiniCal();
 }
 
-function setStatFilter(f){
-  // Toggle off if already active
-  if(filterMode===f){ f='all'; }
-  filterMode=f;
-  document.querySelectorAll('.fb').forEach(b=>b.classList.toggle('active',b.dataset.f===f));
-  buildTable(f);
-  buildStats(); // re-render cards to update active state
-  // Scroll to table
-  document.getElementById('main-table')?.scrollIntoView({behavior:'smooth',block:'start'});
-}
+// ── TIMELINE ──
+function renderTimeline(r){
+  const outer=document.getElementById('tl-outer');
+  const track=document.getElementById('tl-track');
+  const total=35;
 
-document.querySelectorAll('.fb').forEach(btn=>{
-  btn.addEventListener('click',function(){
-    document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
-    this.classList.add('active');filterMode=this.dataset.f;buildTable(filterMode);
-    buildStats(); // sync card active states
+  outer.querySelectorAll(':scope > *:not(#tl-track)').forEach(e=>e.remove());
+  track.innerHTML='';
+  track.style.cssText='position:absolute;top:30px;left:0;right:0;height:20px;border-radius:5px;overflow:visible;display:flex;';
+  outer.style.height='94px';
+
+  // Segment widths: use exact day offsets from invite so dividers align with color changes
+  // cut1offset = days from invite to cut1 (e.g. d1=5 means cut1 is 5 days away, seg1=5 days wide)
+  // The invite day itself is day 0 in the bar; cut1 is at position d1; cut2 at cut2-inv; hard at 34
+  const cut1offset = r.d1;          // position of cut1 divider in 0..34 space
+  const cut2offset = r.threeCsd ? r.cut2 - r.invDoy : null;
+  const hardOffset = 34;            // always day 35 = index 34
+
+  let segs;
+  if(r.threeCsd){
+    segs=[
+      {cls:'tl-seg-1', w:cut1offset,                        days:r.d1+1, csdLabel:fmt(r.csd1)},
+      {cls:'tl-seg-2', w:cut2offset - cut1offset,            days:r.d2,   csdLabel:fmt(r.csd2)},
+      {cls:'tl-seg-3', w:hardOffset - cut2offset + 1,        days:r.d3,   csdLabel:fmt(r.csd3)},
+    ];
+  } else {
+    segs=[
+      {cls:'tl-seg-1', w:cut1offset,                        days:r.d1+1, csdLabel:fmt(r.csd1)},
+      {cls:'tl-seg-2', w:hardOffset - cut1offset + 1,        days:r.d2||0,csdLabel:r.csd2?fmt(r.csd2):''},
+    ];
+  }
+
+  // z1days still used for label positioning — keep as cut1offset+1 for label centering
+  const z1days = cut1offset + 1;
+  segs.filter(s=>s.w>0).forEach((s,i,arr)=>{
+    const div=document.createElement('div');
+    const isFirst=i===0, isLast=i===arr.length-1;
+    const br=`border-radius:${isFirst?'5px':0} ${isLast?'5px':0} ${isLast?'5px':0} ${isFirst?'5px':0}`;
+    div.className='tl-seg '+s.cls;
+    div.style.cssText=`width:${(s.w/total*100).toFixed(3)}%;position:relative;height:100%;${br};transition:filter .15s;`;
+    track.appendChild(div);
   });
-});
 
+  // Hover pills rendered in outer (not inside segments) so they're never clipped
+  // Each pill sits centered over its segment range
+  let segStart=0;
+  segs.filter(s=>s.w>0).forEach((s,i)=>{
+    const segEnd=segStart+s.w;
+    const segMidPct=((segStart+segEnd)/2/total*100).toFixed(2)+'%';
+    segStart=segEnd;
+    if(!s.days||!s.csdLabel) return;
 
-// ── COMMENT SYSTEM v2 ──
-// Architecture:
-// - One data model: comments[] persisted to localStorage
-// - Pins stored as {containerId, relX, relY} — coords relative to their scroll container
-// - Pins rendered as position:fixed, recomputed from container rect on every scroll/resize
-// - Tab isolation: each pin stores the erType it was placed on
-// - Name persisted to localStorage, single source of truth, synced across all inputs
-// - All mutations go through saveComments() which re-renders everything
+    // Pill element in outer
+    const pill=document.createElement('div');
+    pill.style.cssText=`position:absolute;top:30px;left:${segMidPct};transform:translateX(-50%);
+      font-size:10px;font-family:'DM Mono',monospace;font-weight:600;letter-spacing:.02em;
+      color:var(--ink);white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none;
+      background:rgba(255,255,255,0.95);border:1px solid var(--rule2);border-radius:4px;
+      padding:1px 8px;height:20px;line-height:18px;z-index:20;box-shadow:0 1px 4px rgba(0,0,0,.1);`;
+    pill.textContent=s.days+'d → '+s.csdLabel;
+    outer.appendChild(pill);
 
-const CS = (() => {
-  // ── STATE ──
-  const STORAGE_KEY = 'ew_comments_v3';
-  const NAME_KEY    = 'ew_commenter_name';
-  let comments      = [];
-  let commentMode   = false;
-  let activePinId   = null;
-  let panelOpen     = false;
-  let cFilter       = 'open';
-
-  // ── PERSISTENCE ──
-  function persist() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(comments)); } catch(e) {}
-    render();
-  }
-
-  function load() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      comments = raw ? JSON.parse(raw) : [];
-    } catch(e) { comments = []; }
-    // Migrate old comments that have no tab field
-    comments.forEach(c => { if (!c.tab) c.tab = 'new'; });
-    render();
-  }
-
-  // ── NAME ──
-  function getName() {
-    return (document.getElementById('cp-name')?.value?.trim()) ||
-           (document.getElementById('pp-name-input')?.value?.trim()) ||
-           (() => { try { return localStorage.getItem(NAME_KEY) || ''; } catch(e) { return ''; } })();
-  }
-
-  function setName(val) {
-    const v = (val || '').trim();
-    try { localStorage.setItem(NAME_KEY, v); } catch(e) {}
-    const cp = document.getElementById('cp-name');
-    const pp = document.getElementById('pp-name-input');
-    if (cp && cp.value !== v) cp.value = v;
-    if (pp && pp.value !== v) pp.value = v;
-  }
-
-  function loadName() {
-    try {
-      const n = localStorage.getItem(NAME_KEY) || '';
-      const cp = document.getElementById('cp-name');
-      const pp = document.getElementById('pp-name-input');
-      if (cp) cp.value = n;
-      if (pp) pp.value = n;
-    } catch(e) {}
-  }
-
-  // ── PIN COORDINATE SYSTEM ──
-  // We store coords relative to the nearest scroll container with an id.
-  // On render, we convert back to fixed viewport coords via container.getBoundingClientRect().
-  // This means pins naturally scroll with their container.
-
-  function findScrollContainer(el) {
-    let cur = el?.parentElement;
-    while (cur && cur !== document.body) {
-      if (cur.id) {
-        const st = window.getComputedStyle(cur);
-        const overflows = ['auto', 'scroll'];
-        if ((overflows.includes(st.overflowY) || overflows.includes(st.overflow)) &&
-            cur.scrollHeight > cur.clientHeight + 2) {
-          return cur;
-        }
-      }
-      cur = cur.parentElement;
-    }
-    return null;
-  }
-
-  function captureCoords(e) {
-    const container = findScrollContainer(e.target);
-    if (container) {
-      const rect = container.getBoundingClientRect();
-      return {
-        containerId: container.id,
-        relX: e.clientX - rect.left + container.scrollLeft,
-        relY: e.clientY - rect.top  + container.scrollTop,
-        // fallback for resize detection
-        containerW: container.scrollWidth,
-        containerH: container.scrollHeight,
-      };
-    }
-    // No scroll container — store as fraction of viewport (stable across resize)
-    return {
-      containerId: null,
-      relX: e.clientX / window.innerWidth,
-      relY: e.clientY / window.innerHeight,
-      containerW: null,
-      containerH: null,
-    };
-  }
-
-  function pinToViewport(c) {
-    if (c.containerId) {
-      const el = document.getElementById(c.containerId);
-      if (!el) return null;
-      const rect = el.getBoundingClientRect();
-      const x = rect.left + c.relX - el.scrollLeft;
-      const y = rect.top  + c.relY - el.scrollTop;
-      // Clamp visibility: hide if scrolled out of container
-      const visible = x >= rect.left - 12 && x <= rect.right + 12 &&
-                      y >= rect.top  - 12 && y <= rect.bottom + 12;
-      return { x, y, visible };
-    }
-    // Viewport-fraction fallback
-    return {
-      x: c.relX * window.innerWidth,
-      y: c.relY * window.innerHeight,
-      visible: true,
-    };
-  }
-
-  // ── PIN MODE ──
-  function enterCommentMode() {
-    commentMode = true;
-    document.body.classList.add('comment-mode');
-    document.getElementById('comment-mode-bar')?.classList.add('active');
-    closePopover();
-  }
-
-  function exitCommentMode() {
-    commentMode = false;
-    document.body.classList.remove('comment-mode');
-    document.getElementById('comment-mode-bar')?.classList.remove('active');
-  }
-
-  function onPageClick(e) {
-    if (!commentMode) return;
-    const ignored = ['.comment-mode-bar', '.pin-popover', '.pin', '#fab-container'];
-    if (ignored.some(sel => e.target.closest(sel))) return;
-    e.stopPropagation();
-
-    const coords = captureCoords(e);
-    const name   = getName() || 'Anonymous';
-    const pinNum = comments.filter(c => c.pin).length + 1;
-    const id     = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-
-    const comment = {
-      id, author: name, text: '', ts: Date.now(),
-      status: 'open', pin: true, pinNum,
-      tab: window._erType || 'new',
-      context: getCurrentContext(),
-      replies: [],
-      ...coords,
-    };
-
-    comments.push(comment);
-    persist();
-    exitCommentMode();
-
-    // Pulse animation at click point
-    const pulse = Object.assign(document.createElement('div'), { className: 'pin-pulse' });
-    Object.assign(pulse.style, { left: e.clientX + 'px', top: e.clientY + 'px' });
-    document.body.appendChild(pulse);
-    setTimeout(() => pulse.remove(), 1400);
-
-    setTimeout(() => openPopover(id), 80);
-  }
-
-  // ── RENDER PINS ──
-  function renderPins() {
-    document.querySelectorAll('.pin').forEach(p => p.remove());
-    const currentTab = window._erType || 'new';
-    comments
-      .filter(c => c.pin && c.tab === currentTab)
-      .forEach(c => {
-        const vp = pinToViewport(c);
-        if (!vp) return;
-
-        const pin = document.createElement('div');
-        pin.className = 'pin' + (c.status === 'resolved' ? ' resolved' : c.status === 'dismissed' ? ' dismissed' : '');
-        pin.textContent = c.pinNum;
-        pin.dataset.id  = c.id;
-        pin.title       = `Pin #${c.pinNum} — ${c.author}`;
-        Object.assign(pin.style, {
-          left:    vp.x + 'px',
-          top:     vp.y + 'px',
-          display: vp.visible ? 'flex' : 'none',
-        });
-        pin.addEventListener('click', evt => { evt.stopPropagation(); openPopover(c.id); });
-        document.body.appendChild(pin);
-      });
-  }
-
-  // Re-render on any scroll event (captures inner scroll containers)
-  window.addEventListener('scroll', renderPins, { capture: true, passive: true });
-  window.addEventListener('resize', renderPins, { passive: true });
-
-  // ── POPOVER ──
-  function openPopover(cid) {
-    activePinId = cid;
-    const c = comments.find(x => x.id === cid);
-    if (!c) return;
-
-    const pop = document.getElementById('pin-popover');
-    if (!pop) return;
-
-    // Header
-    document.getElementById('pp-num').textContent = c.pinNum;
-    document.getElementById('pp-head-text').textContent = c.context || 'General comment';
-
-    // Pre-fill name
-    const storedName = getName();
-    const ppName = document.getElementById('pp-name-input');
-    if (ppName) {
-      ppName.value = storedName;
-      ppName.style.borderColor = storedName ? 'var(--border2)' : '#f59e0b';
-    }
-
-    // Body: thread
-    let bodyHTML = '';
-    if (!c.text && !(c.replies?.length)) {
-      bodyHTML = '<div class="pp-empty">Drop a note below ↓</div>';
-    } else {
-      if (c.text) bodyHTML += threadItem(c.author, c.text, c.ts, null, cid, -1);
-      (c.replies || []).forEach((rp, ri) => {
-        bodyHTML += threadItem(rp.author, rp.text, rp.ts, true, cid, ri);
-      });
-    }
-
-    // Actions
-    const actions = c.status === 'open'
-      ? `<div class="pp-actions">
-          <button class="pp-btn secondary ok"    onclick="CS.resolve('${cid}')">✓ Resolve</button>
-          <button class="pp-btn secondary danger" onclick="CS.dismiss('${cid}')">✕ Dismiss</button>
-          <button class="pp-btn secondary"        onclick="CS.deletePin('${cid}')">🗑</button>
-        </div>`
-      : `<div class="pp-actions">
-          <button class="pp-btn secondary" onclick="CS.reopen('${cid}')">↩ Reopen</button>
-          <button class="pp-btn secondary" onclick="CS.deletePin('${cid}')">🗑</button>
-        </div>`;
-
-    document.getElementById('pp-body').innerHTML = bodyHTML + actions;
-    document.getElementById('pp-textarea').value = '';
-
-    // Position: prefer right of pin, flip left if near edge
-    const pinEl = document.querySelector(`.pin[data-id="${cid}"]`);
-    let left, top;
-    if (pinEl) {
-      const pr = pinEl.getBoundingClientRect();
-      left = pr.right + 10;
-      top  = pr.top - 10;
-      if (left + 300 > window.innerWidth)  left = pr.left - 310;
-      if (top  + 340 > window.innerHeight) top  = window.innerHeight - 350;
-      if (top < 10) top = 10;
-      if (left < 8) left = 8;
-    } else {
-      left = window.innerWidth / 2 - 145;
-      top  = window.innerHeight / 2 - 170;
-    }
-    Object.assign(pop.style, { position: 'fixed', left: left + 'px', top: top + 'px' });
-    pop.classList.add('open');
-  }
-
-  function threadItem(author, text, ts, isReply, cid, ri) {
-    const del = isReply
-      ? `<span class="pp-ci-del" onclick="CS.deleteReply('${cid}',${ri})">✕</span>`
-      : '';
-    const indent = isReply ? 'style="padding-left:10px;border-left:2px solid var(--border2)"' : '';
-    return `<div class="pp-comment-item" ${indent}>
-      <span class="pp-ci-author">${author}</span>
-      <span class="pp-ci-time">${timeAgo(ts)}</span>${del}
-      <div class="pp-ci-text">${text}</div>
-    </div>`;
-  }
-
-  function closePopover() {
-    document.getElementById('pin-popover')?.classList.remove('open');
-    activePinId = null;
-  }
-
-  // Close popover on outside click
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.pin-popover') && !e.target.closest('.pin') && !commentMode) {
-      closePopover();
+    // Find the corresponding segment div in track and wire hover
+    const segDiv=track.children[i];
+    if(segDiv){
+      segDiv.style.cursor='default';
+      segDiv.addEventListener('mouseenter',()=>{pill.style.opacity='1';segDiv.style.filter='brightness(.93)';});
+      segDiv.addEventListener('mouseleave',()=>{pill.style.opacity='0';segDiv.style.filter='';});
     }
   });
 
-  function submitPinComment() {
-    const text = document.getElementById('pp-textarea')?.value.trim();
-    if (!text || !activePinId) return;
-    // Sync name from popover field
-    const ppName = document.getElementById('pp-name-input')?.value.trim();
-    if (ppName) setName(ppName);
-    const name = getName() || 'Anonymous';
-    const c = comments.find(x => x.id === activePinId);
-    if (!c) return;
-    if (!c.text) {
-      c.text = text; c.author = name;
-    } else {
-      if (!c.replies) c.replies = [];
-      c.replies.push({ author: name, text, ts: Date.now() });
+  const pctEdge=d=>(d/total*100).toFixed(2)+'%';
+
+  function mkLabel(left,top,html,align='center',color='var(--ink2)',size='10px'){
+    const el=document.createElement('div');
+    const xform=align==='left'?'none':align==='right'?'translateX(-100%)':'translateX(-50%)';
+    el.style.cssText=`position:absolute;left:${left};top:${top};transform:${xform};
+      font-size:${size};font-family:'DM Mono',monospace;color:${color};
+      white-space:nowrap;font-weight:500;letter-spacing:.02em;pointer-events:none;line-height:1;`;
+    el.innerHTML=html;
+    outer.appendChild(el);
+  }
+
+  function mkDivider(left,topPx,heightPx,color='rgba(0,0,0,0.18)'){
+    const el=document.createElement('div');
+    el.style.cssText=`position:absolute;left:${left};top:${topPx}px;width:1.5px;height:${heightPx}px;
+      background:${color};transform:translateX(-50%);pointer-events:none;z-index:2;`;
+    outer.appendChild(el);
+  }
+
+  // No invite marker circle — position is already communicated by the bar starting at day 0
+
+  // Hover pills: one per segment, but render them inside outer (not clipped by segment width)
+  // We'll add them after building segments, positioned absolutely over the bar
+  const segPills = [];
+
+  // CSD labels above track
+  function clampedMid(s,e){return(Math.min((s+e)/2,e-0.5)/total*100).toFixed(2)+'%';}
+  const z2end=r.threeCsd?z1days+r.d2:total;
+
+  mkLabel(clampedMid(0,z1days),'8px',fmt(r.csd1),'center','var(--ink)','11px');
+
+  if(r.csd2){
+    const z2mid=(z1days+z2end)/2;
+    if(z2mid<=27&&z2end-z1days>=4){
+      mkLabel((z2mid/total*100).toFixed(2)+'%','8px',fmt(r.csd2),'center','var(--ink)','11px');
+    } else if(z2end-z1days>=4){
+      mkLabel(pctEdge(Math.min(z2end,30)),'8px',fmt(r.csd2),'right','var(--ink)','11px');
     }
-    document.getElementById('pp-textarea').value = '';
-    persist();
-    openPopover(activePinId);
   }
 
-  // ── PANEL ──
-  function togglePanel() {
-    panelOpen = !panelOpen;
-    document.getElementById('comment-panel')?.classList.toggle('open', panelOpen);
-    if (panelOpen) render();
+  if(r.threeCsd&&r.csd3){
+    const z3start=z1days+r.d2;
+    const z3width=r.d3||0;
+    if(z3width>=3){
+      const z3mid=Math.min((z3start+total)/2,total-3);
+      mkLabel((z3mid/total*100).toFixed(2)+'%','8px',fmt(r.csd3),'center','var(--ink)','11px');
+    }
   }
 
-  function setCFilter(el, f) {
-    document.querySelectorAll('.cpf').forEach(b => b.classList.remove('active'));
-    el?.classList.add('active');
-    cFilter = f;
-    renderComments();
-  }
+  // Structural markers below — use same offset space as segments
+  const cut1Label = r.d1===0 ? 'cutoff&nbsp;·&nbsp;day&nbsp;1' : 'cutoff&nbsp;·&nbsp;day&nbsp;'+(cut1offset+1);
+  mkDivider(pctEdge(cut1offset),26,32);
+  mkLabel(pctEdge(cut1offset),'62px',cut1Label,r.d1===0?'left':'center','var(--ink3)','10px');
 
-  function updateFab() {
-    const n = comments.filter(c => c.status === 'open').length;
-    const el = document.getElementById('fab-count');
-    if (el) el.textContent = n || '';
+  if(r.threeCsd&&cut2offset!==null){
+    mkDivider(pctEdge(cut2offset),26,32,'rgba(0,0,0,0.12)');
+    const nearSoft=Math.abs(cut2offset-29)<=3;
+    mkLabel(pctEdge(cut2offset),nearSoft?'78px':'62px','cutoff&nbsp;2&nbsp;·&nbsp;day&nbsp;'+(cut2offset+1),'center','var(--ink3)','10px');
+    const cut2NearSoft=nearSoft;
+    if(cut2NearSoft) outer.style.height='110px';
   }
+}
 
-  // ── COMMENT PANEL RENDER ──
-  function renderComments() {
-    const list = document.getElementById('cp-list');
-    if (!list) return;
-    const visible = comments
-      .filter(c => cFilter === 'all' ? true : c.status === cFilter)
-      .sort((a, b) => b.ts - a.ts);
-    if (!visible.length) {
-      list.innerHTML = `<div class="cp-empty">${cFilter === 'open' ? 'No open comments yet.' : 'Nothing here.'}</div>`;
+// ── CSD CARDS ──
+function renderCsdCards(r){
+  const el=document.getElementById('csd-cards');
+  const cols=r.threeCsd?'1fr 1fr 1fr':'1fr 1fr';
+  el.style.gridTemplateColumns=cols;
+  el.innerHTML='';
+
+  function card(num,cls,csd,days,note){
+    if(!csd){
+      el.innerHTML+='<div class="csd-card empty c'+num+'"><div class="csd-card-num">CSD '+num+'</div><div style="font-size:13px;color:var(--ink3);margin-top:4px">Not available</div></div>';
       return;
     }
-    list.innerHTML = visible.map(c => {
-      const pinTag = c.pin
-        ? `<span style="font-size:9px;background:#dbeafe;color:#1d4ed8;padding:1px 5px;border-radius:3px;font-family:'JetBrains Mono',monospace;margin-left:4px">📍${c.pinNum}</span>`
-        : '';
-      const statusTag = c.status === 'resolved'
-        ? '<span class="resolved-tag">resolved</span>'
-        : c.status === 'dismissed' ? '<span class="dismissed-tag">dismissed</span>' : '';
-      const repliesHTML = (c.replies || []).map((rp, ri) => `
-        <div class="cc-reply">
-          <span class="cc-reply-author">${rp.author}</span>
-          <span class="cc-reply-time">${timeAgo(rp.ts)}</span>
-          <span class="cc-reply-del" onclick="CS.deleteReply('${c.id}',${ri})">✕</span>
-          <div class="cc-reply-body">${rp.text}</div>
-        </div>`).join('');
-      const actions = c.status === 'open'
-        ? `<button class="cc-btn resolve"  onclick="CS.resolve('${c.id}')">✓ Resolve</button>
-           <button class="cc-btn dismiss"  onclick="CS.dismiss('${c.id}')">✕ Dismiss</button>
-           ${c.pin ? `<button class="cc-btn" onclick="CS.viewPin('${c.id}')">📍 View</button>` : ''}
-           <button class="cc-btn"          onclick="CS.deleteComment('${c.id}')">🗑</button>`
-        : `<button class="cc-btn reopen"   onclick="CS.reopen('${c.id}')">↩ Reopen</button>
-           <button class="cc-btn"          onclick="CS.deleteComment('${c.id}')">🗑</button>`;
-      return `<div class="comment-card ${c.status !== 'open' ? 'resolved' : ''}" id="cc-${c.id}">
-        <div class="cc-head">
-          <div class="cc-avatar" style="background:${avatarColor(c.author)}">${authorInitial(c.author)}</div>
-          <div class="cc-meta">
-            <span class="cc-author">${c.author || 'Anonymous'}</span>${pinTag}
-            <span class="cc-time">${timeAgo(c.ts)}</span>${statusTag}
-            ${c.context ? `<div class="cc-context">📅 ${c.context}</div>` : ''}
-          </div>
-        </div>
-        <div class="cc-body">${c.text || '<em style="color:var(--text3)">No text yet</em>'}</div>
-        <div class="cc-actions">${actions}</div>
-        <div class="cc-replies">
-          ${repliesHTML}
-          ${c.status === 'open' ? `<div class="cc-reply-form">
-            <textarea class="cc-reply-input" id="reply-${c.id}" placeholder="Reply…"></textarea>
-            <button class="cc-reply-send" onclick="CS.submitReply('${c.id}')">Send</button>
-          </div>` : ''}
+    const barW=Math.round(Math.min(days/35*100,100));
+    const dayLabel=days===1?'1 day':days+' days';
+    el.innerHTML+=`
+      <div class="csd-card c${num}">
+        <div class="csd-card-num">Coverage start ${num}</div>
+        <div class="csd-card-date">${fmt(csd)}</div>
+        <div class="csd-card-window">${note}</div>
+        <div class="csd-card-days">
+          <div class="days-bar" style="width:${barW}px;max-width:80px"></div>
+          <span>${dayLabel} to enroll</span>
         </div>
       </div>`;
-    }).join('');
   }
 
-  function render() {
-    renderComments();
-    renderPins();
-    updateFab();
+  const isAlsoCutoff=r.invDoy===r.cut1;
+  card(1,'c1',r.csd1,r.d1+1,
+    isAlsoCutoff
+      ? 'Enroll by <strong>'+fmt(r.cut1)+'</strong> — invite date is the cutoff'
+      : 'Enroll by <strong>'+fmt(r.cut1)+'</strong>'
+  );
+  card(2,'c2',r.csd2,r.d2||0,
+    r.csd2
+      ? 'Enroll '+fmt(r.cut1+1)+'–<strong>'+fmt(r.threeCsd?r.cut2:r.hard)+'</strong>'
+        +(r.extended?' <span style="font-size:10px;color:var(--amber);font-family:\'DM Mono\',monospace">(Jan 4–8 ext)</span>':'')
+      : ''
+  );
+  if(r.threeCsd){
+    card(3,'c3',r.csd3,r.d3||0,
+      r.csd3?'Enroll '+fmt(r.cut2+1)+'–<strong>'+fmt(r.hard)+'</strong>':''
+    );
   }
-
-  // ── HELPERS ──
-  function timeAgo(ts) {
-    const s = Math.floor((Date.now() - ts) / 1000);
-    if (s < 60)    return 'just now';
-    if (s < 3600)  return Math.floor(s / 60) + 'm ago';
-    if (s < 86400) return Math.floor(s / 3600) + 'h ago';
-    return Math.floor(s / 86400) + 'd ago';
-  }
-  function authorInitial(n) { return (n || '?').charAt(0).toUpperCase(); }
-  function avatarColor(n) {
-    const cols = ['#2563eb','#7c3aed','#db2777','#059669','#d97706','#dc2626','#0891b2'];
-    let h = 0; for (const c of (n || '?')) h = (h * 31 + c.charCodeAt(0)) % cols.length;
-    return cols[Math.abs(h)];
-  }
-
-  function getCurrentContext() {
-    if (!window.selDoy) return null;
-    try {
-      const r = calc(window.selDoy);
-      return fmt(r.invDoy) + ' invite · CSD1 ' + fmt(r.csd1) + (r.csd2 ? ' · CSD2 ' + fmt(r.csd2) : '');
-    } catch(e) { return null; }
-  }
-
-  // ── PUBLIC API ──
-  return {
-    init() {
-      loadName();
-      load();
-      document.addEventListener('click', onPageClick, { capture: true });
-      document.addEventListener('keydown', e => {
-        if (commentMode && (e.key === 'Escape' || e.key === 'c' || e.key === 'C')) exitCommentMode();
-        if (e.key === 'Escape') closePopover();
-      });
-    },
-    enter:           () => enterCommentMode(),
-    exit:            () => exitCommentMode(),
-    toggle:          () => togglePanel(),
-    setFilter:       (el, f) => setCFilter(el, f),
-    submitPin:       () => submitPinComment(),
-    closePopover:    () => closePopover(),
-    openPopover:     (id) => openPopover(id),
-    renderPins:      () => renderPins(),
-    saveName:        () => setName(document.getElementById('cp-name')?.value || ''),
-    syncName:        (v) => setName(v),
-    resolve:         (id) => { const c = comments.find(x => x.id === id); if (c) { c.status = 'resolved'; persist(); if (activePinId === id) openPopover(id); } },
-    dismiss:         (id) => { const c = comments.find(x => x.id === id); if (c) { c.status = 'dismissed'; persist(); if (activePinId === id) openPopover(id); } },
-    reopen:          (id) => { const c = comments.find(x => x.id === id); if (c) { c.status = 'open'; persist(); if (activePinId === id) openPopover(id); } },
-    deletePin:       (id) => { comments = comments.filter(x => x.id !== id); closePopover(); persist(); },
-    deleteComment:   (id) => { comments = comments.filter(x => x.id !== id); persist(); },
-    deleteReply:     (cid, ri) => { const c = comments.find(x => x.id === cid); if (c?.replies) { c.replies.splice(ri, 1); persist(); if (activePinId === cid) openPopover(cid); } },
-    submitReply:     (cid) => {
-      const el = document.getElementById('reply-' + cid);
-      if (!el) return;
-      const text = el.value.trim();
-      if (!text) return;
-      const name = getName() || 'Anonymous';
-      const c = comments.find(x => x.id === cid);
-      if (!c) return;
-      if (!c.replies) c.replies = [];
-      c.replies.push({ author: name, text, ts: Date.now() });
-      persist();
-    },
-    viewPin: (id) => { togglePanel(); openPopover(id); },
-    onTabChange: () => { render(); },
-  };
-})();
-
-
-// ── ER TYPE TOGGLE ──
-let erType='new';
-function setERType(type){
-  erType=type;
-  window._erType=type;
-  // tabs
-  document.querySelectorAll('.er-tab').forEach(t=>t.classList.toggle('active',t.dataset.er===type));
-  // sidebar sections
-  document.querySelectorAll('[data-new-er]').forEach(el=>{ el.style.display=type==='new'?'block':'none'; });
-  document.querySelectorAll('[data-renewal-er]').forEach(el=>{ el.style.display=type==='renewal'?'block':'none'; });
-  // main sections — always explicit
-  const sb=document.getElementById('stats-bar');
-  const mt=document.getElementById('main-table');
-  const mc=document.getElementById('main-cal');
-  const rm=document.getElementById('renewal-main');
-  if(sb) sb.style.display=type==='new'?'grid':'none';
-  if(mt) mt.style.display=type==='new'?'block':'none';
-  if(mc) mc.style.display=type==='new'?'block':'none';
-  if(rm) rm.style.display=type==='renewal'?'flex':'none';
-  if(type==='renewal') renderRenewalTimeline();
-  if(typeof CS!=="undefined") CS.onTabChange();
 }
 
-function renderRenewalTimeline(){
-  // doy values: Nov2=306, Nov9=313, Nov18=322, Nov24=328, Nov25=329, Dec1=335, Dec15=349
-  const start=306,end=349,span=end-start;
-  function p(d){return Math.round((d-start)/span*100);}
+// ── RULE BOX ──
+function renderRuleBox(r){
+  const el=document.getElementById('rule-box');
+  const balanced=isBalanced(r.invDoy);
+  let icon,text;
+  if(balanced&&r.twoCsd){
+    icon='⚖️';
+    text=`<strong>Perfectly balanced.</strong> This is one of 12 dates in the year where CSD 1 and CSD 2 get exactly equal runway — 17 days each. The processing cutoff falls at the precise midpoint of the 35-day window.`;
+    // Trigger the delight moment after a short delay
+    setTimeout(()=>showBalancedOverlay(r), 180);
+  } else if(r.threeCsd){
+    icon='✦';
+    text=`<strong>Three coverage dates — same system, wider window.</strong> This invite's 35-day window clears two processing cutoffs (${fmt(r.cut1)} and ${fmt(r.cut2)}), making ${fmt(r.csd1)}, ${fmt(r.csd2)}, and ${fmt(r.csd3)} all reachable. This is a structural property of the rolling cutoff model, not a special case — 40 dates per year produce this outcome.`;
+  } else if(r.isOE&&r.oneCsd&&!r.extended){
+    icon='⚠';
+    text=`<strong>OE edge case — extension needed.</strong> This invite's 35-day window closes before the Dec 29 cutoff, leaving only Jan 1 coverage. Enable the Jan 4–8 extension above to restore CSD 2.`;
+  } else if(r.isOE){
+    icon='✓';
+    text=`<strong>OE — same system, fixed anchor.</strong> The rolling monthly cutoff is replaced by a single Dec 29 cutoff targeting Jan 1 coverage. Members still get two coverage dates${r.extended?' via the Jan 4–8 extension':''}.`;
+  } else if(r.twoCsd){
+    icon='✓';
+    text=`<strong>Standard window — two coverage dates.</strong> A member who misses the ${fmt(r.cut1)} cutoff still has until ${fmt(r.hard)} to enroll, landing ${fmt(r.csd2)} coverage. No manual extensions needed.`;
+  } else if(r.oneCsd){
+    icon='⚠';
+    text=`<strong>One coverage date only.</strong> The 35-day window closes before the next processing cutoff. This is a structural property of this invite date — ${r.isOE?'enable the extension above to restore CSD 2':'the same condition can occur off-cycle'}.`;
+  } else {
+    icon='—';text='No coverage dates available in this window.';
+  }
+  el.innerHTML=`<div class="rule-box-icon">${icon}</div><div class="rule-box-text">${text}</div>`;
+}
 
-  function buildTL(barId){
-    const bar=document.getElementById(barId);
-    if(!bar)return;
-    bar.innerHTML=`
-      <div style="position:absolute;left:0;width:${p(322)}%;top:0;height:100%;background:var(--ok-bg);border-radius:3px;border:1px solid rgba(15,110,86,.2)"></div>
-      <div style="position:absolute;left:${p(313)}%;width:${p(335)-p(313)}%;top:0;height:100%;background:var(--warn-bg);border-radius:3px;border:1px solid rgba(133,79,11,.2);opacity:.8"></div>
-      ${mkM(p(306),'var(--ok)','Nov 2','Standard opens','above')}
-      ${mkM(p(313),'var(--warn)','Nov 9','Late start opens','below')}
-      ${mkM(p(322),'var(--warn)','Nov 18','soft A','above')}
-      
-      ${mkM(p(327),'var(--danger)','Nov 23','last chance A','above')}
-      ${mkM(p(329),'var(--warn)','Nov 25','soft B','below')}
-      
-      ${mkM(p(334),'var(--danger)','Nov 30','last chance B','below')}
-      ${mkM(100,'var(--text3)','Dec 15','legal','above',true)}`;
+function showBalancedOverlay(r){
+  if(document.getElementById('balanced-overlay')) return;
+
+  // Particle burst — mixed shapes, sizes, colors, timings
+  const colors=['#059669','#34d399','#6ee7b7','#a7f3d0','#10b981','#047857','#d1fae5','#f0fdf4'];
+  const cx=window.innerWidth/2, cy=window.innerHeight/2;
+  for(let i=0;i<32;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    const angle=(i/32)*Math.PI*2 + (Math.random()-.5)*.4;
+    const dist=80+Math.random()*140;
+    const size=3+Math.random()*9;
+    const isSquare=Math.random()>.6;
+    const delay=Math.random()*0.2;
+    const dur=0.6+Math.random()*0.5;
+    const rot=(Math.random()-.5)*720;
+    p.style.cssText=`
+      left:${cx}px;top:${cy}px;
+      width:${size}px;height:${size}px;
+      background:${colors[i%colors.length]};
+      --dx:${Math.cos(angle)*dist}px;
+      --dy:${Math.sin(angle)*dist}px;
+      --dr:${rot}deg;
+      --pd:${dur}s;
+      --pde:${delay}s;
+      --pr:${isSquare?'2px':'50%'};
+      margin-left:${-size/2}px;margin-top:${-size/2}px;
+    `;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), (dur+delay)*1000+100);
   }
 
-  function mkM(pct,color,date,label,pos,right=false){
-    const topLabel=pos==='above';
-    const dateY=topLabel?'-22px':'28px';
-    const labelY=topLabel?'-34px':'40px';
-    const xform=right?'translateX(-100%)':'translateX(-50%)';
-    return `<div style="position:absolute;left:${pct}%;top:-2px;width:2px;height:20px;background:${color};border-radius:1px">
-      <div style="position:absolute;top:${dateY};font-size:9px;font-weight:600;color:${color};white-space:nowrap;transform:${xform};font-family:'JetBrains Mono',monospace">${date}</div>
-      <div style="position:absolute;top:${labelY};font-size:8px;color:var(--text3);white-space:nowrap;transform:${xform};font-family:'JetBrains Mono',monospace">${label}</div>
+  const overlay=document.createElement('div');
+  overlay.className='balanced-overlay';
+  overlay.id='balanced-overlay';
+  overlay.innerHTML=`
+    <div class="balanced-card" onclick="event.stopPropagation()">
+      <span class="balanced-icon">⚖️</span>
+      <div class="balanced-chip">1 of 12 dates this year</div>
+      <div class="balanced-title">Perfectly <em>balanced.</em></div>
+      <div class="balanced-stat">
+        <div class="balanced-stat-item">
+          <span class="balanced-stat-num">17d</span>
+          <span class="balanced-stat-label">→ ${fmt(r.csd1)}</span>
+        </div>
+        <div class="balanced-stat-item">
+          <span class="balanced-stat-num">17d</span>
+          <span class="balanced-stat-label">→ ${fmt(r.csd2)}</span>
+        </div>
+      </div>
+      <div class="balanced-body">The cutoff lands at the exact midpoint of the 35-day window.<br>Equal runway for both coverage dates. Every month, one date.</div>
+      <button class="balanced-dismiss" onclick="document.getElementById('balanced-overlay').remove()">got it ✕</button>
     </div>`;
+
+  // Click backdrop to dismiss
+  overlay.addEventListener('click', e=>{
+    if(e.target===overlay) overlay.remove();
+  });
+  document.body.appendChild(overlay);
+
+  // Auto-dismiss after 6s
+  setTimeout(()=>{ if(document.getElementById('balanced-overlay')) overlay.remove(); }, 6000);
+}
+
+// ── MINI CALENDAR ──
+function renderMiniCal(){
+  const el=document.getElementById('mini-cal');
+  el.innerHTML='';
+  const r=selDoy?calc(selDoy):null;
+
+  const months=[];
+  for(let m=0;m<12;m++) months.push({m,y:2026,offset:0});
+  months.push({m:0,y:2027,offset:365});
+  months.push({m:1,y:2027,offset:365});
+  months.push({m:2,y:2027,offset:365});
+
+  months.forEach(({m,y,offset})=>{
+    const mc=document.createElement('div');mc.className='mc';
+    mc.innerHTML='<div class="mc-name">'+MS[m]+' '+String(y).slice(2)+'</div>';
+    const dg=document.createElement('div');dg.className='mc-days';
+    DOW_S.forEach(s=>{
+      const d=document.createElement('div');d.className='mc-dow';d.textContent=s;dg.appendChild(d);
+    });
+    const startDow=new Date(y,m,1).getDay();
+    for(let i=0;i<startDow;i++){
+      const e=document.createElement('div');e.className='mcd mcd-blank';dg.appendChild(e);
+    }
+    for(let d=1;d<=DM[m];d++){
+      const n=doy(m,d)+offset;
+      const c=document.createElement('div');
+      c.className='mcd'; c.dataset.n=n;
+
+      let cls='mcd-n';
+      if(r&&n>=r.invDoy&&n<=r.hard){
+        if(n===r.invDoy)             cls='mcd-inv';
+        else if(n===r.csd1)         cls='mcd-csd1';
+        else if(r.csd2&&n===r.csd2) cls='mcd-csd2';
+        else if(r.csd3&&n===r.csd3) cls='mcd-csd3';
+        else if(n===r.cut1)         cls='mcd-cut';
+        else if(r.threeCsd&&r.cut2&&n===r.cut2) cls='mcd-cut';
+        else if(n>r.invDoy&&n<r.cut1)  cls='mcd-z1';
+        else if(n>=r.cut1&&n<=r.hard){
+          cls=r.threeCsd&&r.cut2&&n>r.cut2?'mcd-z3':'mcd-z2';
+        }
+        if(n===selDoy) cls+=' mcd-sel';
+      } else if(n===selDoy) cls='mcd-inv mcd-sel';
+
+      c.className='mcd '+cls;
+      c.title=MS[m]+' '+d+' '+y;
+      c.addEventListener('click',()=>selectDay(n));
+      dg.appendChild(c);
+    }
+    mc.appendChild(dg);el.appendChild(mc);
+  });
+
+  const tip=document.getElementById('mc-tooltip');
+  document.querySelectorAll('.mcd:not(.mcd-blank)').forEach(c=>{
+    c.addEventListener('mouseover',e=>{
+      const n=+c.dataset.n;
+      if(!n) return;
+      const xd=fd(n>365?n-365:n);
+      let label=MO[xd.m]+' '+xd.d+(n>365?' 2027':' 2026');
+      if(r&&n>=r.invDoy&&n<=r.hard){
+        if(n===r.invDoy)             label+=' · Invite';
+        else if(n===r.csd1)         label+=' · CSD 1 starts';
+        else if(r.csd2&&n===r.csd2) label+=' · CSD 2 starts';
+        else if(r.csd3&&n===r.csd3) label+=' · CSD 3 starts';
+        else if(n===r.cut1)         label+=' · Cutoff → CSD 1';
+        else if(r.threeCsd&&r.cut2&&n===r.cut2) label+=' · Cutoff → CSD 2';
+        else if(n>r.invDoy&&n<=r.hard){
+          const isCsd3=r.threeCsd&&r.cut2&&n>r.cut2;
+          const dest=n<=r.cut1?fmt(r.csd1):isCsd3?fmt(r.csd3):r.csd2?fmt(r.csd2):'—';
+          label+=' · enroll → '+dest+(n>r.soft?' (last chance)':'');
+        }
+      }
+      tip.textContent=label;tip.style.display='block';
+    });
+    c.addEventListener('mousemove',e=>{
+      tip.style.left=(e.clientX+14)+'px';tip.style.top=(e.clientY-28)+'px';
+    });
+    c.addEventListener('mouseout',()=>tip.style.display='none');
+  });
+}
+
+// ── CAL TOGGLE ──
+function toggleCal(){
+  const col=document.getElementById('cal-collapse');
+  const tog=document.getElementById('cal-toggle');
+  const arr=document.getElementById('cal-arrow');
+  const open=!col.classList.contains('open');
+  col.classList.toggle('open',open);
+  tog.classList.toggle('open',open);
+  arr.textContent=open?'▼':'▶';
+  if(open) renderMiniCal();
+}
+
+// ── OE EXTENSION ──
+function setExt(v){
+  useExt=v===1;
+  document.querySelectorAll('.oe-btn').forEach(b=>b.classList.toggle('active',+b.dataset.v===v));
+  rebuild();
+  updateInsights();
+  if(selDoy) renderExplainer();
+  if(document.getElementById('cal-collapse').classList.contains('open')) renderMiniCal();
+}
+
+function updateInsights(){
+  // Recount from DATA
+  let one=0,two=0,three=0;
+  DATA.forEach(r=>{
+    if(r.threeCsd) three++;
+    else if(r.twoCsd) two++;
+    else if(r.oneCsd) one++;
+  });
+
+  const baseOne=17, baseTwo=308;
+  const d1=one-baseOne, d2=two-baseTwo;
+
+  function setCell(countEl, deltaEl, val, base){
+    countEl.childNodes[0].textContent=val;
+    const diff=val-base;
+    if(!deltaEl) return;
+    if(diff===0){deltaEl.className='ins-delta zero';}
+    else if(diff>0){deltaEl.className='ins-delta up';deltaEl.textContent='+'+diff;}
+    else{deltaEl.className='ins-delta down';deltaEl.textContent=diff;}
   }
 
-  buildTL('renewal-main-tl');
-}
-// ── POSITIONING PANEL ──
-function togglePOV(){
-  const content=document.getElementById('pov-content');
-  const chevron=document.getElementById('pov-chevron');
-  const label=document.getElementById('pov-toggle-label');
-  const btn=document.getElementById('pov-toggle-btn');
-  const open=content.style.display==='none';
-  content.style.display=open?'block':'none';
-  chevron.style.transform=open?'rotate(180deg)':'rotate(0deg)';
-  label.textContent=open?'Collapse':'Read context';
-  btn.style.background=open?'rgba(255,255,255,0.15)':'rgba(255,255,255,0.1)';
-  try{localStorage.setItem('ew_pov_open',open?'1':'0');}catch(e){}
-}
-// Restore panel state
-(function(){
-  try{
-    const s=localStorage.getItem('ew_pov_open');
-    if(s===null||s==='1'){
-      document.getElementById('pov-content').style.display='block';
-      document.getElementById('pov-chevron').style.transform='rotate(180deg)';
-      document.getElementById('pov-toggle-label').textContent='Collapse';
-      document.getElementById('pov-toggle-btn').style.background='rgba(255,255,255,0.15)';
-    }
-  }catch(e){}
-})();
+  setCell(document.getElementById('ins-1csd-count'), document.getElementById('ins-1csd-delta'), one, baseOne);
+  setCell(document.getElementById('ins-2csd-count'), document.getElementById('ins-2csd-delta'), two, baseTwo);
 
-// ── INIT ── Default: New ERs, Base (no special extension), All dates
-setToggle(0);
-window._erType='new';
-filterMode='all';
-document.querySelectorAll('.fb').forEach(b=>b.classList.toggle('active',b.dataset.f==='all'));
-buildCal();
-buildTable('all');
-// Hide renewal sections, show new ERs
-document.querySelectorAll('[data-renewal-er]').forEach(el=>el.style.display='none');
-document.querySelectorAll('[data-new-er]').forEach(el=>el.style.display='block');
-var rm=document.getElementById('renewal-main');if(rm)rm.style.display='none';
-// Init comment system after DOM is ready
-CS.init();
-setTimeout(()=>setERType('new'), 0);
+  // Sub-text
+  document.getElementById('ins-1csd-sub').textContent = one===0
+    ? '✓ All invite dates have at least 2 CSDs with extension active'
+    : 'Nov 9–25 OE invites — 35d window closes before the Dec 29 cutoff';
+  document.getElementById('ins-1csd').className = 'ins-cell '+(one===0?'c-good':'c-warn');
 
+  document.getElementById('ins-2csd-sub').textContent = two===325
+    ? 'includes 17 OE dates rescued by Jan 4–8 extension'
+    : 'standard experience — member has a backstop if they miss the first cutoff';
+}
+
+// ── INIT ──
+buildMonthTabs();
+buildDayPicker();
+updateInsights();
+selectDay(doy(0,8));
 </script>
-<!-- COMMENT FAB -->
-<div id="fab-container" style="position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:auto">
-  <button onclick="CS.enter()" id="pin-fab" style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;border-radius:50px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 2px 12px rgba(37,99,235,.3);display:flex;align-items:center;gap:6px;font-family:'Inter',sans-serif">📍 Pin comment</button>
-  <button class="comment-fab" onclick="CS.toggle()" id="comment-fab">💬 Comments <span id="fab-count">0</span></button>
-</div>
-
-<!-- COMMENT PANEL -->
-<div class="comment-panel" id="comment-panel">
-  <div class="cp-head">
-    <div class="cp-title">Comments</div>
-    <div style="display:flex;gap:5px;align-items:center">
-      <button class="cpf active" data-f="open" onclick="CS.setFilter(this,'open')">Open</button>
-      <button class="cpf" data-f="resolved" onclick="CS.setFilter(this,'resolved')">Resolved</button>
-      <button class="cpf" data-f="all" onclick="CS.setFilter(this,'all')">All</button>
-      <button onclick="CS.toggle()" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:0 4px;line-height:1;margin-left:4px">✕</button>
-    </div>
-  </div>
-  <div class="cp-name-row">
-    <span style="font-size:11px;color:var(--text3)">Commenting as</span>
-    <input id="cp-name" class="cp-name-input" placeholder="Your name" oninput="CS.saveName()"/>
-  </div>
-  <div class="cp-list" id="cp-list"></div>
-</div>
-
+</body>
 </html>
