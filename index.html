@@ -160,6 +160,20 @@ body{
 .csd-card.c3::before{background:var(--blue3)}
 .csd-card.empty{opacity:.35;pointer-events:none}
 
+/* OE nudge card */
+.csd-nudge{
+  border-radius:8px;padding:16px 18px;
+  border:1px solid var(--rule);
+  background:var(--paper);
+  display:flex;flex-direction:column;gap:8px;
+  cursor:pointer;transition:border-color .2s;
+}
+.csd-nudge:hover{border-color:var(--green)}
+.nudge-eyebrow{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);font-family:'DM Mono',monospace}
+.nudge-date{font-family:'DM Serif Display',serif;font-size:22px;color:var(--paper3);letter-spacing:-.01em}
+.nudge-cta{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;transition:color .15s}
+.csd-nudge:hover .nudge-cta{color:var(--green)}
+
 .csd-card-num{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);font-family:'DM Mono',monospace;margin-bottom:6px}
 .csd-card-date{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);letter-spacing:-.01em;margin-bottom:8px}
 .csd-card-window{font-size:12px;color:var(--ink2);line-height:1.6}
@@ -236,46 +250,32 @@ body{
   white-space:nowrap;line-height:1.5;
 }
 
-/* ── OE TOGGLE ── */
-/* ── INSIGHTS BAR ── */
-.insights-bar{
-  display:grid;grid-template-columns:1fr 1fr 1fr;
-  border:1px solid var(--rule2);border-radius:8px;overflow:hidden;
-  margin-bottom:32px;
-}
-.ins-cell{padding:14px 18px;background:var(--paper);position:relative;transition:background .2s}
-.ins-cell+.ins-cell{border-left:1px solid var(--rule2)}
-.ins-cell-label{font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--ink3);font-family:'DM Mono',monospace;margin-bottom:6px}
-.ins-cell-count{font-size:28px;font-weight:600;letter-spacing:-.03em;line-height:1;
-  font-family:'DM Serif Display',serif;transition:color .25s}
-.ins-cell-sub{font-size:11px;color:var(--ink3);margin-top:4px;line-height:1.5;min-height:32px}
-.ins-cell.c-good .ins-cell-count{color:var(--green)}
-.ins-cell.c-warn .ins-cell-count{color:var(--amber)}
-.ins-cell.c-blue .ins-cell-count{color:#2563eb}
-.ins-delta{display:inline-block;font-size:10px;font-weight:600;font-family:'DM Mono',monospace;
-  padding:1px 6px;border-radius:3px;margin-left:6px;vertical-align:middle;transition:all .2s}
+/* ── INLINE STATS ── */
+.inline-stats{display:flex;align-items:flex-start;gap:0;margin-top:28px;padding-top:24px;border-top:1px solid var(--rule)}
+.istat{display:flex;flex-direction:column;gap:3px;flex:1}
+.istat-div{width:1px;background:var(--rule);margin:0 28px;align-self:stretch}
+.istat-num{font-family:'DM Serif Display',serif;font-size:28px;letter-spacing:-.03em;line-height:1;color:var(--ink)}
+.istat-label{font-size:11px;font-weight:500;color:var(--ink2)}
+.istat-sub{font-size:11px;color:var(--ink3);line-height:1.5}
+.istat.c-warn .istat-num{color:var(--amber)}
+.istat.c-good .istat-num{color:var(--green)}
+.istat.c-blue .istat-num{color:#2563eb}
+/* reuse ins-delta from old code */
+.ins-delta{display:inline-block;font-size:10px;font-weight:600;font-family:'DM Mono',monospace;padding:1px 5px;border-radius:3px;margin-left:5px;vertical-align:middle;transition:all .2s}
 .ins-delta.up{background:#dcfce7;color:#166534}
 .ins-delta.down{background:#fee2e2;color:#991b1b}
 .ins-delta.zero{display:none}
 
-.oe-bar{
-  background:var(--paper2);border:1px solid var(--rule2);
-  border-radius:8px;padding:12px 16px;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:16px;margin-bottom:16px;flex-wrap:wrap;
-}
-.oe-bar-label{font-size:12px;color:var(--ink2);line-height:1.5}
-.oe-bar-label strong{color:var(--ink);font-weight:600}
-.oe-switch{display:flex;gap:6px}
-.oe-btn{
-  font-size:11px;padding:4px 12px;border-radius:20px;
-  border:1px solid var(--rule2);background:transparent;
-  color:var(--ink2);cursor:pointer;font-family:'DM Mono',monospace;
-  transition:all .12s;
-}
-.oe-btn.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+/* ── PICKER CARD ── */
+.picker-card{background:var(--paper2);border-radius:12px;padding:24px 28px;margin-bottom:40px}
+.picker-prompt{font-size:13px;font-weight:500;color:var(--ink2);margin-bottom:12px;margin-top:20px}
 
+/* ── OE CONFIG ROW ── */
+.oe-config-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:20px;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.oe-config-label{font-size:11px;color:var(--ink3);line-height:1.6;max-width:480px}
+.oe-switch{display:flex;gap:6px;flex-shrink:0}
+.oe-btn{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--rule2);background:transparent;color:var(--ink2);cursor:pointer;font-family:'DM Mono',monospace;transition:all .12s}
+.oe-btn.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 /* ── BALANCED ANIMATION ── */
 @keyframes cardBounce{
   0%  {opacity:0;transform:scale(.6) rotate(-4deg)}
@@ -406,115 +406,89 @@ body{
 
 <div class="page">
 
-  <!-- Header -->
+  <!-- ── HEADER ── -->
   <div class="hd">
     <div class="hd-eyebrow">Thatch · Enrollment windows · 2026</div>
     <h1 class="hd-title">One system.<br><em>Off-cycle and OE.</em></h1>
     <p class="hd-sub">The core primitive is simple: ask the employer when they want coverage to begin. They can choose when to send invites — that's the extent of their control. Everything else is logic we own. The same 35-day window runs year-round, for new hires and open enrollment alike.</p>
-  </div>
 
-  <!-- OE toggle -->
-  <div class="oe-bar" id="oe-bar">
-    <div class="oe-bar-label">
-      <strong>OE configuration</strong> — The same 30+5d window applies; employers choose when to send invites. The Jan 4–8 extension is purely optional — it restores a second CSD for Nov 9–25 invites, but breaks the one-system principle.
+    <!-- Window anatomy strip -->
+    <div style="display:flex;align-items:stretch;border:1px solid var(--rule2);border-radius:8px;overflow:hidden;margin-top:24px;font-family:'DM Mono',monospace;">
+      <div style="flex:30;background:var(--blue1);padding:10px 16px;display:flex;flex-direction:column;gap:3px">
+        <span style="font-size:11px;font-weight:600;color:#1e40af">30 days</span>
+        <span style="font-size:10px;color:#3b82f6">marketed window</span>
+      </div>
+      <div style="flex:5;background:var(--blue2);padding:10px 16px;display:flex;flex-direction:column;gap:3px;border-left:1px solid rgba(255,255,255,.4)">
+        <span style="font-size:11px;font-weight:600;color:#1e40af">+5 days</span>
+        <span style="font-size:10px;color:#3b82f6">last chance</span>
+      </div>
+      <div style="flex:0 0 auto;background:var(--paper2);padding:10px 16px;display:flex;align-items:center;border-left:1px solid var(--rule2)">
+        <span style="font-size:11px;color:var(--ink3)">= 35d total</span>
+      </div>
     </div>
-    <div class="oe-switch">
-      <button class="oe-btn" data-v="0" onclick="setExt(0)">Without extension</button>
-      <button class="oe-btn active" data-v="1" onclick="setExt(1)">With extension</button>
-    </div>
-  </div>
 
-  <!-- Insights bar -->
-  <div class="insights-bar" id="insights-bar">
-    <div class="ins-cell c-warn" id="ins-1csd">
-      <div class="ins-cell-label">1 CSD only</div>
-      <div class="ins-cell-count" id="ins-1csd-count">17<span class="ins-delta down" id="ins-1csd-delta"></span></div>
-      <div class="ins-cell-sub" id="ins-1csd-sub">Nov 9–25 OE invites — 35d window closes before the Dec 29 cutoff</div>
-    </div>
-    <div class="ins-cell c-good" id="ins-2csd">
-      <div class="ins-cell-label">2 CSDs</div>
-      <div class="ins-cell-count" id="ins-2csd-count">308<span class="ins-delta up" id="ins-2csd-delta"></span></div>
-      <div class="ins-cell-sub" id="ins-2csd-sub">standard experience — member has a backstop if they miss the first cutoff</div>
-    </div>
-    <div class="ins-cell c-blue" id="ins-3csd">
-      <div class="ins-cell-label">3 CSDs</div>
-      <div class="ins-cell-count">40<span class="ins-delta zero"></span></div>
-      <div class="ins-cell-sub">window spans two cutoffs — late-month invites near EOM</div>
-    </div>
-  </div>
-
-  <!-- Window anatomy -->
-  <div style="display:flex;align-items:stretch;border:1px solid var(--rule2);border-radius:8px;overflow:hidden;margin-bottom:32px;font-family:'DM Mono',monospace;">
-    <div style="flex:30;background:var(--blue1);padding:10px 16px;display:flex;flex-direction:column;gap:3px">
-      <span style="font-size:11px;font-weight:600;color:#1e40af">30 days</span>
-      <span style="font-size:10px;color:#3b82f6">marketed window</span>
-    </div>
-    <div style="flex:5;background:var(--blue2);padding:10px 16px;display:flex;flex-direction:column;gap:3px;border-left:1px solid rgba(255,255,255,.4)">
-      <span style="font-size:11px;font-weight:600;color:#1e40af">+5 days</span>
-      <span style="font-size:10px;color:#3b82f6">last chance</span>
-    </div>
-    <div style="flex:0 0 auto;background:var(--paper2);padding:10px 16px;display:flex;align-items:center;border-left:1px solid var(--rule2)">
-      <span style="font-size:11px;color:var(--ink3)">= 35d total per invite</span>
+    <!-- Inline stats -->
+    <div class="inline-stats" id="insights-bar">
+      <div class="istat c-warn" id="ins-1csd">
+        <span class="istat-num" id="ins-1csd-count">17<span class="ins-delta down" id="ins-1csd-delta"></span></span>
+        <span class="istat-label">dates with 1 CSD</span>
+        <span class="istat-sub" id="ins-1csd-sub">Nov 9–25 · 35d window closes before Dec 29</span>
+      </div>
+      <div class="istat-div"></div>
+      <div class="istat c-good" id="ins-2csd">
+        <span class="istat-num" id="ins-2csd-count">308<span class="ins-delta up" id="ins-2csd-delta"></span></span>
+        <span class="istat-label">dates with 2 CSDs</span>
+        <span class="istat-sub" id="ins-2csd-sub">standard — backstop if member misses first cutoff</span>
+      </div>
+      <div class="istat-div"></div>
+      <div class="istat c-blue" id="ins-3csd">
+        <span class="istat-num">40</span>
+        <span class="istat-label">dates with 3 CSDs</span>
+        <span class="istat-sub">window spans two cutoffs near EOM</span>
+      </div>
     </div>
   </div>
 
-  <!-- Date picker -->
-  <div class="picker-wrap">
-    <div class="section-label">Pick any invite date — off-cycle or OE <span style="font-size:9px;font-weight:400;letter-spacing:.03em;text-transform:none;color:var(--ink3);margin-left:6px">OE begins Nov 9</span></div>
+  <!-- ── PICKER CARD ── -->
+  <div class="picker-card">
+
+    <!-- OE config row -->
+    <div class="oe-config-row">
+      <span class="oe-config-label">OE · Nov 9–Dec 28 — same 30+5d window. Jan 4–8 extension is optional; restores 2nd CSD for Nov 9–25, but breaks the one-system principle.</span>
+      <div class="oe-switch">
+        <button class="oe-btn" data-v="0" onclick="setExt(0)">Without extension</button>
+        <button class="oe-btn active" data-v="1" onclick="setExt(1)">With extension</button>
+      </div>
+    </div>
+
+    <!-- Month tabs -->
+    <div class="picker-prompt">Pick an invite date</div>
     <div class="month-tabs" id="month-tabs"></div>
     <div class="day-picker" id="day-picker"></div>
     <div style="margin-top:10px;font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:6px">
       <span style="display:inline-block;width:14px;height:14px;border-radius:3px;border:1.5px solid var(--amber-mid);background:transparent;vertical-align:middle"></span>
-      Processing cutoff for that month — enroll by this date for next-month coverage
+      Processing cutoff — enroll by this date for next-month coverage
     </div>
   </div>
 
-  <!-- Main explainer — shown once date selected -->
+  <!-- ── EXPLAINER ── -->
   <div class="explainer" id="explainer" style="display:none">
-
-    <!-- Selected date header -->
     <div class="ex-date-row">
       <span class="ex-invite-label">Invite sent</span>
       <span class="ex-invite-date" id="ex-date">—</span>
       <span class="ex-cutoff-note" id="ex-cutoff-note" style="display:none">also the cutoff</span>
     </div>
-
-    <!-- Timeline -->
     <div class="timeline-wrap">
       <div class="tl-outer" id="tl-outer" style="height:80px">
         <div class="tl-track" id="tl-track"></div>
       </div>
     </div>
-
-    <!-- CSD cards -->
     <div class="csd-cards" id="csd-cards"></div>
-
-    <!-- Rule box -->
     <div class="rule-box" id="rule-box"></div>
-
   </div>
 
-  <!-- Explore calendar (collapsed) -->
-  <div>
-    <button class="explore-toggle" id="cal-toggle" onclick="toggleCal()">
-      <span class="explore-toggle-arrow" id="cal-arrow">▶</span>
-      Explore all invite dates
-    </button>
-    <div class="cal-collapse" id="cal-collapse">
-      <div class="section-label" style="margin-bottom:12px">Full year · Jan 2026 – Mar 2027</div>
-      <div class="mini-cal-grid" id="mini-cal"></div>
-      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;align-items:center">
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--blue1);display:inline-block"></span>→ CSD 1</div>
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--blue2);display:inline-block"></span>→ CSD 2</div>
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--blue3);display:inline-block"></span>→ CSD 3</div>
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3)"><span style="width:10px;height:10px;border-radius:2px;background:#94a3b8;display:inline-block"></span>Cutoff</div>
-        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3)"><span style="width:10px;height:10px;border-radius:2px;background:var(--green);display:inline-block"></span>Invite</div>
-      </div>
-    </div>
-  </div>
 
 </div>
-
 <script>
 // ── CORE LOGIC ──
 // Corrected calc engine: pastCutoff branch from full_year tool + three-CSD detection restored
@@ -681,7 +655,6 @@ function renderExplainer(){
   renderCsdCards(r);
   renderRuleBox(r);
 
-  if(document.getElementById('cal-collapse').classList.contains('open')) renderMiniCal();
 }
 
 // ── TIMELINE ──
@@ -698,9 +671,10 @@ function renderTimeline(r){
   // Segment widths: use exact day offsets from invite so dividers align with color changes
   // cut1offset = days from invite to cut1 (e.g. d1=5 means cut1 is 5 days away, seg1=5 days wide)
   // The invite day itself is day 0 in the bar; cut1 is at position d1; cut2 at cut2-inv; hard at 34
-  const cut1offset = r.d1;          // position of cut1 divider in 0..34 space
-  const cut2offset = r.threeCsd ? r.cut2 - r.invDoy : null;
+  // For OE 1-CSD dates, cut1 is beyond the hard close — cap so bar doesn't overflow
   const hardOffset = 34;            // always day 35 = index 34
+  const cut1offset = Math.min(r.d1, hardOffset);
+  const cut2offset = r.threeCsd ? r.cut2 - r.invDoy : null;
 
   let segs;
   if(r.threeCsd){
@@ -712,8 +686,10 @@ function renderTimeline(r){
   } else {
     segs=[
       {cls:'tl-seg-1', w:cut1offset,                        days:r.d1+1, csdLabel:fmt(r.csd1)},
-      {cls:'tl-seg-2', w:hardOffset - cut1offset + 1,        days:r.d2||0,csdLabel:r.csd2?fmt(r.csd2):''},
     ];
+    if(r.csd2&&(r.d2||0)>0){
+      segs.push({cls:'tl-seg-2', w:hardOffset - cut1offset + 1, days:r.d2, csdLabel:fmt(r.csd2)});
+    }
   }
 
   // z1days still used for label positioning — keep as cut1offset+1 for label centering
@@ -805,9 +781,12 @@ function renderTimeline(r){
   }
 
   // Structural markers below — use same offset space as segments
+  const cut1InWindow = r.d1 <= hardOffset;
   const cut1Label = r.d1===0 ? 'cutoff&nbsp;·&nbsp;day&nbsp;1' : 'cutoff&nbsp;·&nbsp;day&nbsp;'+(cut1offset+1);
-  mkDivider(pctEdge(cut1offset),26,32);
-  mkLabel(pctEdge(cut1offset),'62px',cut1Label,r.d1===0?'left':'center','var(--ink3)','10px');
+  if(cut1InWindow){
+    mkDivider(pctEdge(cut1offset),26,32);
+    mkLabel(pctEdge(cut1offset),'62px',cut1Label,r.d1===0?'left':'center','var(--ink3)','10px');
+  }
 
   if(r.threeCsd&&cut2offset!==null){
     mkDivider(pctEdge(cut2offset),26,32,'rgba(0,0,0,0.12)');
@@ -820,6 +799,7 @@ function renderTimeline(r){
 
 // ── CSD CARDS ──
 function renderCsdCards(r){
+  window._lastR = r;
   const el=document.getElementById('csd-cards');
   const cols=r.threeCsd?'1fr 1fr 1fr':'1fr 1fr';
   el.style.gridTemplateColumns=cols;
@@ -827,7 +807,18 @@ function renderCsdCards(r){
 
   function card(num,cls,csd,days,note){
     if(!csd){
-      el.innerHTML+='<div class="csd-card empty c'+num+'"><div class="csd-card-num">CSD '+num+'</div><div style="font-size:13px;color:var(--ink3);margin-top:4px">Not available</div></div>';
+      const isOE1CSDempty = num===2 && !useExt && window._lastR && window._lastR.isOE && window._lastR.oneCsd;
+      if(isOE1CSDempty){
+        // Compute what Feb 1 would be if extension were on
+        const feb1str = 'Feb 1 2027';
+        el.innerHTML+=`<div class="csd-nudge" onclick="setExt(1)">
+          <div class="nudge-eyebrow">Coverage start 2</div>
+          <div class="nudge-date">Feb 1 2027</div>
+          <div class="nudge-cta">Enable extension to unlock →</div>
+        </div>`;
+      } else {
+        el.innerHTML+='<div class="csd-card empty c'+num+'"><div class="csd-card-num">CSD '+num+'</div><div style="font-size:13px;color:var(--ink3);margin-top:4px">Not available</div></div>';
+      }
       return;
     }
     const barW=Math.round(Math.min(days/35*100,100));
@@ -845,16 +836,22 @@ function renderCsdCards(r){
   }
 
   const isAlsoCutoff=r.invDoy===r.cut1;
+  const isOE1CSDcohort=r.isOE&&r.oneCsd&&!r.extended;
+  const isOEnormal=r.isOE&&!isOE1CSDcohort;
   card(1,'c1',r.csd1,r.d1+1,
-    isAlsoCutoff
-      ? 'Enroll by <strong>'+fmt(r.cut1)+'</strong> — invite date is the cutoff'
-      : 'Enroll by <strong>'+fmt(r.cut1)+'</strong>'
+    (isOE1CSDcohort||isOEnormal)
+      ? 'Soft close <strong>'+fmt(r.invDoy+29)+'</strong> · last chance <strong>'+fmt(r.hard)+'</strong>'
+        +(isOEnormal?'<br><span style="font-size:10px;color:var(--ink3)">Dec 29 cutoff applies — enroll before then for Jan 1</span>':'')
+      : isAlsoCutoff
+        ? 'Enroll by <strong>'+fmt(r.cut1)+'</strong> — invite date is the cutoff'
+        : 'Enroll by <strong>'+fmt(r.cut1)+'</strong>'
   );
   card(2,'c2',r.csd2,r.d2||0,
-    r.csd2
-      ? 'Enroll '+fmt(r.cut1+1)+'–<strong>'+fmt(r.threeCsd?r.cut2:r.hard)+'</strong>'
-        +(r.extended?' <span style="font-size:10px;color:var(--amber);font-family:\'DM Mono\',monospace">(Jan 4–8 ext)</span>':'')
-      : ''
+    r.extended
+      ? 'Enroll <strong>Jan 4–Jan 8 2027</strong> <span style="font-size:10px;color:var(--amber);font-family:\'DM Mono\',monospace">(extension)</span>'
+      : r.csd2
+        ? 'Enroll '+fmt(r.cut1+1)+'–<strong>'+fmt(r.threeCsd?r.cut2:r.hard)+'</strong>'
+        : ''
   );
   if(r.threeCsd){
     card(3,'c3',r.csd3,r.d3||0,
@@ -868,7 +865,7 @@ function renderRuleBox(r){
   const el=document.getElementById('rule-box');
   const balanced=isBalanced(r.invDoy);
   let icon,text;
-  if(balanced&&r.twoCsd){
+  if(balanced&&r.twoCsd&&!r.isOE){
     icon='⚖️';
     text=`<strong>Perfectly balanced.</strong> This is one of 12 dates in the year where CSD 1 and CSD 2 get exactly equal runway — 17 days each. The processing cutoff falls at the precise midpoint of the 35-day window.`;
     // Trigger the delight moment after a short delay
@@ -878,7 +875,7 @@ function renderRuleBox(r){
     text=`<strong>Three coverage dates — same system, wider window.</strong> This invite's 35-day window clears two processing cutoffs (${fmt(r.cut1)} and ${fmt(r.cut2)}), making ${fmt(r.csd1)}, ${fmt(r.csd2)}, and ${fmt(r.csd3)} all reachable. This is a structural property of the rolling cutoff model, not a special case — 40 dates per year produce this outcome.`;
   } else if(r.isOE&&r.oneCsd&&!r.extended){
     icon='⚠';
-    text=`<strong>OE edge case — extension needed.</strong> This invite's 35-day window closes before the Dec 29 cutoff, leaving only Jan 1 coverage. Enable the Jan 4–8 extension above to restore CSD 2.`;
+    text=`<strong>OE — enroll within 35 days of invite.</strong> For Nov 9–25 invites, the 35-day window closes before the Dec 29 cutoff. Jan 1 coverage is only available if the member enrolls by day 35 (${fmt(r.hard)}). No second CSD without the Jan 4–8 extension.`;
   } else if(r.isOE){
     icon='✓';
     text=`<strong>OE — same system, fixed anchor.</strong> The rolling monthly cutoff is replaced by a single Dec 29 cutoff targeting Jan 1 coverage. Members still get two coverage dates${r.extended?' via the Jan 4–8 extension':''}.`;
@@ -958,97 +955,7 @@ function showBalancedOverlay(r){
   setTimeout(()=>{ if(document.getElementById('balanced-overlay')) overlay.remove(); }, 6000);
 }
 
-// ── MINI CALENDAR ──
-function renderMiniCal(){
-  const el=document.getElementById('mini-cal');
-  el.innerHTML='';
-  const r=selDoy?calc(selDoy):null;
 
-  const months=[];
-  for(let m=0;m<12;m++) months.push({m,y:2026,offset:0});
-  months.push({m:0,y:2027,offset:365});
-  months.push({m:1,y:2027,offset:365});
-  months.push({m:2,y:2027,offset:365});
-
-  months.forEach(({m,y,offset})=>{
-    const mc=document.createElement('div');mc.className='mc';
-    mc.innerHTML='<div class="mc-name">'+MS[m]+' '+String(y).slice(2)+'</div>';
-    const dg=document.createElement('div');dg.className='mc-days';
-    DOW_S.forEach(s=>{
-      const d=document.createElement('div');d.className='mc-dow';d.textContent=s;dg.appendChild(d);
-    });
-    const startDow=new Date(y,m,1).getDay();
-    for(let i=0;i<startDow;i++){
-      const e=document.createElement('div');e.className='mcd mcd-blank';dg.appendChild(e);
-    }
-    for(let d=1;d<=DM[m];d++){
-      const n=doy(m,d)+offset;
-      const c=document.createElement('div');
-      c.className='mcd'; c.dataset.n=n;
-
-      let cls='mcd-n';
-      if(r&&n>=r.invDoy&&n<=r.hard){
-        if(n===r.invDoy)             cls='mcd-inv';
-        else if(n===r.csd1)         cls='mcd-csd1';
-        else if(r.csd2&&n===r.csd2) cls='mcd-csd2';
-        else if(r.csd3&&n===r.csd3) cls='mcd-csd3';
-        else if(n===r.cut1)         cls='mcd-cut';
-        else if(r.threeCsd&&r.cut2&&n===r.cut2) cls='mcd-cut';
-        else if(n>r.invDoy&&n<r.cut1)  cls='mcd-z1';
-        else if(n>=r.cut1&&n<=r.hard){
-          cls=r.threeCsd&&r.cut2&&n>r.cut2?'mcd-z3':'mcd-z2';
-        }
-        if(n===selDoy) cls+=' mcd-sel';
-      } else if(n===selDoy) cls='mcd-inv mcd-sel';
-
-      c.className='mcd '+cls;
-      c.title=MS[m]+' '+d+' '+y;
-      c.addEventListener('click',()=>selectDay(n));
-      dg.appendChild(c);
-    }
-    mc.appendChild(dg);el.appendChild(mc);
-  });
-
-  const tip=document.getElementById('mc-tooltip');
-  document.querySelectorAll('.mcd:not(.mcd-blank)').forEach(c=>{
-    c.addEventListener('mouseover',e=>{
-      const n=+c.dataset.n;
-      if(!n) return;
-      const xd=fd(n>365?n-365:n);
-      let label=MO[xd.m]+' '+xd.d+(n>365?' 2027':' 2026');
-      if(r&&n>=r.invDoy&&n<=r.hard){
-        if(n===r.invDoy)             label+=' · Invite';
-        else if(n===r.csd1)         label+=' · CSD 1 starts';
-        else if(r.csd2&&n===r.csd2) label+=' · CSD 2 starts';
-        else if(r.csd3&&n===r.csd3) label+=' · CSD 3 starts';
-        else if(n===r.cut1)         label+=' · Cutoff → CSD 1';
-        else if(r.threeCsd&&r.cut2&&n===r.cut2) label+=' · Cutoff → CSD 2';
-        else if(n>r.invDoy&&n<=r.hard){
-          const isCsd3=r.threeCsd&&r.cut2&&n>r.cut2;
-          const dest=n<=r.cut1?fmt(r.csd1):isCsd3?fmt(r.csd3):r.csd2?fmt(r.csd2):'—';
-          label+=' · enroll → '+dest+(n>r.soft?' (last chance)':'');
-        }
-      }
-      tip.textContent=label;tip.style.display='block';
-    });
-    c.addEventListener('mousemove',e=>{
-      tip.style.left=(e.clientX+14)+'px';tip.style.top=(e.clientY-28)+'px';
-    });
-    c.addEventListener('mouseout',()=>tip.style.display='none');
-  });
-}
-
-// ── CAL TOGGLE ──
-function toggleCal(){
-  const col=document.getElementById('cal-collapse');
-  const tog=document.getElementById('cal-toggle');
-  const arr=document.getElementById('cal-arrow');
-  const open=!col.classList.contains('open');
-  col.classList.toggle('open',open);
-  tog.classList.toggle('open',open);
-  arr.textContent=open?'▼':'▶';
-  if(open) renderMiniCal();
-}
 
 // ── OE EXTENSION ──
 function setExt(v){
@@ -1057,7 +964,6 @@ function setExt(v){
   rebuild();
   updateInsights();
   if(selDoy) renderExplainer();
-  if(document.getElementById('cal-collapse').classList.contains('open')) renderMiniCal();
 }
 
 function updateInsights(){
@@ -1084,15 +990,14 @@ function updateInsights(){
   setCell(document.getElementById('ins-1csd-count'), document.getElementById('ins-1csd-delta'), one, baseOne);
   setCell(document.getElementById('ins-2csd-count'), document.getElementById('ins-2csd-delta'), two, baseTwo);
 
-  // Sub-text
   document.getElementById('ins-1csd-sub').textContent = one===0
     ? '✓ All invite dates have at least 2 CSDs with extension active'
-    : 'Nov 9–25 OE invites — 35d window closes before the Dec 29 cutoff';
-  document.getElementById('ins-1csd').className = 'ins-cell '+(one===0?'c-good':'c-warn');
+    : 'Nov 9–25 · 35d window closes before Dec 29';
+  document.getElementById('ins-1csd').className = 'istat '+(one===0?'c-good':'c-warn');
 
   document.getElementById('ins-2csd-sub').textContent = two===325
     ? 'includes 17 OE dates rescued by Jan 4–8 extension'
-    : 'standard experience — member has a backstop if they miss the first cutoff';
+    : 'standard — backstop if member misses first cutoff';
 }
 
 // ── INIT ──
